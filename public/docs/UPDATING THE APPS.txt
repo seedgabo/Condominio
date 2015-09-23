@@ -1,0 +1,7 @@
+To update turn off internet then start the app and select update, the update window will appear
+then the update will fail as internet is off, close the app and the update window will remain open,
+turn internet back on then retry the update, once updates are downloaded and installed close the
+update window then restart the app, if you get any issues then simply recopy the dll file(s). 
+
+You can download the updates direct from Adobes website and install them with the app closed also, 
+replacing the dll file again when the update finishes installing. 

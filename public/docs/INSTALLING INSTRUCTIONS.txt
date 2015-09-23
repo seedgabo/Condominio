@@ -1,0 +1,42 @@
+METHOD 1 
+---------------------
+
+
+1) Instal the app in trial mode (no serial required). Start the app and start the trial then 
+   close the app.
+
+2) Go to the DLL folder and copy the dll file for 32 or 64 or both and paste & replace the ones 
+   in the CS5.1 program directory, eg copy and paste and replace to here;
+
+C:\Program Files (x86)\Adobe\Adobe InDesign CS6 <--32bit
+C:\Program Files\Adobe\Adobe Media Encoder CS6  <--64bit. 
+
+or
+
+C:\Program Files\Adobe\Adobe InDesign CS6 <--32bit
+
+
+METHOD 2
+---------------------
+
+
+Download Adobe Tool from here;
+
+https://thepiratebay.se/search/Adobe%20Tool%20%5Bthethingy%5D/0/99/301
+
+then use that to sort the hosts and serials and disable activation.
+
+
+---------------------
+
+For updating and other errors then refer to the other text documents.
+
+Dont post serials on the comments pages please. 
+
+For help with this or any other torrent then join the forum;
+
+http://forum.suprbay.org/member.php?action=register&referrer=102727 
+
+you can send messages after registering as thats usually quicker than posting comments
+on pirate bay. 
+

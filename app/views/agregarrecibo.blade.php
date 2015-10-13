@@ -9,7 +9,7 @@
         <small class="red-text">{{ $errors->first('concepto') }}</small>
     </div>
     <div class="input-field col s12">
-        <input type="number" id="" name="monto"  required="" placeholder="BsF." class="validate"></input> 
+        <input type="number" id="" name="monto"  step="0.001" required="" placeholder="COP." class="validate"></input> 
         <label for="monto">Monto</label> 
         <small class="red-text">{{ $errors->first('monto') }}</small>
     </div>

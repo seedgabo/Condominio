@@ -16,7 +16,9 @@ class CreateDirectivaTable extends Migration {
 		{
 			$tabla->increments('id');
 			$tabla->string('nombre', 50);
-			$tabla->string('cargo')->unique();
+			$tabla->string('email');
+			$tabla->string('telefono');
+			$tabla->string('cargo');
 			$tabla->timestamps();
 		});
 	}

@@ -1,5 +1,5 @@
 <?php $i ='A'; ?>
-@extends('Admin.layout')
+@extends('admin.layout')
 @section('header')
 
 @stop

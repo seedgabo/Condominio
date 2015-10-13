@@ -27,8 +27,14 @@ Route::any('admin/Encuestas', 'AdminController@Encuestas');
 Route::any('admin/Residencias', 'AdminController@Residencias');
 Route::any('admin/Galeria', 'AdminController@Galeria');
 Route::any('admin/Documentos', 'AdminController@documentos');
+
 Route::any('admin/Email', 'AdminController@emailPorUsuario');
 Route::any('admin/Email/Dueños', 'AdminController@EmailPorResidencia');
+Route::any('admin/Email/Morosos', 'AdminController@emailPorMoroso');
+Route::any('admin/Email/AlDia', 'AdminController@emailPorSolvencia');
+
+
+Route::any('admin/Diseño/Portada', 'AdminController@Portada');
 Route::any('admin/eliminarconcepto/{id}','AdminController@eliminarconcepto');
 
 
@@ -84,13 +90,17 @@ Route::any('generar-factura', function()
     $residencia = residencias::where("id","=", $persona->residencia_id)
     ->first();
     $html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona);
-    // return $html;
-    return PDF::load($html, 'A4', 'portrait')->show('mipdf.pdf');
+    $headers = array('Content-Type' => 'application/pdf');
+    return Response::make(PDF::load($html, 'A4', 'portrait')->show('my_pdf'), 200, $headers);
 });
 
 Route::any("test", function()
 {
-    $output = new Symfony\Component\Console\Output\BufferedOutput;
-    Artisan::call('migrate:refresh', array("--seed" =>true), $output);
-    echo $output->fetch();
+    $credentials =Input::only('email','password');
+        if(Auth::attempt($credentials, Input::get('remember', true)))
+        {
+            return  "Bienvenido" .  Auth::user()->nombre;
+        }
+        else 
+            return "ERROR";
 });

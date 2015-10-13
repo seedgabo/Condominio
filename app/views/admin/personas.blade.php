@@ -1,5 +1,5 @@
 
-@extends('Admin.layout')
+@extends('admin.layout')
 @section('header')
 <script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>     
 <!-- Include one of jTable styles. -->
@@ -43,58 +43,71 @@
                     title: 'Nombre',
                 },
                 email:{
-                	title: 'Email',
-                	type: 'email'
+                    title: 'Email',
+                    type: 'email'
                 },
                 residencia_id:{
-                	title: 'Residencia',
-                  options: opciones,
-              },
-              admin:{
-               title : "Administrador",
-               type: 'radiobutton',
-               options: { 0 : 'Usuario', 1 : 'Admin' },
-               defaultValue: 'false',
-           }
-       },
-         recordsLoaded: function()
-    {
-        var tabla=  $('table.jtable').DataTable
-        ({
-            responsive: true,
-            "language": {
-                "sProcessing":     "Procesando...",
-                "sLengthMenu":     "Mostrar _MENU_ registros",
-                "sZeroRecords":    "No se encontraron resultados",
-                "sEmptyTable":     "NingÃºn dato disponible en esta tabla",
-                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix":    "",
-                "sSearch":         "Buscar:",
-                "sUrl":            "",
-                "sInfoThousands":  ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst":    "Primero",
-                    "sLast":     "Ãšltimo",
-                    "sNext":     "Siguiente",
-                    "sPrevious": "Anterior"
+                    title: 'Residencia',
+                    options: opciones,
                 },
-                "oAria": {
-                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                admin:{
+                    title : "Administrador",
+                    type: 'radiobutton',
+                    options: { 0 : 'Usuario', 1 : 'Admin' },
+                    defaultValue: 'false',
                 },
-            }
-        }); 
-    $(".dataTables_paginate").removeClass("dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_simple_numbers");
-     $(".dataTables_length").css("display", "inline").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-    $(".dataTables_filter").css("display", "inline");
-    tabla.search("{{Input::get('query','')}}").draw();
+                residencia_id:
+                {   
+                    options: opciones,
+                    title: "Residencia",
+                }
+            },
+            recordsLoaded: function()
+            {
+                var tabla=  $('table.jtable').DataTable
+                ({
+                    responsive: true,
+                    "language": {
+                        "sProcessing":     "Procesando...",
+                        "sLengthMenu":     "Mostrar _MENU_ registros",
+                        "sZeroRecords":    "No se encontraron resultados",
+                        "sEmptyTable":     "NingÃºn dato disponible en esta tabla",
+                        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix":    "",
+                        "sSearch":         "Buscar:",
+                        "sUrl":            "",
+                        "sInfoThousands":  ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst":    "Primero",
+                            "sLast":     "Ãšltimo",
+                            "sNext":     "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        },
+                    }
+                }); 
+$(".dataTables_paginate").removeClass("dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_simple_numbers");
+$(".dataTables_length").css("display", "inline").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+$(".dataTables_filter").css("display", "inline");
+tabla.search("{{Input::get('query','')}}").draw();
 }
 });
 $('#table').jtable('load');
 
 });
+function buscar (array,filtro)
+{
+    array.filter(function(item) {
+        return (item.name === "nick");
+    });
+}
+
+
 </script>
 @stop

@@ -10,7 +10,7 @@
         </div>
         <span class="card-title black-text">{{$recibo->concepto}}</span>
         <div class="card-content">
-            <p>{{"Monto: " . $recibo->monto}} BsF.</p>
+            <p>{{"Monto: " .  number_format($recibo->monto,3) . Config::get("var.moneda_abreviada")}} </p>
         </div>
         <div class="card-action">
             <a href="{{url("eliminar-recibo/".$recibo->id)}}">Borrar</a>

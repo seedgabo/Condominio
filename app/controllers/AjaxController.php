@@ -179,7 +179,10 @@ class AjaxController extends BaseController {
 			}
 			if($action=="list")
 			{
-				$Records = Residencias::get();
+				if (Input::has('q'))
+					$Records = Residencias::where("id", Input::get('q'))->get();
+				else
+					$Records = Residencias::get();
 				$respuesta= array('Records' => $Records, 'Result' => "OK");
 				return json_encode($respuesta);
 			}

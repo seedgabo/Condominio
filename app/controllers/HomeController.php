@@ -80,7 +80,7 @@ class HomeController extends BaseController {
 		if (Request::isMethod('post'))
 		{
 			$rules =  array(
-				'archivo' => 'mimes:jpg,jpeg,gif,bmp,png|max:10240',
+				'archivo' => 'image|max:10240',
 				'concepto' => 'required|min:3,max:30',
 				'monto' => 'required|numeric|min:0' 
 				);
@@ -95,12 +95,12 @@ class HomeController extends BaseController {
 			{
 				$newName = quitar_tildes(Input::file('archivo')->getClientOriginalName());
 				Input::file('archivo')->move(public_path('images/recibos'),$newName);
-				$data= array_add($data,'path',$newName );
+				$data= array_add($data,'path',$newName);
 			}
 
 			$id =Recibos::insertGetId($data);
 			Session::flash('message', "Recibo Agregado Correctamente");
-			return  Redirect::To('ver-recibos');
+			return  Redirect::to('ver-recibos');
 		}
 		return View::make('agregarrecibo');
 	}

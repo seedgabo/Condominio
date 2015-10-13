@@ -1,10 +1,10 @@
 <?php
 return array(
 'user' =>  Auth::user() ? Auth::user()->nombre : "invitado",
-'condominio' =>"Condominios El Tejar", 
-'ubicacion' => "San Diego ,  Valle de Oro",
+'condominio' =>"Conjunto Residencial de Prueba", 
+'ubicacion' => "Bogotá DC",
 'correo' => "Tucondominio@online.com",
-'keycode' => "diego",
+'keycode' => "prueba",
 
 
 // DATOS DE PAIS

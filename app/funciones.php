@@ -14,5 +14,16 @@ function traducir_fecha($cadena)
 	$texto = str_replace($recibido,$traducido,$cadena);
 	return $texto;
 }
-	
+
+function revisar_expansion ($opcion)
+{
+	if ((Request::segment(2) == $opcion))
+		return "collapse in";
+	else if (($opcion  == "Admin") && (Request::segment(2)!= "Email") && (Request::segment(2)!= "Dise%C3%B1o"))
+		return "collapse in";
+	else
+		return "collapse";
+}
+
+
 ?>

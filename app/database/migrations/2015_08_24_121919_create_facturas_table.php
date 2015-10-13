@@ -17,7 +17,7 @@ class CreateFacturasTable extends Migration {
 			$tabla->increments('id');
 			$tabla->string('mes', 50);
 			$tabla->string('año', 50);
-			$tabla->decimal("monto",10,5);
+			$tabla->decimal("monto",20,3);
 			$tabla->string("concepto",50);
 			$tabla->timestamps();
 		});

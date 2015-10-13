@@ -16,12 +16,13 @@ $message = Session::get('message');
 	<link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<script src="//code.jquery.com/jquery.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-	   {{-- Link a FAVICON --}}
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />
+	{{-- Link a FAVICON --}}
+	<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />
 	@yield('header', '')
 </head>
 
 <body>
+
 	<div id="wrapper">  
 		<!-- Sidebar -->
 		<div id="sidebar-wrapper">
@@ -31,49 +32,65 @@ $message = Session::get('message');
 						<i class="fa fa-home"></i> Principal
 					</a> 
 				</li>
-				<li>
-					<a href="{{url('admin/areas')}}">  <i class="fa fa-location-arrow"></i> Areas</a>
+
+				<li data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">
+					<strong><a href="#">Administrar  &#9660;</a></strong>
 				</li>
-				<li>
-					<a href="{{url('admin/directiva')}}"><i class="fa fa-sitemap"></i> 	Directiva</a>
-				</li>
-				<li>
-					<a href="{{url('admin/eventos')}}"><i class="fa fa-calendar"></i> Eventos</a>
-				</li>
-				<li>
-					<a href="{{url('admin/Encuestas')}}"> <i class="fa fa-list"></i> Encuestas</a>
-				</li>
-				<li>
-					<a href="{{url('admin/facturas')}}"><i class="fa fa-dollar"></i> Facturas</a>
-				</li>
-				<li>
-					<a href="{{url('admin/Noticias')}}"><i class="fa fa-newspaper-o"></i> Noticias</a>
-				</li>
-				<li>
-					<a href="{{url('admin/Recibos')}}"><i class="fa fa-money"></i> Recibos</a>
-				</li>
-				<li>
-					<a href="{{url('admin/Personas')}}"><i class="fa fa-user"></i> Personas</a>
-				</li>
-				<li>
-					<a href="{{url('admin/Personal')}}"><i class="fa fa-users"></i> Personal</a>
-				</li>
-				<li>
-					<a href="{{url('admin/Residencias')}}"> <i class="fa fa-home"></i> Residencias</a>
-				</li>
-				<li>
-					<a href="{{url('admin/Galeria')}}"> <i class="fa fa-picture-o"></i> Galeria</a>
-				</li>
-				<li>
-					<a href="{{url('admin/Documentos')}}"> <i class="fa fa-file-text"></i> Documentos</a>
-				</li>
+				<div class="{{revisar_expansion('Admin')}}"  id="collapseAdmin">
+					
+					<li>
+						<a href="{{url('admin/areas')}}">  <i class="fa fa-location-arrow"></i> Areas</a>
+					</li>
+					<li>
+						<a href="{{url('admin/directiva')}}"><i class="fa fa-sitemap"></i> 	Directiva</a>
+					</li>
+					<li>
+						<a href="{{url('admin/eventos')}}"><i class="fa fa-calendar"></i> Eventos</a>
+					</li>
+					<li>
+						<a href="{{url('admin/Encuestas')}}"> <i class="fa fa-list"></i> Encuestas</a>
+					</li>
+					<li>
+						<a href="{{url('admin/facturas')}}"><i class="fa fa-dollar"></i> Facturas</a>
+					</li>
+					<li>
+						<a href="{{url('admin/Noticias')}}"><i class="fa fa-newspaper-o"></i> Noticias</a>
+					</li>
+					<li>
+						<a href="{{url('admin/Recibos')}}"><i class="fa fa-money"></i> Recibos</a>
+					</li>
+					<li>
+						<a href="{{url('admin/Personas')}}"><i class="fa fa-user"></i> Personas</a>
+					</li>
+					<li>
+						<a href="{{url('admin/Personal')}}"><i class="fa fa-users"></i> Personal</a>
+					</li>
+					<li>
+						<a href="{{url('admin/Residencias')}}"> <i class="fa fa-home"></i> Residencias</a>
+					</li>
+					<li>
+						<a href="{{url('admin/Galeria')}}"> <i class="fa fa-picture-o"></i> Galeria</a>
+					</li>
+					<li>
+						<a href="{{url('admin/Documentos')}}"> <i class="fa fa-file-text"></i> Documentos</a>
+					</li>
+				</div>
 
 				<li data-toggle="collapse" data-target="#collapseEmail" aria-expanded="true" aria-controls="collapeEmail">
-					<a href="#"> <i class="fa fa-envelope"></i> Email  &#9660;</a>
+					<strong><a href="#">Email  &#9660;</a></strong>
 				</li>
-				<div class="collapse" id="collapseEmail">
+				<div class="{{revisar_expansion('Email')}}" id="collapseEmail">
 					<li><a href="{{url('admin/Email')}}"><i class="fa fa-envelope-square"></i>Email a Usuarios</a></li>
 					<li><a href="{{url('admin/Email/Dueños')}}"><i class="fa fa-envelope-square"></i> Email a Dueños</a></li>
+					<li><a href="{{url('admin/Email/Morosos')}}"><i class="fa fa-envelope-square"></i> Email a Morosos</a></li>
+					<li><a href="{{url('admin/Email/AlDia')}}"><i class="fa fa-envelope-square"></i> Email a Al Dia</a></li>
+				</div>
+
+				<li data-toggle="collapse" data-target="#collapseDesign" aria-expanded="true" aria-controls="collapseDesign">
+					<strong><a href="#">Diseño  &#9660;</a></strong>
+				</li>
+				<div class="{{revisar_expansion('Dise%C3%B1o')}}" id="collapseDesign">
+					<li><a href="{{url('admin/Diseño/Portada')}}"><i class="fa fa-book"></i> Portadas</a></li>
 				</div>
 			</ul>
 		</div>
@@ -82,7 +99,6 @@ $message = Session::get('message');
 
 		<div id="page-content-wrapper">
 			<button class="btn" id="menu-toggle"><i class="fa fa-bars"></i></button>
-
 			@yield('content','')
 		</div>
 		<!-- Menu Toggle Script -->

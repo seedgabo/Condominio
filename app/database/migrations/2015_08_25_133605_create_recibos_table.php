@@ -16,7 +16,7 @@ class CreateRecibosTable extends Migration {
 		{
 			$tabla->increments('id');
 			$tabla->string('concepto', 50);
-			$tabla->decimal("monto",10,5);
+			$tabla->decimal("monto",20,3);
 			$tabla->biginteger("persona_id");
 			$tabla->string("path",200)->nullable();
 			$tabla->timestamps();

@@ -1,6 +1,6 @@
 <?php  $meses = array('Selecionar','ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO', 'AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'); $i=0;?>
 
-@extends('Admin.layout') @section('content')
+@extends('admin.layout') @section('content')
 <div class="col-md-12 col-sm-12 well ">
 		{{ Form::open(['method' => 'GET', 'class' => 'form form-inline']) }}
 		<div class="form-group ">

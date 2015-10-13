@@ -90,7 +90,7 @@ class AdminController extends BaseController {
 		$files = File::files(public_path()."/images/galeria");
 		if (Input::hasFile('file'))
 		{
-			$validator = Validator::make(Input::all(), array('file'=> 'mimes:jpeg,bmp,png,gif|max:10240'));
+			$validator = Validator::make(Input::all(), array('file'=> 'mimes:jpg,bmp,png,gif|max:10240'));
 			if ($validator->fails())
 			{
 				return Redirect::to('admin/Galeria')->withFiles($files)->withErrors($validator);
@@ -127,6 +127,7 @@ class AdminController extends BaseController {
 		}
 		return View::make('admin.documentos')->withFiles($files);
 	}
+	// Controladores para Email
 	public function emailPorUsuario()
 	{
 		$correos =User::lists('email','nombre');
@@ -137,5 +138,48 @@ class AdminController extends BaseController {
 		$correos =Residencias::rightJoin('personas', 'personas.id', '=', 'residencias.persona_id_propietario')
 		->select("personas.email as correo","residencias.nombre")->lists("correo","nombre");
 		return View::make('admin.email')->withCorreos($correos);
+	}
+	public function emailPorMoroso()
+	{
+		$correos =Residencias::rightJoin('personas', 'personas.id', '=', 'residencias.persona_id_propietario')
+		->where("residencias.solvencia","=","0")
+		->select("personas.email as correo","residencias.nombre")->lists("correo","nombre");
+		return View::make('admin.email')->withCorreos($correos);
+	}
+	public function emailPorSolvencia()
+	{
+		$correos =Residencias::rightJoin('personas', 'personas.id', '=', 'residencias.persona_id_propietario')
+		->where("residencias.solvencia","=","1")
+		->select("personas.email as correo","residencias.nombre")->lists("correo","nombre");
+		return View::make('admin.email')->withCorreos($correos);
+	}
+
+  //Controladores para el Diseño
+	public function Portada()
+	{
+		if (Input::has("id"))
+		{
+			Event::fire('eliminarArchivo', public_path()."/images/portadas/" . DB::table("portadas")->where("id",Input::get("id"))->first()->media);
+			DB::table("portadas")->where("id",Input::get("id"))->delete();
+			return View::make("admin.portadas");
+		}
+		if (Input::method()=="POST")
+		{
+
+			$validator = Validator::make(Input::all(), array(
+				'media'=> 'image|max:10240',
+				'titulo'=> 'max:50|min:3',
+				'contenido' => 'max:500|min:8'));
+			if ($validator->fails())
+			{
+				return Redirect::to('admin/Diseño/Portada')->withErrors($validator);
+			}
+			$id = DB::table("portadas")->insertGetId(Input::only('titulo','contenido'));
+			Input::file('media')->move(public_path()."/images/portadas/","slider" . $id .".". Input::file('media')->getClientOriginalExtension());
+			DB::table("portadas")
+			->where("id","=",$id)
+			->update(array("media"=> "slider" . $id .".". Input::file('media')->getClientOriginalExtension()));
+		}
+		return View::make("admin.portadas");
 	}
 }

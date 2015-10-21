@@ -10,7 +10,7 @@
 		</div> 
 		<div class="collapsible-body row">
 			<div class="col s2 m2 ml2">
-				<img src="images/noticias/{{$noticia->media or '../favicon.png'}}" alt="" data-caption="{{$noticia->titulo}}" class="circle materialboxed" height="100">
+				<img src="images/noticias/{{$noticia->media or '../logo.png'}}" alt="" data-caption="{{$noticia->titulo}}" class="circle materialboxed" height="100">
 			</div>
 			<div class="col s10 m10 l10">
 				<p>{{$noticia->contenido}} <br>

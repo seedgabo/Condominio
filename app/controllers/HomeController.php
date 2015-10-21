@@ -4,7 +4,7 @@ class HomeController extends BaseController {
 
 	
 	public function inicio()
-	{
+	{		
 		$noticias =	DB::table('noticias')->take(20)->orderby('fecha','desc')->orderby('id','asc')->get();
 		$eventos = DB::table('eventos')
 		->where('fecha_ini','>=',Carbon\Carbon::now())
@@ -12,7 +12,7 @@ class HomeController extends BaseController {
 		->orderby('fecha_ini','asc')
 		->orderby('tiempo_ini','asc')
 		->get();
-		return View::make('inicio')->with('noticias',$noticias)->withEventos($eventos);
+		return  View::make('inicio')->with('noticias',$noticias)->withEventos($eventos);
 	}	
 	public function agregarnoticia()
 	{
@@ -210,7 +210,7 @@ class HomeController extends BaseController {
 	public function verencuestas()
 	{
 		$encuestas = Encuestas::orderby('updated_at','asc')->take(100)->get();
-    	return View::make('verencuesta')->withEncuestas($encuestas);
+		return View::make('verencuesta')->withEncuestas($encuestas);
 	}
 	public function eliminarrecibo($id)
 	{
@@ -243,12 +243,13 @@ class HomeController extends BaseController {
 	}
 	public function login()
 	{
+		
 		$credentials =Input::only('email','password');
 		if(Auth::attempt($credentials, Input::get('remember', true)))
 		{
 			Session::flash('message', "Bienvenido " . Auth::user()->nombre);
 			return  Redirect::to("/");
-		};
+		}
 		Session::flash('message', "Credenciales Invalidas");
 		return  Redirect::to("/");
 	}

@@ -91,16 +91,26 @@ Route::any('generar-factura', function()
     ->first();
     $html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona);
     $headers = array('Content-Type' => 'application/pdf');
-    return Response::make(PDF::load($html, 'A4', 'portrait')->show('my_pdf'), 200, $headers);
+    return Response::make(PDF::load($html, 'A4', 'portrait')->show('mi Factura'), 200, $headers);
 });
 
 Route::any("test", function()
 {
-    $credentials =Input::only('email','password');
-        if(Auth::attempt($credentials, Input::get('remember', true)))
-        {
-            return  "Bienvenido" .  Auth::user()->nombre;
-        }
-        else 
-            return "ERROR";
+    header('Access-Control-Allow-Origin:*');
+    if (Auth::attempt(Input::all(), false))
+    {
+        return json_encode(array_add(Auth::user(),"status",true));
+    }
+     return json_encode(array("status",false));
+});
+
+Route::any("test2", function()
+{
+    header('Access-Control-Allow-Origin:*');
+    return json_encode(Residencias::find(Input::get("id",0)));
+});
+Route::any("test3", function()
+{
+    header('Access-Control-Allow-Origin:*');
+    return json_encode(Noticias::get());
 });

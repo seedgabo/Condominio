@@ -40,7 +40,7 @@ class HomeController extends BaseController {
 				Input::file('media')->move(public_path('images/noticias'),$newName);
 				$data= array_add($data,'media',$newName );
 			}
-			DB::table('noticias')->insertGetId($data);
+			Noticias::create($data);
 			Session::flash('message', '# Noticia Cargada Correctamente #');
 			return Redirect::to('/');
 		}

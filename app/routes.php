@@ -97,20 +97,20 @@ Route::any('generar-factura', function()
 Route::any("test", function()
 {
     header('Access-Control-Allow-Origin:*');
-    if (Auth::attempt(Input::all(), false))
+    if (Auth::attempt(Input::except('dominio'), false))
     {
         return json_encode(array_add(Auth::user(),"status",true));
     }
-     return json_encode(array("status",false));
+    return json_encode(array("status",false));
 });
 
-Route::any("test2", function()
+
+
+
+Route::group(array('prefix' => 'api'), function()
 {
-    header('Access-Control-Allow-Origin:*');
-    return json_encode(Residencias::find(Input::get("id",0)));
-});
-Route::any("test3", function()
-{
-    header('Access-Control-Allow-Origin:*');
-    return json_encode(Noticias::get());
+  
+    Route::resource('noticias', 'NoticiasController');
+    Route::resource('encuestas', 'EncuestasController');
+    Route::resource('residencias', 'ResidenciasController');
 });

@@ -308,6 +308,7 @@ class AjaxController extends BaseController {
 		$resultados[4]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","4")->count('respuesta');
 		$resultados[5]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","5")->count('respuesta');
 		$resultados[6]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","6")->count('respuesta');
+		header('Access-Control-Allow-Origin:*');
 		return View::make('renderpie')->withEncuesta($encuesta)->withResultados($resultados);
 	}
 	public function cambiarsolvencia()

@@ -51,7 +51,6 @@
 </div>
 <script>
   var ctx = document.getElementById("myChart").getContext("2d");
-  var myPieChart = new Chart(ctx).Pie(data,{percentageInnerCutout : 25, animationSteps : 35,});
   var data = [
   {
     value: {{$resultados[1]}},
@@ -89,5 +88,7 @@
     highlight: "#2EFEF7",
     label: "{{$encuesta->respuesta6}}"
   }
-  ];
+  ];  
+  var myPieChart = new Chart(ctx).Pie(data,{percentageInnerCutout : 25, animationSteps : 35,});
+
 </script>

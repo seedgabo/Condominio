@@ -109,8 +109,8 @@ Route::any("test", function()
 
 Route::group(array('prefix' => 'api'), function()
 {
-  
     Route::resource('noticias', 'NoticiasController');
     Route::resource('encuestas', 'EncuestasController');
     Route::resource('residencias', 'ResidenciasController');
+    Route::resource('portadas', 'PortadasController');
 });

@@ -320,35 +320,73 @@ class AjaxController extends BaseController {
 	}
 	public function email()
 	{
+
 		if (Input::has('to'))
+
 		{
+
 			$validator = Validator::make(Input::all(), 
+
 				array('contenido'=> 'required|min:8',
+
 					'title'=> 'required|min:3|max:50',
-					'to'=> 'required'
+
+					'to'=> 'required',
+
+					'file' => 'max:10240|mimes:jpeg,bmp,png,doc,docx,xls,xlsx,pdf,jpg,gif,sql,txt,ppt,pptx'
+
 					));
+
 			if ($validator->fails())
+
 			{
+
 				$salida ['message'] =  $validator->messages()->first();
-				return json_encode($salida);
+
+				return Redirect::back()->withErrors($validator);
+
 			}
 
 
-			Mail::send('emails.basic', array('title' => Input::get('title'), 'contenido' => Input::get('contenido')), function($message)
+
+			foreach (Input::get('to') as $to) 
+
 			{
-				$message->to(Input::get('to'))->subject(Input::get('subject','Condominio'));
-				if(Input::has('path'))
+
+				Mail::send('emails.basic', array('title' => Input::get('title'), 'contenido' => Input::get('contenido')), function($message) use ($to)
+
 				{
-					$message->attach(Input::get('path'));
-				}
-			});
+
+					$message->to($to)->subject(Input::get('title',Empresas::find(Auth::user()->empresa_id)));
+
+					if(Input::hasFile('file'))
+
+					{
+
+						$message->attach(Input::file('file')->getRealPath(), array('as' =>Input::file('file')->getClientOriginalName()));
+
+					}
+
+				});
+
+			};
+
+
+
 			$salida['message'] = "Mensaje Enviado entregado a los Destinatarios:  ";
+
 			$salida['status']  = "ok";
+
 			foreach (Input::get('to') as $key => $correo) {
+
 				$salida['message'] .= $correo  .",  ";
+
 			}
+
 			return  json_encode($salida);
+
 		}
-		return "error";
+
+		return "error No Ha Seleccionado ningun Destinatario";
 	}
 }

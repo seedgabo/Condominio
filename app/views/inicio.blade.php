@@ -30,29 +30,30 @@ $portadas = DB::table('portadas')->get();
 <div class="row">
     {{-- NOTICIAS --}}
     <div class="col s12 m9 l9">
-        <ul class="collapsible" data-collapsible="expandable">
+        <ul class="collection with-header z-depth-5">
             @forelse ($noticias as $noticia)
-            <li>
-                <div class="collapsible-header center  active">
-                <strong style="text-transform: uppercase">{{$noticia->titulo}}</strong>
-               </div> 
-               <div class="collapsible-body row">
-                <div class="col s2 m2 ml2">
-                    <img src="images/noticias/{{$noticia->media or '../logo.png'}}" data-caption="{{$noticia->titulo}}" class="circle materialboxed responsive-img" height="100">
+            <li class="collection-item">
+                <div class="center-align">
+                    <strong class="uppercase">{{$noticia->titulo}}</strong>
                 </div>
-                <div class="col s10 m10 l10">
-                    <p>{{$noticia->contenido}} <br>
-                        <blockquote>Por: {{ $noticia->persona or 'Condominio' }}</blockquote>
-                    </p>
+                <div class="row">
+                    <div class="pull-left">
+                        <img src="images/noticias/{{$noticia->media or '../logo.png'}}" data-caption="{{$noticia->titulo}}" class="circle materialboxed " height="100">
+                    </div>
+                    <div class="justified col s10 m10 l10 offset-s2 offset-m2 offset-l2">
+                        <p>{{$noticia->contenido}} <br>
+                            <blockquote class="pull-right"> Por: {{ $noticia->persona or 'Condominio'}}</blockquote>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </li>
-        @empty
-        No hay Noticias
-        @endforelse
-    </ul>
-</div>
-{{-- Links --}}
+            </li>
+            @empty
+            No hay Noticias
+            @endforelse
+        </ul>  
+    </div>
+
+{{-- Links y Eventos --}}
 <div class="col s12  m3 l3 ">
     <ul class="collection right-aligned z-depth-3">
         <a href="{{url('directiva')}}" class="collection-item waves-effect"><i class="fa fa-info fa-fw fa-lg"></i> Datos Del Condominio</a>
@@ -65,9 +66,10 @@ $portadas = DB::table('portadas')->get();
         <a href="{{url('ver-noticias')}}" class="collection-item waves-effect"><i class="fa fa-newspaper-o"></i> Noticias </a>
         <a href="{{url('ver-personal')}}" class="collection-item waves-effect"><i class="fa fa-th"></i> Personal </a>
     </ul>
+
     {{-- Eventos --}}
     <ul class="collection right-aligned  z-depth-3">
-        <li class="collection-header red center-align">
+        <li class="collection-header center-align">
             <h5> Proximos Eventos </h5>
         </li>
         @forelse($eventos as $evento)
@@ -81,10 +83,11 @@ $portadas = DB::table('portadas')->get();
             </blockquote>
         </li>
         @empty
-        <li class="collection-item">No hay Eventos</li>
+        <li class="collection-item">No hay Eventos Próximos</li>
         @endforelse
     </ul>
 </div>
+
 
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
     <a type="button" class="btn-floating btn-large red"><i class="fa fa-plus-circle"></i></a>
@@ -102,8 +105,8 @@ $portadas = DB::table('portadas')->get();
 <script>
     $(document).ready(function () {
         $('.slider').slider({
-            full_width: true
         });
     })
 </script>
+
 @stop

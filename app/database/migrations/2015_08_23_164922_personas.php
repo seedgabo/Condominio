@@ -18,6 +18,8 @@ class Personas extends Migration {
 			$tabla->string('email', 100)->unique();
 			//varchar 200 para encriptar los passwords
 			$tabla->string('password', 200);
+
+			$tabla->string('avatar',200)->nullable();
 			
  			$tabla->bigInteger('residencia_id')->nullable();
 

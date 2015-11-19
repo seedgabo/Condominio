@@ -3,6 +3,12 @@
  ?>
 
 @extends('layout') 
+
+@section('head')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.ptTimeSelect.css') }}">	
+<script src="{{ asset('js/jquery.ptTimeSelect.js') }}"></script>
+@stop
+
 @section('contenido') 
 {{ Form::open(['method' => 'POST', 'class' => 'container']) }}
 <h2>Agregar Evento</h2>
@@ -56,7 +62,4 @@
 </script>
 @stop
 
-@section('head')
-<link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.ptTimeSelect.css') }}">	
-<script src="{{ asset('js/jquery.ptTimeSelect.js') }}"></script>
-@stop
+

@@ -6,7 +6,7 @@
 <link href="{{asset('jtable/themes/jqueryui/jtable_jqueryui.min.css')}}" rel="stylesheet" type="text/css" />
 
 <!-- Inclusion de jquery ui tema -->
-<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.4/themes/excite-bike/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.4/themes/flick/jquery-ui.css" />
 
 <!-- Include jTable script file. -->
 <script src="{{asset('jtable/jquery.jtable.min.js')}}" type="text/javascript"></script>
@@ -77,7 +77,7 @@
         defaultValue: 1,
         display: function (data)
         {
-          output= '<button class="btn btn-block btn-'+ ((data.record.solvencia ==1 )? 'success': 'danger') +' id=solvencia'+data.record.id+'" onClick="cambiarsolvencia('+data.record.id+')">' ;
+          output= '<button class="btn btn-xs btn-block btn-'+ ((data.record.solvencia ==1 )? 'success': 'danger') +' id=solvencia'+data.record.id+'" onClick="cambiarsolvencia('+data.record.id+')">' ;
           output += ( data.record.solvencia ==1 ? 'Solvente':'Moroso') + "</button>";  
           return  output;
         }
@@ -124,7 +124,6 @@ $('#table').jtable('load');
 
 function cambiarsolvencia(row_id)
 {
-  console.log("ejecutando");
   $.ajax({
    url: "{{url('ajax/cambiarsolvencia')}}",
    type: 'POST',

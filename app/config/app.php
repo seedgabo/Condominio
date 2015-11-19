@@ -39,7 +39,7 @@ return array(
 	|
 	*/
 
-	'timezone' => 'America/Caracas',
+	'timezone' => 'America/Bogota',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'blnDryTuY7snYhLE0EAHxY46BIDEkOjp',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -121,7 +121,10 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-		'Thujohn\Pdf\PdfServiceProvider',
+
+		'Thujohn\Pdf\PdfServiceProvider',   // PDF con Laravel
+		'Way\Generators\GeneratorsServiceProvider',	 //Way Generator
+		'Artdarek\OAuth\OAuthServiceProvider' //Oauth-4-Laravel
 
 		),
 
@@ -189,7 +192,8 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
-		'PDF' 				=> 'Thujohn\Pdf\PdfFacade',
+		'PDF' 							=> 'Thujohn\Pdf\PdfFacade',
+		'OAuth' 						=> 'Artdarek\OAuth\Facade\OAuth'
 		),
 
 );

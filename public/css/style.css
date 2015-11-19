@@ -1,0 +1,26 @@
+.justified
+{
+	text-align: justify;
+}
+.uppercase
+{
+	text-transform: uppercase;
+}
+.btn-small
+{ 
+	display: inline-block;
+	height: 3em !important;
+	font-size: 0.8em; 
+	line-height: 0px;
+	padding: 0 1rem !important;
+}
+
+.avatar
+{
+	max-width: 32px;
+}
+
+.big-avatar
+{
+	max-width: 64px;
+}

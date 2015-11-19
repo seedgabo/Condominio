@@ -62,25 +62,33 @@
 }
 
 .sidebar-nav li {
-    text-indent: 20px;
-    line-height: 40px;
+    text-indent: 12px;
+    line-height: 32px;
+    font-size: 1.1em;
 }
 
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
     color: white;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #04B404;
-    background: rgba(255, 255, 255, 0.2);
+    color: blue;
+    background: white;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
 }
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
     text-decoration: none;
+    color: green;
 }
 
 .sidebar-nav > .sidebar-brand {

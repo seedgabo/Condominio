@@ -98,9 +98,11 @@ $message = Session::get('message');
 		<!-- Page Content -->
 
 		<div id="page-content-wrapper">
-			<button class="btn" id="menu-toggle"><i class="fa fa-bars"></i></button>
+			<button class="btn btn-info" id="menu-toggle"><i class="fa fa-bars"></i></button>
 			@yield('content','')
 		</div>
+
+
 		<!-- Menu Toggle Script -->
 		<script>
 			$("#menu-toggle").click(function(e) {

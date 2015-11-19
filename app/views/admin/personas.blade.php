@@ -6,7 +6,7 @@
 <link href="{{asset('jtable/themes/jqueryui/jtable_jqueryui.min.css')}}" rel="stylesheet" type="text/css" />
 
 <!-- Inclusion de jquery ui tema -->
-<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.4/themes/excite-bike/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.4/themes/flick/jquery-ui.css" />
 
 <!-- Include jTable script file. -->
 <script src="{{asset('jtable/jquery.jtable.min.js')}}" type="text/javascript"></script>
@@ -49,6 +49,22 @@
                 residencia_id:{
                     title: 'Residencia',
                     options: opciones,
+                },
+                avatar:{
+                    title: "Avatar",
+                    create: false,
+                    edit: false,
+                    display: function(data)
+                    {
+                        if (data.record.avatar)
+                        {
+                           return " <img width='32' class='avatar' src='"+ data.record.avatar +"' alt=''>";
+                        }
+                        else
+                        {
+                            return "Sin imagen";
+                        }
+                    }
                 },
                 admin:{
                     title : "Administrador",

@@ -163,7 +163,7 @@ class HomeController extends BaseController {
 	public function verresidencia()
 	{
 		$residencia = DB::table('residencias')
-		->select("personas.nombre as Dueño","residencias.nombre","residencias.alicuota","residencias.cant_personas","residencias.id","solvencia")
+		->select("personas.nombre as Dueño","personas.*","residencias.*")
 		->leftjoin('personas',"personas.id","=","residencias.persona_id_propietario")
 		->where("residencias.id", "=", Auth::user()->residencia_id)
 		->first(); 

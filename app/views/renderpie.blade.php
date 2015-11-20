@@ -10,6 +10,10 @@
     <li class="teal-text"> {{$encuesta->respuesta6 or ""}} :  {{$resultados[6]}} </li>
   </ol>         
 </div>
+@if ($respuesta != null )
+  <p><strong>Tu Respuesta: </strong>  {{$encuesta['respuesta'. $respuesta->respuesta]}}</p>
+  <p><strong>Tus Comentarios: </strong>{{$respuesta->comentarios}}</p>
+@endif
 <!-- Modal Trigger -->
 <button data-target="modal1" class="btn modal-trigger">Votar</button>
 
@@ -17,32 +21,33 @@
 <div id="modal1" class="modal">
   <div class="modal-content left-align">
     <h4> {{$encuesta->pregunta}}</h4>
-    {{ Form::open(['method' => 'GET','id' => 'respuestaform', 'class' => 'form-horizontal']) }}        
-    <p><input name="respuesta" type="radio" id="respuesta1" value="1" checked="checked" />
+    {{ Form::model($respuesta ,['method' => 'GET','id' => 'respuestaform', 'class' => 'form-horizontal']) }}        
+    <p><input name="respuesta" class="with-gap" type="radio" id="respuesta1" value="1" checked="checked" />
      <label for="respuesta1">{{$encuesta->respuesta1}}</label> 
    </p>
 
-   <p><input name="respuesta" type="radio" id="respuesta2" value="2"  />
+   <p><input name="respuesta" class="with-gap" type="radio" id="respuesta2" value="2"  />
      <label for="respuesta2">{{$encuesta->respuesta2}}</label> 
    </p>
 
-   <p><input name="respuesta" type="radio" id="respuesta3" value="3" />
+   <p><input name="respuesta" class="with-gap" type="radio" id="respuesta3" value="3" />
      <label for="respuesta3">{{$encuesta->respuesta3}}</label>
    </p>
 
-   <p><input name="respuesta" type="radio" id="respuesta4" value="4" />
+   <p><input name="respuesta" class="with-gap" type="radio" id="respuesta4" value="4" />
      <label for="respuesta4">{{$encuesta->respuesta4}}</label> 
    </p>
 
-   <p><input name="respuesta" type="radio" id="respuesta5" value="5" />
+   <p><input name="respuesta" class="with-gap" type="radio" id="respuesta5" value="5" />
      <label for="respuesta5">{{$encuesta->respuesta5}}</label> 
    </p>
 
-   <p><input name="respuesta" type="radio" id="respuesta6" value="6" />
+   <p><input name="respuesta" class="with-gap" type="radio" id="respuesta6" value="6" />
      <label for="respuesta6">{{$encuesta->respuesta6}}</label> 
    </p>
+   {{ Form::text('comentarios', null, ['class' => '', 'length' => 100]) }}
    {{Form::hidden('encuesta_id', $encuesta->id)}}
-   {{Form::submit('Enviar Respuesta', ["class"=>"btn green"])}}
+   {{Form::submit('Enviar Respuesta', ["class"=>"btn"])}}
    {{ Form::close() }}
  </div>
  <div class="modal-footer">
@@ -90,5 +95,4 @@
   }
   ];  
   var myPieChart = new Chart(ctx).Pie(data,{percentageInnerCutout : 25, animationSteps : 35,});
-
 </script>

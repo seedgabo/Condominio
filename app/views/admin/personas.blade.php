@@ -46,9 +46,17 @@
                     title: 'Email',
                     type: 'email'
                 },
+                telefono:{
+                    title: 'Telefono',
+                    type: 'number'
+                },
                 residencia_id:{
                     title: 'Residencia',
                     options: opciones,
+                },
+                observaciones:{
+                    title: 'Observaciones',
+                    type: 'textarea'
                 },
                 avatar:{
                     title: "Avatar",

@@ -15,8 +15,8 @@ class CreateFacturasTable extends Migration {
 		Schema::create('facturas', function($tabla)
 		{
 			$tabla->increments('id');
-			$tabla->string('mes', 50);
-			$tabla->string('año', 50);
+			$tabla->integer('mes');
+			$tabla->integer('año');
 			$tabla->decimal("monto",20,3);
 			$tabla->string("concepto",50);
 			$tabla->timestamps();

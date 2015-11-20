@@ -3,18 +3,19 @@
 <div class="container">
 	<div class="row">
 		<ul class="collection">
-		@if (count($docs) <= 1)
+			@if (count($docs) <= 1)
 			<h3>NO HAY DOCUMENTOS CARGADOS</h3>
-		@endif
+			@endif
 			@forelse ($docs as $doc)
 			@if (substr(strrchr($doc,'/'),1)=="index.html")
 			<?php continue ?>
 			@endif
-			<li class="collection-item avatar">
-				<img src="images/pdf.png" alt="" class="circle">
-				<span class="title">{{ substr(strrchr($doc,"/"),1)}}</span>
-				<p>Descargar: {{link_to('docs'. strrchr($doc,"/"), substr(strrchr($doc,"/"),1))}} </p> 
-				<p class="secondary-content"> <i class="fa fa-2x fa-file-pdf-o"></i></p>
+			<li class="collection-item ">
+			<i class="fa left fa-2x fa-file-pdf-o"></i> 
+			<span class="title center">{{ substr(strrchr($doc,"/"),1)}}</span>
+				<span class="secondary-content">
+					Descargar: <i class="fa fa-download"></i> {{link_to('docs'. strrchr($doc,"/"), substr(strrchr($doc,"/"),1))}} 
+				</span>
 			</li>
 			@empty
 			No Hay documentos

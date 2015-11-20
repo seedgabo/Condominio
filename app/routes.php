@@ -11,11 +11,11 @@
 |
 */
 // Variables compartidas en vistas
-View::share('time', new Carbon\Carbon);
+View::share('time', new Carbon);
 
 // controlador Admin
 Route::group(array('prefix' => 'admin'), function(){
-    Route::any('/', 'AdminController@Residencias');
+    Route::any('/', 'GraphController@Graphs');
     Route::any('eventos', 'AdminController@eventos');
     Route::any('areas', 'AdminController@areas');
     Route::any('directiva', 'AdminController@directiva');
@@ -101,10 +101,6 @@ Route::group(array(), function(){
     Route::any('logout', array('before' => 'auth', 'uses' => 'HomeController@logout'));
     Route::any('registro',"HomeController@registro");
 });
-
-
-
-
 
 
 Route::any('generar-factura', function()

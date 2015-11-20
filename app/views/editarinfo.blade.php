@@ -3,8 +3,7 @@
 
 <div class="card">
 	<div class="container">
-		<h2 class="center">Tus Datos
-		</h2>
+		<h2 class="center">Tus Datos</h2>
 
 		{{ Form::model(Auth::user(),['method' => 'Post', 'class' => 'form-horizontal row']) }}
 		<div class="col l1 m2 s3">			
@@ -19,6 +18,11 @@
 			{{ Form::label('email', 'Email adress') }}
 			{{ Form::email('email', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'ej: foo@bar.com']) }}
 			<small class="red-text">{{ $errors->first('email') }}</small>
+		</div>
+		<div class="input-field col l11 s9 m10">
+			{{ Form::label('telefono', 'Teléfono:') }}
+			{{ Form::text('telefono', null, ['class' => 'form-control','length'=>'30']) }}
+			<small class="red-text">{{ $errors->first('telefono') }}</small>
 		</div>
 		<div class="input-field col l12 m12 s12">
 			{{ Form::select('residencia_id', $residencias, null, ['class' => '', 'required' => 'required']) }}

@@ -127,6 +127,8 @@ class AdminController extends BaseController {
 		}
 		return View::make('admin.documentos')->withFiles($files);
 	}
+
+
 	// Controladores para Email
 	public function emailPorUsuario()
 	{
@@ -153,6 +155,9 @@ class AdminController extends BaseController {
 		->select("personas.email as correo","residencias.nombre")->lists("correo","nombre");
 		return View::make('admin.email')->withCorreos($correos);
 	}
+
+
+
 
   //Controladores para el Diseño
 	public function Portada()

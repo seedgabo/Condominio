@@ -23,6 +23,7 @@
 	No hay Noticias
 	@endforelse
 </ul>
+		{{$noticias->links()}}
 </div>
 <div class="container row">
 	<a href="{{url("agregar-noticia")}}" type="button" class=" btn-large col s12 m12 l12"><i class="fa fa-newspaper-o"></i> Agregar Noticia</a>

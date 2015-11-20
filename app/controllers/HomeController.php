@@ -5,9 +5,9 @@ class HomeController extends BaseController {
 	
 	public function inicio()
 	{		
-		$noticias =	DB::table('noticias')->take(20)->orderby('fecha','desc')->orderby('id','asc')->get();
+		$noticias =	DB::table('noticias')->take(20)->orderby('created_at','desc')->orderby('id','asc')->get();
 		$eventos = DB::table('eventos')
-		->where('fecha_ini','>=',Carbon\Carbon::now())
+		->where('fecha_ini','>=',Carbon::today())
 		->take(10)
 		->orderby('fecha_ini','asc')
 		->orderby('tiempo_ini','asc')
@@ -28,12 +28,15 @@ class HomeController extends BaseController {
 			{
 				return Redirect::to('agregar-noticia')->withErrors($validation);
 			}
-
 			$data= Input::except('_token','media');
-			$fecha = new Carbon\Carbon();
+			$fecha = new Carbon();
 			$fecha->setTimezone('America/Caracas');			
 			$data= array_add($data,'fecha',$fecha::now());
-			$data= array_add($data,'persona',Auth::user()->nombre . " de Residencia " . Residencias::find(Auth::user()->residencia_id)->nombre);
+			if(Auth::user()->avatar != null)
+				$imagen ="<img class='avatar circle' src='" . Auth::user()->avatar ."'/>";
+			else
+				$imagen ='  <i class="fa fa-2x fa-user"></i>';
+			$data= array_add($data,'persona', Auth::user()->nombre . " de Residencia " . Residencias::find(Auth::user()->residencia_id)->nombre . $imagen);
 			if (Input::hasFile('media'))
 			{
 				$newName = quitar_tildes(Input::file('media')->getClientOriginalName());
@@ -82,14 +85,18 @@ class HomeController extends BaseController {
 			$rules =  array(
 				'archivo' => 'image|max:10240',
 				'concepto' => 'required|min:3,max:30',
-				'monto' => 'required|numeric|min:0' 
+				'monto' => 'required|numeric|min:0',
+				'mes' => 'numeric|min:1|max:12|required_with:isFactura',
+				'año' => 'numeric|min:2000|max:2099|required_with:isFactura'
 				);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
 				return Redirect::to('agregar-recibo')->withErrors($validation);
 			}
-			$data= Input::except("_token","archivo");
+
+
+			$data= Input::except("_token","archivo","isFactura","mes","año");
 			$data= array_add($data,'persona_id', Auth::user()->id);
 			if(Input::hasFile('archivo'))
 			{
@@ -128,7 +135,7 @@ class HomeController extends BaseController {
 	public function verfullcalendar()
 	{
 		$proximos = DB::table('eventos')
-		->where('fecha_ini','>=',Carbon\Carbon::now())
+		->where('fecha_ini','>=',Carbon::today())
 		->take(10)
 		->orderby('fecha_ini','asc')
 		->orderby('tiempo_ini','asc')
@@ -137,8 +144,7 @@ class HomeController extends BaseController {
 			DB::raw('CONCAT(fecha_ini,"T",tiempo_ini) as start'),
 			DB::raw('CONCAT(fecha_fin,"T",tiempo_fin) as end'))
 		->get();
-		//dd($eventos->toJson());
-		return View::make('vercalendario')->withEvents($eventos->toJson())->withProximos($proximos);
+		return View::make('vercalendario')->withEventos($eventos->toJson())->withProximos($proximos);
 	}
 	public function verdirectiva()
 	{
@@ -177,7 +183,7 @@ class HomeController extends BaseController {
 	}
 	public function vernoticias()
 	{
-		$noticias =	DB::table('noticias')->orderby('fecha','desc')->get();
+		$noticias =	DB::table('noticias')->orderby('fecha','desc')->paginate(20);
 		return View::make('vernoticias')->with('noticias',$noticias);
 	}
 	public function verpersonal()
@@ -219,7 +225,7 @@ class HomeController extends BaseController {
 			File::delete(public_path()."/images/recibos/".$recibo->path);
 			$recibo->delete();
 			Session::flash('message', 'Recibo o Factura Borrado Correctamente');
-			return Redirect::to("/");
+			return Redirect::to("ver-recibos");
 		}	
 		else
 		{

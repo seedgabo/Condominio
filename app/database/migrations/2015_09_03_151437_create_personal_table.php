@@ -12,9 +12,9 @@ class CreatePersonalTable extends Migration {
 			$tabla->increments('id');
 			$tabla->string('nombre', 100);
 			$tabla->string("cedula",50)->nullable();
+			$tabla->string("telefono",50)->nullable();
 			$tabla->string("email",50)->nullable();
 			$tabla->string("cargo",200)->nullable();
-			$tabla->biginteger("telefono")->nullable();
 			$tabla->biginteger("residencia_id");
 			$tabla->timestamps();
 		});

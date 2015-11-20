@@ -14,7 +14,7 @@ class OauthController extends \BaseController {
             if($user != null)
             {
                 $user->nombre = $result['name'];
-                $user->avatar =  'https://graph.facebook.com/' . $result['id'] . '/picture?type=large';
+                $user->avatar =  'https://graph.facebook.com/' . $result['id'] . '/picture?type=square';
                 $user->save();
                 Auth::login($user, false);
                 Session::flash('message',"<img src='".$user->avatar ."' height='70' alt=''> Sesion iniciada con Facebook<br> Bienvenido " . $result['name']);

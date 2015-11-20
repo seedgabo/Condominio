@@ -1,23 +1,27 @@
 @extends('layout')
 @section('contenido')
 <div class=" row">
-	<div class="card hoverable  col  s12 m10 l0">
+	<div class="card hoverable  col  s12 m9 l9">
 		<h2 class="teal-text center-align"> Calendario de Eventos</h2>
 		<div id="calendar" class=""></div>
 	</div>
 
 	<a href="href{{url('agregar-evento')}}" class="btn col s12 hide-on-med-and-up"> Agregar Evento</a>
 
-	<div class="col m2 l2 hide-on-small-only">
+	<div class="col m3 l3 hide-on-small-only">
 		<ul class="collection right-aligned red z-depth-3">
 			<li class="collection-header center-align"> <h5> Proximos Eventos </h5></li>
 			@forelse($proximos as $evento)
 			<li class="collection-item ">
 				<strong class="center-align">
 					{{ $evento->razon }}    
-				</strong> :  
-				{{traducir_fecha(Carbon\Carbon::parse($evento->fecha_ini)->formatLocalized('%A %d %B %Y')) ." - "}}
-				{{traducir_fecha(Carbon\Carbon::parse($evento->fecha_fin)->formatLocalized('%A %d %B %Y'))}}
+				</strong>
+				<p>					
+					<?php  setlocale(LC_TIME, 'es_CO'); ?>
+					{{traducir_fecha(Carbon::parse($evento->fecha_ini)->formatLocalized('%a %d %b %y'))}} -
+					{{traducir_fecha(Carbon::parse($evento->fecha_fin)->formatLocalized('%a %d %b %y'))}}
+				</p>  
+				<p class="red-text">{{traducir_fecha(Carbon::now()->diffForHumans(Carbon::parse($evento->fecha_ini . $evento->tiempo_ini))) }}</p>
 				<p>{{$evento->areas}}</p>
 				<blockquote class="right-align">
 					{{$evento->persona}}
@@ -43,7 +47,7 @@
 			lang: 'es',
 			defaultDate: '{{$time::now()}}',
 		eventLimit: true, // allow "more" link when too many events
-		events:{{$events}}
+		events:{{$eventos}}
 	})
 	});
 </script>

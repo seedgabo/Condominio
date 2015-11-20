@@ -122,9 +122,10 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		'Thujohn\Pdf\PdfServiceProvider',   // PDF con Laravel
-		'Way\Generators\GeneratorsServiceProvider',	 //Way Generator
-		'Artdarek\OAuth\OAuthServiceProvider' //Oauth-4-Laravel
+		'Thujohn\Pdf\PdfServiceProvider',            					  // PDF con Laravel
+		'Way\Generators\GeneratorsServiceProvider',	 					  //Way Generator
+		'Artdarek\OAuth\OAuthServiceProvider',      					  //Oauth-4-Laravel
+		"Khill\Lavacharts\Laravel\LavachartsServiceProvider"    //LavaCharts For Google Charts
 
 		),
 
@@ -192,6 +193,8 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+
+		'Carbon'						=> 'Carbon\Carbon',
 		'PDF' 							=> 'Thujohn\Pdf\PdfFacade',
 		'OAuth' 						=> 'Artdarek\OAuth\Facade\OAuth'
 		),

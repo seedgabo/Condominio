@@ -3,13 +3,13 @@
 <div class="container">
 	<div class="row">
 		{{-- Carta de Residencia --}}
-		<div class="card hoverable">
+		<div class="card large hoverable">
 			<div class="card-image waves-effect waves-block waves-light">
-				<img height ="500"  class="activator" src="images/home.png">
+				<img height="300" class="activator" src="{{asset('images/condominio/logo.png')}}">
 			</div>
 			<div class="card-content center-align activator">
 				<span class="card-title  grey-text text-darken-4">
-					<h2>{{ $residencia->nombre}}</h2>
+					<h2>{{ $residencia->nombre }}</h2>
 					<p class="red-text">Click en la Imagen para Ver los Detalles</p>
 				</span>
 			</div>

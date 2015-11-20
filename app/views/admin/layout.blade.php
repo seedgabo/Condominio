@@ -8,8 +8,9 @@ $message = Session::get('message');
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Admin Page</title>
+	<title>Adminitracion de {{Config::get('var.condominio')}}</title>
 	<link rel="stylesheet" href=" {{ asset('css/simple-sidebar.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
 	{{-- Font Awesome  --}}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 	<!-- Latest compiled and minified CSS & JS -->
@@ -28,13 +29,13 @@ $message = Session::get('message');
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand">
-					<a href="{{url()}}">
-						<i class="fa fa-home"></i> Principal
+					<a href="{{url('admin')}}">
+						<i class="fa fa-dashboard"></i> Dashboard
 					</a> 
 				</li>
-
+				<br>
 				<li data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">
-					<strong><a href="#">Administrar  &#9660;</a></strong>
+					<strong><a href="#">Administrar<i class="fa fa-chevron-circle-right"></i></a></strong>
 				</li>
 				<div class="{{revisar_expansion('Admin')}}"  id="collapseAdmin">
 					
@@ -77,7 +78,7 @@ $message = Session::get('message');
 				</div>
 
 				<li data-toggle="collapse" data-target="#collapseEmail" aria-expanded="true" aria-controls="collapeEmail">
-					<strong><a href="#">Email  &#9660;</a></strong>
+					<strong><a href="#">Email<i class="fa fa-chevron-circle-right"></i></a></strong>
 				</li>
 				<div class="{{revisar_expansion('Email')}}" id="collapseEmail">
 					<li><a href="{{url('admin/Email')}}"><i class="fa fa-envelope-square"></i>Email a Usuarios</a></li>
@@ -87,7 +88,7 @@ $message = Session::get('message');
 				</div>
 
 				<li data-toggle="collapse" data-target="#collapseDesign" aria-expanded="true" aria-controls="collapseDesign">
-					<strong><a href="#">Diseño  &#9660;</a></strong>
+					<strong><a href="#">Diseño<i class="fa fa-chevron-circle-right"></i></a></strong>
 				</li>
 				<div class="{{revisar_expansion('Dise%C3%B1o')}}" id="collapseDesign">
 					<li><a href="{{url('admin/Diseño/Portada')}}"><i class="fa fa-book"></i> Portadas</a></li>
@@ -99,6 +100,7 @@ $message = Session::get('message');
 
 		<div id="page-content-wrapper">
 			<button class="btn btn-info" id="menu-toggle"><i class="fa fa-bars"></i></button>
+			<a href="{{url()}}"><small><i class="fa fa-undo"></i> Volver a Principal </small></a> 
 			@yield('content','')
 		</div>
 

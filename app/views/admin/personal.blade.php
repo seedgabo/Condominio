@@ -50,6 +50,9 @@
                 	title: 'Email',
                 	type: 'email'
                 },
+                telefono:{
+                    title: 'telefono'
+                },
                 cargo:{
                     title: 'Cargo o Trabajo',
                 },

@@ -9,9 +9,13 @@ function quitar_tildes($cadena)
 
 function traducir_fecha($cadena)
 {
-	$recibido = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','January','February','March','April','May','June','July','August','September','October','November','December');
-	$traducido = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+	$recibido = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Mon','Tue','Wed','Thu','Fri','Sat','Sun','January','February','March','April','May','June','July','August','September','October','November','December','day','days','hour','hours','month','months','year','years','week','weeks','before','after');
+	$traducido = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Lun','Mar','Mie','Jue','Vie','Sab','Dom','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre','Dia','Dias','Hora','Horas','Mes','Meses','Año','Años','Semana','Semanas','Antes','Despues');
 	$texto = str_replace($recibido,$traducido,$cadena);
+	if (ends_with($texto,"Antes"))
+	{
+		$texto = "Dentro de " .str_replace("Antes","",$texto); 
+	}
 	return $texto;
 }
 
@@ -25,5 +29,33 @@ function revisar_expansion ($opcion)
 		return "collapse";
 }
 
+function getMeses()
+{
+	return array("Meses","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+}
+
+
+
+// Funciones para obtener rutas a directorios Publicos
+function condominio_path($file = null)
+{
+	return public_path() . "/images/condominio/" . $file;
+}
+function galeria_path($file = null)
+{
+	return public_path() . "/images/galeria/" . $file;
+}
+function noticias_path($file = null)
+{
+	return public_path() . "/images/noticias/" . $file;
+}
+function portadas_path($file = null)
+{
+	return public_path() . "/images/portadas/" . $file;
+}
+function recibos_path($file = null)
+{
+	return public_path() . "/images/recibos/" . $file;
+}
 
 ?>

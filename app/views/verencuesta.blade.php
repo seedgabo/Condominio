@@ -66,7 +66,7 @@
 				$("#respuestaform").append('<div class="progress"> <div class="indeterminate"></div> </div>') 
 			},
 			url: '{{url("ajax/resultados-encuesta/")}}' +"/"+id,
-			data: {respuesta:$('input[name=respuesta]:checked').val(), persona_id:"{{Auth::user()->id}}" ,encuesta_id: $('input[name=encuesta_id]').val()},
+			data: {comentarios:$('input[name=comentarios]').val(),respuesta:$('input[name=respuesta]:checked').val(), persona_id:"{{Auth::user()->id}}" ,encuesta_id: $('input[name=encuesta_id]').val()},
 			success: function(data)
 			{
 				$("#modal1").closeModal();

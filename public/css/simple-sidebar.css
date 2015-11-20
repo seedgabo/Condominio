@@ -22,6 +22,7 @@
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
+    float: left;
     left: 250px;
     width: 0;
     height: 100%;
@@ -45,7 +46,7 @@
 }
 
 #wrapper.toggled #page-content-wrapper {
-    position: absolute;
+    /*position: absolute;*/
     margin-right: -250px;
 }
 
@@ -92,7 +93,7 @@
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
+    height: 45px;
     font-size: 18px;
     line-height: 60px;
 }

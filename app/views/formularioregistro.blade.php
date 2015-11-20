@@ -31,6 +31,11 @@
         {{ Form::label('nombre', 'Nombre Completo:') }}
         <small class="red-text">{{ $errors->first('nombre') }}</small>
     </div>
+        <div class="input-field">
+        {{ Form::text('telefono', null, ['class' => 'form-control','length' => '50']) }}
+        {{ Form::label('telefono', 'Telefono:') }}
+        <small class="red-text">{{ $errors->first('telefono') }}</small>
+    </div>
 
 
     <div class="input-field">

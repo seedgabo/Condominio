@@ -20,7 +20,25 @@
 	max-width: 32px;
 }
 
+.lg-avatar
+{
+	max-width: 48px;
+}
 .big-avatar
 {
 	max-width: 64px;
+}
+
+
+.big-hover
+{
+	-webkit-transition: 0.3s;
+	-o-transition: 0.3s;
+	transition: 0.3s;
+}
+.big-hover:hover
+{
+	-webkit-transition: 0.5s;
+	-o-transition: 0.5s;
+	transition: 0.5s;
 }

@@ -5,7 +5,6 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,7 +15,7 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 	<link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
 
 	<!-- Compiled and minified CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+	<link rel="stylesheet" href="{{asset('css/materialize.min.css')}}">
 	<!-- Libreria de Iconos -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -34,6 +33,7 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 			display: flex;
 			min-height: 100vh;
 			flex-direction: column;
+			background-color: #fafafa;
 		}
 
 		main {
@@ -41,62 +41,73 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 		}
 	</style>
 </head>
-
 <body>
-	{{-- Menu Bar --}}
-	<header id="header" class="">
-		<nav>
-			<div class="nav-wrapper  indigo">
-				<a href="{{ url('/') }}" class="brand-logo center"><img src="{{asset('images/favicon.png')}}" width="60"></a>
-				<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-				<ul class="left hide-on-med-and-down">
-					@if (Auth::check() &&Auth::user()->admin)
-					<li class="tooltipped" data-delay="10" data-position="right" data-tooltip="Entrar Como Administrador"><a href="{{url('admin')}}" title="Entrar como Administrador"><i class="fa fa-bar-chart left"></i>Admin</a></li>
-					@endif
-				</ul>
-				<ul class="right hide-on-med-and-down">
-					@if (!Auth::check())
-					<li><a href="#modallogin" class="modal-trigger" data-target="#modallogin"> Iniciar Sesión</a></li>
-					<li><a href="{{url('registro')}}"> Registrate</a></li>
-					@else
-					<li class="tooltipped" data-delay="10" data-tooltip="Cerrar Sessión"><a href="{{url('logout')}}">{{Auth::user()->nombre}}</a></li>
-					<li class="tooltipped" data-delay="10" data-tooltip="Encuestas">
-						<a href="{{url('ver-encuestas')}}"> <i class="fa fa-list-alt"></i></a>
-					</li>
-					<li class="tooltipped" data-delay="10" data-tooltip="Pagos y Facturas"><a href="{{url('ver-recibos')}}"><i class="fa fa-credit-card"></i></a></li>
-					<li class="tooltipped" data-delay="10" data-tooltip="Condominio"><a href="{{url('directiva')}}"><i class="fa fa-info"></i></a></li>
-					<li class="tooltipped" data-delay="10" data-tooltip="Galeria"><a href="{{url('ver-galeria')}}"><i class="fa fa-picture-o "></i></a></li>
-					<li class="tooltipped" data-delay="10" data-tooltip="Documentos"><a href="{{url('ver-documentos')}}"><i class="fa fa-paperclip "></i></a></li>
-					<li class="tooltipped" data-delay="10" data-tooltip="Tu Residencia"><a href="{{url('ver-residencia')}}"><i class="fa fa-home "></i></a></li>
-					<li><a class="tooltipped modal-trigger" data-delay="10" data-tooltip="Revisar Solvencia" href="#solvencia"><i class="fa fa-users"></i></a></li>
-					<li class="tooltipped" data-delay="10" data-tooltip="Editar informacion"><a href="{{url('Usuario-Edit')}}"><i class="fa fa-pencil"></i></a></li>
-					@endif
-				</ul>
 
-				<ul class="side-nav" id="mobile-demo">
-					@if (!Auth::check())
-					<li><a href="#modallogin" class="modal-trigger" data-target="#modallogin">Iniciar Sesión</a></li>
-					<li><a href="{{url('registro')}}">Registrate</a></li>
-					@else
-					<li><a href="{{url('logout')}}">Cerrar Sesión</a> </li>
-					<li><a href="{{url('ver-encuestas')}}"><i class="fa fa-list-alt left"></i>Encuestas</a></li>
-					<li><a href="{{url('ver-recibos')}}"><i class="fa fa-credit-card left"></i>Pagos</a></li>
-					<li><a href="{{url('directiva')}}"><i class="fa fa-info left"></i>Condominio</a></li>
-					<li><a href="{{url('ver-galeria')}}"> <i class="fa fa-picture-o left"></i>Galeria</a></li>
-					<li><a href="{{url('ver-documentos')}}"><i class="fa fa-paperclip left"></i>Documetación</a></li>
-					<li><a href="{{url('ver-residencia')}}"><i class="fa fa-home left"></i>Residencia</a></li>
-					<li><a href="{{url('Usuario-Edit')}}"><i class="fa fa-pencil left"></i> Editar</a></li>
-					<li><a class="modal-trigger" href="#solvencia">Revisar Solvencia</a></li>
-					@if (Auth::user()->admin)
-					<li><a href="{{url('admin')}}" title="Entrar como Administrador">Admin</a></li>
-					@endif @endif
-				</ul>
-			</div>
+	{{-- Menu Bar --}}
+	<div class="navbar-fixed">
+		<nav>
+			<header id="header" class="">
+				<nav>
+					<div class="nav-wrapper ">
+						<a href="{{ url('/') }}" class="brand-logo center"><img src="{{asset('images/favicon.png')}}" width="55"></a>
+						<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+						<ul class="left hide-on-med-and-down">
+							@if (Auth::check() && Auth::user()->avatar != null)
+							<li> <img class="lg-avatar circle" src="{{Auth::user()->avatar}}" alt=""></li>
+							@endif
+							@if (Auth::check() &&Auth::user()->admin)
+							<li class="tooltipped" data-delay="10" data-position="right" data-tooltip="Entrar Como Administrador"><a href="{{url('admin')}}" title="Entrar como Administrador"><i class="fa fa-bar-chart left"></i>Admin</a></li>
+							@endif
+						</ul>
+						<ul class="right hide-on-med-and-down">
+							@if (!Auth::check())
+							<li><a href="#modallogin" class="modal-trigger" data-target="#modallogin"> Iniciar Sesión</a></li>
+							<li><a href="{{url('registro')}}"> Registrate</a></li>
+							@else
+							<li class="tooltipped" data-delay="10" data-tooltip="Cerrar Sessión"><a href="{{url('logout')}}">{{Auth::user()->nombre}}</a></li>
+							<li class="tooltipped" data-delay="10" data-tooltip="Encuestas">
+								<a href="{{url('ver-encuestas')}}"> <i class="fa fa-list-alt"></i></a>
+							</li>
+							<li class="tooltipped" data-delay="10" data-tooltip="Pagos y Facturas"><a href="{{url('ver-recibos')}}"><i class="fa fa-credit-card"></i></a></li>
+							<li class="tooltipped" data-delay="10" data-tooltip="Condominio"><a href="{{url('directiva')}}"><i class="fa fa-info"></i></a></li>
+							<li class="tooltipped" data-delay="10" data-tooltip="Galeria"><a href="{{url('ver-galeria')}}"><i class="fa fa-picture-o "></i></a></li>
+							<li class="tooltipped" data-delay="10" data-tooltip="Documentos"><a href="{{url('ver-documentos')}}"><i class="fa fa-paperclip "></i></a></li>
+							<li class="tooltipped" data-delay="10" data-tooltip="Calendario"><a href="{{url('ver-eventos')}}"><i class="fa fa-calendar "></i></a></li>
+							<li class="tooltipped" data-delay="10" data-tooltip="Tu Residencia"><a href="{{url('ver-residencia')}}"><i class="fa fa-home "></i></a></li>
+							<li><a class="tooltipped modal-trigger" data-delay="10" data-tooltip="Revisar Solvencia" href="#solvencia"><i class="fa fa-users"></i></a></li>
+							<li class="tooltipped" data-delay="10" data-tooltip="Editar informacion"><a href="{{url('Usuario-Edit')}}"><i class="fa fa-pencil"></i></a></li>
+							@endif
+						</ul>
+
+						<ul class="side-nav" id="mobile-demo">
+							@if (!Auth::check())
+							<li><a href="#modallogin" class="modal-trigger" data-target="#modallogin">Iniciar Sesión</a></li>
+							<li><a href="{{url('registro')}}">Registrate</a></li>
+							@else
+							<li><a href="{{url('logout')}}">Cerrar Sesión</a> </li>
+							<li><a href="{{url('ver-encuestas')}}"><i class="fa fa-list-alt left"></i>Encuestas</a></li>
+							<li><a href="{{url('ver-recibos')}}"><i class="fa fa-credit-card left"></i>Pagos</a></li>
+							<li><a href="{{url('directiva')}}"><i class="fa fa-info left"></i>Condominio</a></li>
+							<li><a href="{{url('ver-galeria')}}"> <i class="fa fa-picture-o left"></i>Galeria</a></li>
+							<li><a href="{{url('ver-documentos')}}"><i class="fa fa-paperclip left"></i>Documetación</a></li>
+							<li><a href="{{url('ver-residencia')}}"><i class="fa fa-home left"></i>Residencia</a></li>
+							<li><a href="{{url('Usuario-Edit')}}"><i class="fa fa-pencil left"></i> Editar</a></li>
+							<li><a class="modal-trigger" href="#solvencia">Revisar Solvencia</a></li>
+							@if (Auth::user()->admin)
+							<li><a href="{{url('admin')}}" title="Entrar como Administrador">Admin</a></li>
+							@endif @endif
+						</ul>
+					</div>
+				</nav>
+			</header>
 		</nav>
-	</header>
+	</div>
+
+	{{-- Contenido Principal --}}
 	<main>
 		@yield('contenido', '')
 	</main>
+
 	<!-- Modal de iniciar session -->
 	<div id="modallogin" class="modal">
 		<div class="modal-content">
@@ -116,7 +127,7 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 				<div class="pull-right">
 					<a href="{{url('login/facebook')}}" class="waves-effect waves-light btn btn-small blue darken-2"><i class="fa fa-facebook"></i></a>
 					<a href="{{url('login/google')}}" class="waves-effect waves-light btn btn-small red"><i class="fa fa-google-plus"></i></a>
-					<button type="submit" class="btn waves-effect waves-lime white black-text"><i class="right fa fa-sign-in"></i> Iniciar Sesión</button>
+					<button type="submit" class="btn waves-effect waves-light"><i class="right fa fa-sign-in"></i> Iniciar Sesión</button>
 				</div>
 				<br>
 			</form>
@@ -153,11 +164,13 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 			<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Listo</a>
 		</div>
 	</div>
-	<footer class="page-footer  indigo"> 
+
+	{{-- Footer --}}
+	<footer  style="background-image: url(http://www.img.lirent.net/2014/10/Android-Lollipop-wallpapers-Download.jpg)" class="page-footer"> 
 		<div class="container">
 			<div class="row">
 				<div class="col l6 s12">
-					<h6 class="white-text">¿Quieres tu propio servicio de Condominio online?</h6>
+					<h6 class="black-text">¿Quieres tu propio servicio de Condominio online?</h6>
 					<form action="http://www.tucondominio.com" method="GET">
 						<input type="email" name="emailContact" class="form-control col s12 m8 l8" id="" placeholder="Deja tu Correo">
 						<button type="submit" class="btn col s12 offset-l1 offset-m1 m3 l3">Enviar</button>
@@ -165,14 +178,14 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 				</div>
 				<div class="col l4 offset-l2 s12">
 					<ul>
-						<li>
-							<a href="mailto:seedgabo@gmail.com" class="grey-text text-lighten-3"> <i class="fa fa-send-o"></i> Correo</a>
+						<li class="big-hover">
+							<a href="mailto:seedgabo@gmail.com" class="black-text"> <i class="fa fa-send-o"></i> Correo</a>
 						</li>
-						<li>
-							<a href="https://ve.linkedin.com/pub/gabriel-bejarano/98/817/711" class="grey-text text-lighten-3"> <i class="fa fa-linkedin"></i> Linkendin</a>
+						<li class="big-hover">
+							<a href="https://ve.linkedin.com/pub/gabriel-bejarano/98/817/711" class="black-text text-lighten-3"> <i class="fa fa-linkedin"></i> Linkendin</a>
 						</li>
-						<li>
-							<a href="tel:+573212441949" class="grey-text text-lighten-3"> <i class="fa fa-phone"></i> Llamanos: 321 244 1949</a>
+						<li class="big-hover">
+							<a href="tel:+573212441949" class="black-text text-lighten-3"> <i class="fa fa-phone"></i> Llamanos: 321 244 1949</a>
 						</li>
 					</ul>
 				</div>
@@ -180,11 +193,27 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 		</div>
 
 		<div class="footer-copyright">
-			<div class="container">
+			<div class="container black-text">
 				© 2015 Copyright , Derechos de Autor Reservados a SeeD Ltda. ResidenciasOnline Ltda es una división de Seed Ltda.
 			</div>
 		</div>
 	</footer>
+
+	{{--  boton FAB --}}
+	<div id="fab" class="fixed-action-btn" style="bottom: 45px; right: 28px;">
+		<a type="button" class="btn-floating btn-large red "><i id="fab-btn"  class="fa fa-plus-circle"></i></a>
+		<ul>
+			<li>
+				<a href="{{url("agregar-noticia")}}" type="button" class="btn-floating red tooltipped" data-position="left" data-delay="10" data-tooltip="Nueva Noticia"><i class="fa fa-newspaper-o"></i></a>
+			</li>
+			<li><a href="{{url("agregar-recibo")}}" type="button" class="btn-floating blue tooltipped" data-position="left" data-delay="10" data-tooltip="Registrar Pago"><i class="fa fa-money"></i></a></li>
+			<li><a href="{{url("agregar-evento")}}" type="button" class="btn-floating green tooltipped" data-position="left" data-delay="10" data-tooltip="Agregar Evento al Calendario"><i class="fa fa-calendar-plus-o"></i></a></li>
+			<li><a href="{{url("agregar-imagen")}}" type="button" class="btn-floating yellow tooltipped" data-position="left" data-delay="10" data-tooltip="Subir una imagen"><i class="fa fa-picture-o"></i></a></li>
+		</ul>
+	</div>
+
+
+
 	<script>
 		$(".button-collapse").sideNav();
 		$(document).ready(function () {
@@ -192,8 +221,14 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 			if ("{{$message or ''}}".length != 0) {
 				Materialize.toast("{{$message or ''}}", 15000, "rounded");
 			}
+
+			$("#fab").hover(
+				function(){$("#fab-btn").toggleClass('fa-plus-circle').toggleClass('fa-times')},
+				function(){$("#fab-btn").toggleClass('fa-times').toggleClass('fa-plus-circle')});
 		});
+
 	</script>
 </body>
 
 </html>
+

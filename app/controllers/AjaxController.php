@@ -297,7 +297,7 @@ class AjaxController extends BaseController {
 	{
 		if(Input::has('respuesta'))
 		{
-			$respuesta= EncuestasRespuestas::firstOrCreate(Input::except("respuesta"));
+			$respuesta= EncuestasRespuestas::firstOrCreate(Input::except("respuesta","comentarios"));
 			$respuesta->update(Input::all());
 			return $respuesta;
 		}
@@ -309,7 +309,8 @@ class AjaxController extends BaseController {
 		$resultados[5]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","5")->count('respuesta');
 		$resultados[6]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","6")->count('respuesta');
 		header('Access-Control-Allow-Origin:*');
-		return View::make('renderpie')->withEncuesta($encuesta)->withResultados($resultados);
+		$respuesta = EncuestasRespuestas::where("persona_id","=",Auth::id())->where("encuesta_id","=",$id)->first();
+		return View::make('renderpie')->withEncuesta($encuesta)->withResultados($resultados)->withRespuesta($respuesta);
 	}
 	public function cambiarsolvencia()
 	{
@@ -357,7 +358,7 @@ class AjaxController extends BaseController {
 
 				{
 
-					$message->to($to)->subject(Input::get('title',Empresas::find(Auth::user()->empresa_id)));
+					$message->to($to)->subject(Input::get('title'));
 
 					if(Input::hasFile('file'))
 

@@ -59,7 +59,7 @@ Route::filter('admin', function()
 });
 
 Route::filter('api', function(){
-header('Access-Control-Allow-Origin:*');
+		header('Access-Control-Allow-Origin:*');
 });
 
 // amarrando el filtro a todas las direcciones admin

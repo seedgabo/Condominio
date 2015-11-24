@@ -1,15 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
 // Variables compartidas en vistas
 View::share('time', new Carbon);
 
@@ -63,6 +53,8 @@ Route::group(array('prefix' => 'api'), function()
     Route::resource('encuestas', 'EncuestasController');
     Route::resource('residencias', 'ResidenciasController');
     Route::resource('portadas', 'PortadasController');
+    Route::resource('eventos', 'EventosController');
+    Route::resource('galeria', 'GaleriaController');
 });
 
 // Controlador Oauth
@@ -94,6 +86,7 @@ Route::group(array(), function(){
     Route::any('ver-eventos','HomeController@verfullcalendar');
     Route::any('ver-galeria', "HomeController@vergaleria");
     Route::any('ver-noticias', "HomeController@vernoticias");
+		Route::any('generar-factura', 'HomeController@generarFactura' );
 
 
     // Controladores de login y logout
@@ -103,20 +96,6 @@ Route::group(array(), function(){
 });
 
 
-Route::any('generar-factura', function()
-{
-    $time = new Carbon\Carbon;
-    $factura = DB::table('facturas')
-    ->where("mes","=", Input::get('mes', $time->month))
-    ->where("año","=",Input::get('año', $time->year))
-    ->get();
-    $persona = User::find(Input::get('persona_id',Auth::user()->id));
-    $residencia = residencias::where("id","=", $persona->residencia_id)
-    ->first();
-    $html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona);
-    $headers = array('Content-Type' => 'application/pdf');
-    return Response::make(PDF::load($html, 'A4', 'portrait')->show('mi Factura'), 200, $headers);
-});
 
 Route::any("test", function()
 {
@@ -130,9 +109,5 @@ Route::any("test", function()
 
 Route::any("printInput", function(){
    header('Access-Control-Allow-Origin:*'); 
-   return json_encode(Input::all());});
-
-
-
-
-
+   return json_encode(Input::all());
+});

@@ -39,6 +39,7 @@ class AdminController extends BaseController {
 		$time = new Carbon\Carbon;
 		$array = DB::table('facturas')->where("mes", "=" ,Input::get('mes',$time->month)) 
 		->where("año","=",Input::get('año', $time->year))
+		->whereNull('residencia_id')
 		->get();
 		
 		$personas_opt= User::lists('nombre','id');

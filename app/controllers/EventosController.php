@@ -1,22 +1,27 @@
 <?php
 
-class NoticiasController extends \BaseController {
+class EventosController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
+	 * GET /eventos
 	 *
 	 * @return Response
 	 */
-
 	public function index()
 	{
-		header('Access-Control-Allow-Origin:*');
-		return json_encode(Noticias::orderby("updated_at","asc")->get());
+	  $eventos = Eventos::where('fecha_ini','>=',Carbon::today())->orderby("fecha_ini","asc")->orderby("tiempo_ini","asc")->get();
+	  foreach ($eventos as $key => $evento) {
+	  	$evento  = array_add($evento,'duracion',traducir_fecha(Carbon::parse($evento->fecha_ini . $evento->tiempo_ini)->diffForHumans(Carbon::parse($evento->fecha_fin . $evento->tiempo_fin)),true));
+	  	$evento['inicio'] = traducir_fecha(Carbon::parse($evento->fecha_ini . $evento->tiempo_ini)->toDayDateTimeString());
+	  	$evento['fin'] = traducir_fecha(Carbon::parse($evento->fecha_fin . $evento->tiempo_fin)->toDayDateTimeString());
+	  }
+	  return $eventos;
 	}
-
 
 	/**
 	 * Show the form for creating a new resource.
+	 * GET /eventos/create
 	 *
 	 * @return Response
 	 */
@@ -25,47 +30,32 @@ class NoticiasController extends \BaseController {
 		//
 	}
 
-
 	/**
 	 * Store a newly created resource in storage.
+	 * POST /eventos
 	 *
 	 * @return Response
 	 */
 	public function store()
 	{
-			header('Access-Control-Allow-Origin:*');
-			Auth::once(Input::only('email','password'));
-			$data = Input::get('data');
-			$fecha = new Carbon();
-			$fecha->setTimezone('America/Caracas');			
-			$data= array_add($data,'fecha',$fecha::now());
-			
-			if(Auth::user()->avatar != null)
-				$imagen ="<img class='avatar circle' src='" . Auth::user()->avatar ."'/>";
-
-			else
-				$imagen ='  <i class="fa fa-2x fa-user"></i>';
-			$data= array_add($data,'persona', Auth::user()->nombre . " de Residencia " . Residencias::find(Auth::user()->residencia_id)->nombre . $imagen);
-			
-			$noticia = Noticias::create($data);
-			return 	$noticia;
+		//
 	}
-
 
 	/**
 	 * Display the specified resource.
+	 * GET /eventos/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function show($id)
 	{
-		//
+		return	 json_encode(Eventos::find($id));
 	}
-
 
 	/**
 	 * Show the form for editing the specified resource.
+	 * GET /eventos/{id}/edit
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -75,9 +65,9 @@ class NoticiasController extends \BaseController {
 		//
 	}
 
-
 	/**
 	 * Update the specified resource in storage.
+	 * PUT /eventos/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -87,9 +77,9 @@ class NoticiasController extends \BaseController {
 		//
 	}
 
-
 	/**
 	 * Remove the specified resource from storage.
+	 * DELETE /eventos/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -98,6 +88,5 @@ class NoticiasController extends \BaseController {
 	{
 		//
 	}
-
 
 }

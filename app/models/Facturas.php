@@ -2,5 +2,5 @@
 class Facturas extends Eloquent {
 
    protected $table ="facturas";
-   protected $fillable =array('mes','año','monto','concepto');
+   protected $fillable =array('mes','año','residencia_id','monto','concepto');
 }

@@ -125,7 +125,7 @@ class HomeController extends BaseController {
 				{
 					return Redirect::to('agregar-imagen')->withErrors($validation);
 				}
-				Input::file('file')->move(public_path()."/images/galeria/", Input::file('file')->getClientOriginalName());
+				Input::file('file')->move(public_path()."/images/galeria/", Input::get('nombre', Input::file('file')->getClientOriginalName()));
 				Session::flash('message',"Imagen subida a la Galeria Correctamente");
 				return Redirect::to('ver-galeria');
 			}
@@ -247,6 +247,32 @@ class HomeController extends BaseController {
 			return Redirect::back();
 		}	
 	}
+
+	public function generarFactura ()
+	{
+		if (Input::has("persona_id"))
+			$persona = User::find(Input::get('persona_id'));
+		else
+			$persona = User::find(Auth::id()); 
+
+		$residencia = residencias::where("id","=", $persona->residencia_id)
+		->first();
+		$time = new Carbon\Carbon;
+		$factura = DB::table('facturas')
+		->where("mes","=", Input::get('mes', $time->month))
+		->where("año","=",Input::get('año', $time->year))
+		->where(function ($query) use($residencia)
+		{
+			$query->where('residencia_id', '=', $residencia->id)
+			->orwhere('residencia_id');
+		})
+		->get();
+		
+		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona);
+		$headers = array('Content-Type' => 'application/pdf');
+		return PDF::load($html, 'A4', 'portrait')->download('Mi Factura');
+	}
+	
 	public function login()
 	{
 		
@@ -305,6 +331,7 @@ class HomeController extends BaseController {
 		$residencias =Residencias::union($nulos)->lists("nombre","id");
 		return View::make('formularioregistro')->withResidencias($residencias);
 	}
+
 	public function usuarioEdit()
 	{
 		$residencias = Residencias::lists('nombre','id');

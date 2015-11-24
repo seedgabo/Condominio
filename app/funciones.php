@@ -7,15 +7,25 @@ function quitar_tildes($cadena)
 	return $texto;
 }
 
-function traducir_fecha($cadena)
+function traducir_fecha($cadena, $diferencia = false)
 {
-	$recibido = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Mon','Tue','Wed','Thu','Fri','Sat','Sun','January','February','March','April','May','June','July','August','September','October','November','December','day','days','hour','hours','month','months','year','years','week','weeks','before','after');
-	$traducido = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Lun','Mar','Mie','Jue','Vie','Sab','Dom','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre','Dia','Dias','Hora','Horas','Mes','Meses','Año','Años','Semana','Semanas','Antes','Despues');
+	$recibido = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Mon','Tue','Wed','Thu','Fri','Sat','Sun','January','February','March','April','May','June','July','August','September','October','November','December','second','seconds','minute','minutes','day','days','hour','hours','month','months','year','years','week','weeks','before','after');
+	$traducido = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Lun','Mar','Mie','Jue','Vie','Sab','Dom','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre','Segundo','Segundos','Minuto','Minutos','Dia','Dias','Hora','Horas','Mes','Meses','Año','Años','Semana','Semanas','Antes','Despues');
 	$texto = str_replace($recibido,$traducido,$cadena);
 	if (ends_with($texto,"Antes"))
 	{
 		$texto = "Dentro de " .str_replace("Antes","",$texto); 
 	}
+	if (ends_with($texto,"Despues"))
+	{
+		$texto = "Hace " .str_replace("Despues","",$texto); 
+	}
+
+	if($diferencia == true)
+	{
+		$texto = str_replace(["Dentro de ", "Hace "],"",$texto); 
+	}
+
 	return $texto;
 }
 

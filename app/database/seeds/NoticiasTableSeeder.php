@@ -10,7 +10,11 @@ class NoticiasTableSeeder extends Seeder {
 		Noticias::create(array('titulo' => 'Informacion', 'contenido' => 'Puedes agregar tus propias noticias para compartirlas con el resto de los usuarios, aprovecha y promociona tus productos, o comparte imagenes de tus juntas de condominio, Se precavido' ,'persona' => 'Sistema', 'fecha'=> $fecha));
 
 		DB::table('eventos')->delete();
-		Eventos::create(array('razon'=>'Junta de Condominio','fecha_ini' => $fecha, 'fecha_fin'=> $fecha, 'tiempo_ini' => $fecha->format('h:i') , 'tiempo_fin'=>$fecha->addHours(2)->format('h:i') ));
+		Eventos::create(array('razon'=>'Junta de Condominio','fecha_ini' => $fecha, 'fecha_fin'=> $fecha, 'tiempo_ini' => $fecha->format('H:i:s') , 'tiempo_fin'=>$fecha->addHours(2)->format('H:i:s') ));
+	 	
+	 	
+	 	db::Table('portadas')->delete();
+	 	db::Table('portadas')->insert(array("id"=>1 ,"titulo" => "Mi Residencia esta la WEB!!","media" => "slider1.jpg" , "contenido" => "ResidenciasOnline.com"));
 	 $this->command->info('Noticias Table Seed!');
 	}
 

@@ -12,6 +12,7 @@
         "guzzlehttp/guzzle" : "~4.0",
         "way/generators" : "~2.0",
         "fzaninotto/faker" : "dev-master",
+        "maatwebsite/excel": "~1.3",
         "artdarek/oauth-4-laravel": "dev-master",
         "khill/lavacharts" : "2.5.*"
     },

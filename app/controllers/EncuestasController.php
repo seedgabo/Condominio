@@ -9,7 +9,6 @@ class EncuestasController extends \BaseController {
 	 */
 	public function index()
 	{
-		header('Access-Control-Allow-Origin:*');
 		return json_encode(Encuestas::get());
 	}
 
@@ -44,8 +43,7 @@ class EncuestasController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		header('Access-Control-Allow-Origin:*');
-		Auth::attempt(Input::only('email','password'),true);
+		Auth::once(Input::only('email','password'),true);
 		$encuesta  = Encuestas::find($id);
 		$resultados[1]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","1")->count('respuesta');
 		$resultados[2]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","2")->count('respuesta');
@@ -79,7 +77,6 @@ class EncuestasController extends \BaseController {
 	 */
 	public function update($id)
 	{
-			header('Access-Control-Allow-Origin:*');
 			Auth::attempt(Input::only('email','password'),true);
 			$respuestaUsuario = EncuestasRespuestas::firstOrCreate(['encuesta_id' =>$id, 'persona_id' => Auth::id()]);
 			$respuestaUsuario->update(Input::get('data'));

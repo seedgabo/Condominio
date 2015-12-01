@@ -32,7 +32,7 @@
     <img class="" src="{{ url('images/galeria/').strrchr($file,'/')}}" alt="Imagen" >
   </a>
   <div class="caption">
-   <h3>{{substr(strrchr($file,'/'),1)}}</h3>
+   <h5>{{substr(strrchr($file,'/'),1)}}</h5>
    <p>
      <a href="{{ url('images/galeria/').strrchr($file,'/')}}" class="btn btn-primary" role="button">Ver</a>
      <a href="#" onclick="eliminarimagen('{{substr(strrchr($file,'/'),1)}}',{{$i++}})" class="btn btn-danger" role="button">Borrar</a> 
@@ -61,10 +61,8 @@
 </div>
 
 <script>
-  var x;
   function eliminarimagen(path,selector)
   {
-    x = selector;
     jQuery.ajax(
     {
       url: '{{url("admin/Galeria")}}',
@@ -78,7 +76,7 @@
          opacity: 0.25,
          left: "+=50",
          height: "toggle"},
-         1500, function() 
+         'fast', function() 
          {
           $(selector).remove();
         });

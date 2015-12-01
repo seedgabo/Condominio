@@ -24,6 +24,8 @@ class Personas extends Migration {
 			$tabla->string('password', 200);
 
 			$tabla->string('avatar',200)->nullable();
+
+			$tabla->timestamp('last_login')->nullable();
 			
  			$tabla->bigInteger('residencia_id')->nullable();
 

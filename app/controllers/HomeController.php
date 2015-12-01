@@ -174,7 +174,7 @@ class HomeController extends BaseController {
 		->where("residencias.id", "=", Auth::user()->residencia_id)
 		->first(); 
 		$residentes = DB::table('personas')
-		->select("personas.nombre")
+		->select("personas.*")
 		->join("residencias","personas.residencia_id","=","residencias.id")
 		->where("residencias.id", "=" , $residencia->id)
 		->get();
@@ -247,32 +247,26 @@ class HomeController extends BaseController {
 			return Redirect::back();
 		}	
 	}
-
-	public function generarFactura ()
+	
+	public function generarFactura()
 	{
 		if (Input::has("persona_id"))
 			$persona = User::find(Input::get('persona_id'));
 		else
 			$persona = User::find(Auth::id()); 
 
-		$residencia = residencias::where("id","=", $persona->residencia_id)
-		->first();
+		$residencia = residencias::where("id","=", $persona->residencia_id)->first();
 		$time = new Carbon\Carbon;
-		$factura = DB::table('facturas')
-		->where("mes","=", Input::get('mes', $time->month))
-		->where("año","=",Input::get('año', $time->year))
-		->where(function ($query) use($residencia)
-		{
-			$query->where('residencia_id', '=', $residencia->id)
-			->orwhere('residencia_id');
-		})
-		->get();
-		
-		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona);
+		$mes = Input::get('mes', $time->month);
+		$año = Input::get('año', $time->year);
+		$factura = DB::Select("call generarfacturaporresidencia(?,?,?)", array($residencia->id,$mes,$año));
+		$cant_residencias = Residencias::where("nombre","<>","condominio")->count();
+		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona)->withMes($mes)->withAño($año)->with('cant_residencias',$cant_residencias);;
 		$headers = array('Content-Type' => 'application/pdf');
-		return PDF::load($html, 'A4', 'portrait')->download('Mi Factura');
+		return $html;
+		return PDF::load($html, 'letter', 'portrait')->download('Factura ' . $persona->nombre);
 	}
-	
+
 	public function login()
 	{
 		

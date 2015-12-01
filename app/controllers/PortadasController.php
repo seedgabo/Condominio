@@ -9,7 +9,6 @@ class PortadasController extends \BaseController {
 	 */
 	public function index()
 	{
-		header('Access-Control-Allow-Origin:*');
 		return json_encode(DB::table('portadas')->orderby("updated_at","asc")->get());
 	}
 

@@ -14,7 +14,7 @@ nav {
 
     i {
       display: block;
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
   }
 
@@ -86,6 +86,7 @@ nav {
 
       &:hover, &.active {
         background-color: rgba(0,0,0,.1);
+        color: black;
       }
     }
     a {
@@ -93,6 +94,10 @@ nav {
       color: $navbar-font-color;
       display: block;
       padding: 0 10px;
+
+      &:hover, &.active {
+        background-color: rgba(0,0,0,.1);
+      }
     }
 
     &.left {

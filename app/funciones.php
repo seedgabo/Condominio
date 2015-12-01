@@ -33,7 +33,7 @@ function revisar_expansion ($opcion)
 {
 	if ((Request::segment(2) == $opcion))
 		return "collapse in";
-	else if (($opcion  == "Admin") && (Request::segment(2)!= "Email") && (Request::segment(2)!= "Dise%C3%B1o"))
+	else if (($opcion  == "Admin") && (Request::segment(2)!= "Email") && (Request::segment(2)!= "Dise%C3%B1o") && (Request::segment(2)!= "Finanzas") )
 		return "collapse in";
 	else
 		return "collapse";
@@ -44,6 +44,15 @@ function getMeses()
 	return array("Meses","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 }
 
+
+function sendFacturaMail()
+{
+		Mail::send('pdf.factura',array('mes' => $mes, 'año' => $año, 'factura' => $factura, 'cant_residencias' => $cant_residencias,'persona'=> $persona,'residencia' => $residencia),function($message)
+		{
+				 $message->from('Gabriel@residenciasOnline.com', 'Tu Residencia');
+    		 $message->to('seedgabo@gmail.com');
+		});
+}
 
 
 // Funciones para obtener rutas a directorios Publicos

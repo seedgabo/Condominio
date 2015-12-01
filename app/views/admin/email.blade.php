@@ -4,7 +4,7 @@
 
 @section('header')
 
-<script src="//cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
+   <script type="text/javascript" src="{{asset('vendors/ckeditor/ckeditor.js')}}"></script>
 
 @stop
 
@@ -56,13 +56,13 @@
 
 
 
-			<div class="form-group col-md-4">
+			<div class="form-group col-md-3">
 
 				<div class="checkbox">
 
 					<label for="{{'correos['.$i.']'}}">
 
-						{{ Form::checkbox("to[".$i."]", $correo,true) }} <strong>{{$nombre}}</strong> <small>{{$correo}} </small>
+						{{ Form::checkbox("to[".$i."]", $correo,true) }} <strong>{{$nombre}}</strong> <br> <small>{{$correo}} </small>
 
 					</label>
 
@@ -141,33 +141,20 @@
 
 
 <script type="text/javascript">
-
-	
-
-
-
 	function selectall()
-
 	{
 
 		var checkboxes = $(':checkbox');
 
 		checkboxes.prop('checked', true);
-
 	}
-
 	function unselectall()
-
 	{
 
 		var checkboxes = $(':checkbox');
 
 		checkboxes.prop('checked', false);
-
 	}
-
-
-
 </script>
 
 @stop

@@ -8,5 +8,9 @@ class Residencias extends Eloquent {
 	{
 		return $this->hasMany('User','residencia_id');
 	}
+	public function personal()
+	{
+		return $this->hasMany('personal','residencia_id');
+	}
 
 }

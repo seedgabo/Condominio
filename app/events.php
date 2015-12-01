@@ -8,3 +8,8 @@ Event::listen('eliminarArchivo', function($path)
    	else 
    		return false;
 });
+
+Event::listen('auth.login', function($user) {
+    $user->last_login = Carbon::now();
+    $user->save();
+});

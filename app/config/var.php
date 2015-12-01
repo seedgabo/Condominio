@@ -1,9 +1,12 @@
 <?php
 return array(
-'user' =>  Auth::user() ? Auth::user()->nombre : "invitado",
-'condominio' =>"Conjunto Residencial de Prueba", 
-'ubicacion' => "Bogotá DC",
+'nombre' =>"Conjunto Residencial de Prueba", 
+'ubicacion' => "Bogotá DC <br>  Calle 9sur #8-39 <br> Colombia",
+'long' => 4.5817998,
+'lat'   => -74.0878306,
 'correo' => "Tucondominio@online.com",
+
+
 'keycode' => "prueba",
 
 

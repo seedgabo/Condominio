@@ -7,12 +7,13 @@ class DirectivaTableSeeder extends Seeder {
 		$i=1;
 		DB::table('Directiva')->delete();
 
-		Directiva::create(array("nombre" => "Fulano de Tal" , "Cargo" =>"Presidente de la junta Directiva"));
-		Directiva::create(array("nombre" => "Mengana" , "Cargo" =>"Secretario"));
-		Directiva::create(array("nombre" => "Pedro Pérez" , "Cargo" =>" Tesorero"));
-		Directiva::create(array("nombre" => "Ana Rojas" , "Cargo" =>"Administrador"));
-		Directiva::create(array("nombre" => "Juan Gonzalez" , "Cargo" =>"Consejal"));
-		 $this->command->info('Directiva Table Seed!');
+		$directiva[] =(array("nombre" => "Fulano de Tal" , "Cargo" =>"Presidente de la junta Directiva","email"=> "fulano@residenciasonline.com","telefono" => "123456789"));
+		$directiva[] =(array("nombre" => "Mengana" , "Cargo" =>"Secretario","email"=> "mengana@residenciasonline.com","telefono" => "123456789"));
+		$directiva[] =(array("nombre" => "Pedro Pérez" , "Cargo" =>" Tesorero","email"=> "tesoro@residenciasonline.com","telefono" => "123456789"));
+		$directiva[] =(array("nombre" => "Ana Rojas" , "Cargo" =>"Administrador","email"=> "Ana.rojas@residenciasonline.com","telefono" => "123456789"));
+		$directiva[] =(array("nombre" => "Juan Gonzalez" , "Cargo" =>"Consejal","email"=> "JuanG@residenciasonline.com","telefono" => "123456789"));
+		Directiva::insert($directiva);
+		$this->command->info('Directiva Table Seed!');
 		
 	}
 

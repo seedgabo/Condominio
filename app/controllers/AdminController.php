@@ -6,54 +6,6 @@ class AdminController extends BaseController {
 	{
 		return View::make('admin.eventos');
 	}
-	public function facturas()
-	{
-		
-		if(Request::isMethod("post"))
-		{
-			$i=0;
-			$monto = Input::get("monto");
-			$id= Input::get('id');
-			foreach (Input::get('nombre') as $key => $value) 
-			{
-				$elemento =	DB::table('facturas')->find($id[$i]);
-				$array = array('mes' => Input::get("mes"), 
-					'año' => Input::get("año"),
-					'concepto'=> $value,
-					'monto' => $monto[$i] );
-				if($elemento ===null)
-				{
-					DB::table('facturas')->insert($array);
-				}
-				else
-				{
-					DB::table('facturas')->where("id","=",$id[$i])->update($array);
-				}
-				$i++;
-			}
-			return Redirect::to("admin/facturas");
-		}
-		
-		
-			// definimos un tiempo predeterminado
-		$time = new Carbon\Carbon;
-		$array = DB::table('facturas')->where("mes", "=" ,Input::get('mes',$time->month)) 
-		->where("año","=",Input::get('año', $time->year))
-		->whereNull('residencia_id')
-		->get();
-		
-		$personas_opt= User::lists('nombre','id');
-		return View::make('admin.generadordefacturas')
-		->withArray($array)
-		->withPersonas($personas_opt)
-		->with('año',Input::get('año',$time->year))
-		->withMes(Input::get('mes',$time->month));
-	}
-	public function eliminarconcepto($id)
-	{
-		DB::table("facturas")->where("id","=",$id)->delete();
-		return 	Redirect::to(url("admin/facturas"))->withInput(Input::flashOnly('mes', 'año'));
-	}
 	public function areas()
 	{
 		return View::make("admin.areas");
@@ -91,7 +43,7 @@ class AdminController extends BaseController {
 		$files = File::files(public_path()."/images/galeria");
 		if (Input::hasFile('file'))
 		{
-			$validator = Validator::make(Input::all(), array('file'=> 'mimes:jpg,bmp,png,gif|max:10240'));
+			$validator = Validator::make(Input::all(), array('file'=> 'image|max:10240'));
 			if ($validator->fails())
 			{
 				return Redirect::to('admin/Galeria')->withFiles($files)->withErrors($validator);
@@ -156,8 +108,6 @@ class AdminController extends BaseController {
 		->select("personas.email as correo","residencias.nombre")->lists("correo","nombre");
 		return View::make('admin.email')->withCorreos($correos);
 	}
-
-
 
 
   //Controladores para el Diseño

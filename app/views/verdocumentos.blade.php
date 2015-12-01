@@ -14,7 +14,7 @@
 			<i class="fa left fa-2x fa-file-pdf-o"></i> 
 			<span class="title center">{{ substr(strrchr($doc,"/"),1)}}</span>
 				<span class="secondary-content">
-					Descargar: <i class="fa fa-download"></i> {{link_to('docs'. strrchr($doc,"/"), substr(strrchr($doc,"/"),1))}} 
+					<a href="{{asset('docs'. strrchr($doc,"/"))}}"> Descargar <i class="fa fa-lg fa-download"></i></a>
 				</span>
 			</li>
 			@empty

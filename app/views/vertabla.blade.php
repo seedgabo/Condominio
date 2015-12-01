@@ -1,5 +1,5 @@
 <div class="container">
-    <table class="responsive-table hoverable centered">
+    <table class="table responsive-table hoverable centered">
         <thead>
             <tr>
                 @foreach ($tabla[0] as $key => $value)

@@ -12,13 +12,13 @@ class EncuestasTableSeeder extends Seeder {
 
 		DB::table('encuestas_respuestas')->delete();
 		for ($i=1; $i <100 ; $i++) { 
-			EncuestasRespuestas::create(array('encuesta_id' => 1 , 'persona_id' => $i,'respuesta' => $faker->biasedNumberBetween($min = 1, $max = 6, $function = 'Faker\Provider\Biased::linearLow'), 'comentarios' => 'Los comentarios son importantes!' ));
+			$encuestasrespuestas[] =(array('encuesta_id' => 1 , 'persona_id' => $i,'respuesta' => $faker->biasedNumberBetween($min = 1, $max = 6, $function = 'Faker\Provider\Biased::linearLow'), 'comentarios' => 'Los comentarios son importantes!' ));
 		}
 		for ($i=1; $i <100 ; $i++) { 
-			EncuestasRespuestas::create(array('encuesta_id' => 2 , 'persona_id' => $i,'respuesta' => $faker->biasedNumberBetween($min = 1, $max = 6, $function = 'Faker\Provider\Biased::linearLow'), 'comentarios' => 'Los comentarios son importantes!' ));
+			$encuestasrespuestas[] =(array('encuesta_id' => 2 , 'persona_id' => $i,'respuesta' => $faker->biasedNumberBetween($min = 1, $max = 6, $function = 'Faker\Provider\Biased::linearLow'), 'comentarios' => 'Los comentarios son importantes!' ));
 		}
 
-
+	EncuestasRespuestas::insert($encuestasrespuestas);
 	$this->command->info('Encuestas Table Seed!');
 	}
 

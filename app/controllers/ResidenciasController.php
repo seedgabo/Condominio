@@ -9,7 +9,6 @@ class ResidenciasController extends \BaseController {
 	 */
 	public function index()
 	{
-		 header('Access-Control-Allow-Origin:*');
 		return json_encode(Residencias::get());
 	}
 
@@ -44,7 +43,6 @@ class ResidenciasController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		header('Access-Control-Allow-Origin:*');
 		return json_encode(Residencias::find($id));
 	}
 

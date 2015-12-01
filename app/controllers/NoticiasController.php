@@ -10,7 +10,6 @@ class NoticiasController extends \BaseController {
 
 	public function index()
 	{
-		header('Access-Control-Allow-Origin:*');
 		return json_encode(Noticias::orderby("updated_at","asc")->get());
 	}
 
@@ -33,7 +32,6 @@ class NoticiasController extends \BaseController {
 	 */
 	public function store()
 	{
-			header('Access-Control-Allow-Origin:*');
 			Auth::once(Input::only('email','password'));
 			$data = Input::get('data');
 			$fecha = new Carbon();

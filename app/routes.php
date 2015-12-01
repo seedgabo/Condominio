@@ -9,7 +9,6 @@ Route::group(array('prefix' => 'admin'), function(){
     Route::any('eventos', 'AdminController@eventos');
     Route::any('areas', 'AdminController@areas');
     Route::any('directiva', 'AdminController@directiva');
-    Route::any('facturas', 'AdminController@facturas');
     Route::any('Noticias', 'AdminController@Noticias');
     Route::any('Recibos', 'AdminController@Recibos');
     Route::any('Personas', 'AdminController@Personas');
@@ -26,10 +25,19 @@ Route::group(array('prefix' => 'admin'), function(){
 
 
     Route::any('Diseño/Portada', 'AdminController@Portada');
-    Route::any('eliminarconcepto/{id}','AdminController@eliminarconcepto');
 });
 
-//Controladores de AJAX
+// Controlador Finanzas
+Route::group(array('prefix' => 'admin/Finanzas'), function(){
+    Route::any('cuotas', 'FinanzasController@facturas');
+    Route::any('cuotasPorResidencia', 'FinanzasController@facturasPorResidencia');
+    Route::any('cuotasMasivas', 'FinanzasController@cuotasMasivas');
+    Route::any('eliminarconcepto/{id}','FinanzasController@eliminarconcepto');
+    Route::any('eliminarconceptomasivo/{concepto}','FinanzasController@eliminarconceptomasivo');
+});
+
+
+//Controlador de AJAX
 Route::group(array('prefix' => 'ajax'), function()
 {
     Route::any('calendar/{action?}', 'AjaxController@Calendar');
@@ -46,7 +54,7 @@ Route::group(array('prefix' => 'ajax'), function()
     Route::any("cambiarsolvencia",'AjaxController@cambiarsolvencia');
 });
 
-//Controladores de API's
+//Controlador de API's
 Route::group(array('prefix' => 'api'), function()
 {
     Route::resource('noticias', 'NoticiasController');
@@ -55,10 +63,21 @@ Route::group(array('prefix' => 'api'), function()
     Route::resource('portadas', 'PortadasController');
     Route::resource('eventos', 'EventosController');
     Route::resource('galeria', 'GaleriaController');
+    Route::any("login", array('uses' => function()
+    {
+      return json_encode(array_add(Auth::user(),"status",true));
+        if (Auth::attempt(Input::except('dominio'), false))
+        {
+            return json_encode(array_add(Auth::user(),"status",true));
+        }
+        return json_encode(array("status",false));
+    }));
 });
 
+
 // Controlador Oauth
-Route::group(array(), function(){
+Route::group(array(), function()
+{
     Route::any('login/facebook', 'OauthController@LoginWithFacebook');
     Route::any('login/google', 'OauthController@LoginWithGoogle');
     Route::any('register/facebook', 'OauthController@RegisterWithFacebook');
@@ -86,7 +105,7 @@ Route::group(array(), function(){
     Route::any('ver-eventos','HomeController@verfullcalendar');
     Route::any('ver-galeria', "HomeController@vergaleria");
     Route::any('ver-noticias', "HomeController@vernoticias");
-		Route::any('generar-factura', 'HomeController@generarFactura' );
+        Route::any('generar-factura', 'HomeController@generarFactura' );
 
 
     // Controladores de login y logout
@@ -95,19 +114,43 @@ Route::group(array(), function(){
     Route::any('registro',"HomeController@registro");
 });
 
-
-
-Route::any("test", function()
+Route::any("printInput", array('before' => '' , 'uses' =>function()
 {
-    header('Access-Control-Allow-Origin:*');
-    if (Auth::attempt(Input::except('dominio'), false))
-    {
-        return json_encode(array_add(Auth::user(),"status",true));
-    }
-    return json_encode(array("status",false));
-});
-
-Route::any("printInput", function(){
    header('Access-Control-Allow-Origin:*'); 
    return json_encode(Input::all());
+}));
+
+Route::any('test', function(){
+
+    // Si se solicito Descarga
+    if(Input::has('descargar'))
+    {
+        Excel::create('ResidenciasOnline', function($excel) {
+            $excel->sheet('Residencias', function($sheet) 
+            {
+                $sheet->fromModel(Residencias::select('residencias.nombre','cant_personas',"personas.nombre as propietario","alicuota","solvencia")
+                    ->join("personas","personas.id","=","residencias.persona_id_propietario")->get());
+                $sheet->freezeFirstRow();
+                $sheet->setAutoFilter();
+            });
+            $excel->sheet('personas', function($sheet) 
+            {
+                $sheet->fromModel(User::select('personas.nombre','email','residencias.nombre as residencia','telefono','avatar','observaciones','admin')
+                    ->join("residencias","residencia_id","=","residencias.id")->get());
+                $sheet->freezeFirstRow();
+                $sheet->setAutoFilter();
+            });
+        })->export('xls');
+    }
+
+
+    else
+    {
+        //si se exporto el archivo
+        if(Input::hasFile('file'))
+        {
+            return Excel::load(Input::file('file')->getRealPath(), function($reader){})->get();
+        }
+        return View::make('archivos/excel');
+    }
 });

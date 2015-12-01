@@ -31,13 +31,16 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
-
+Route::filter('basic.once', function()
+{
+		// return json_encode(Request::header('Authorization')); 
+    return Auth::onceBasic();
+});
 
 Route::filter('guest', function()
 {
 	if (Auth::check()) return Redirect::to('/');
 });
-
 
 Route::filter('csrf', function()
 {
@@ -46,7 +49,6 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
-
 
 // Filtro de clase administrador
 Route::filter('admin', function()
@@ -58,16 +60,10 @@ Route::filter('admin', function()
 	}
 });
 
+// Filtro de las Api
 Route::filter('api', function(){
-		header('Access-Control-Allow-Origin:*');
+		header('Access-Control-Allow-Origin: *');
 });
-
-// amarrando el filtro a todas las direcciones admin
-
-Route::when('admin','auth|admin');
-Route::when('admin/*', 'auth|admin');
-
-Route::when('api/*','api');
 
 
 Route::filter('ajax', function(){
@@ -78,3 +74,11 @@ Route::filter('ajax', function(){
 });
 
 
+// amarrando el filtro a todas las direcciones admin
+
+Route::when('admin','auth|admin');
+Route::when('admin/*', 'auth|admin');
+
+
+//Mismo caso para API
+Route::when('api/*','api');

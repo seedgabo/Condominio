@@ -8,9 +8,9 @@ $portadas = DB::table('portadas')->get();
             <li>
                 <img style="opacity: .8" src="{{url('images/portadas/slider0.jpg')}}">
                 <div class="caption left-align">
-                    <h2><i class="fa fa-home fa-2x"></i> {{Config::get('var.condominio')}}</h2>
+                    <h2><i class="fa fa-home fa-2x"></i> {{Config::get('var.nombre')}}</h2>
                     <h4> <i class="fa fa-location-arrow"></i> {{Config::get('var.ubicacion')}}</h4>
-                    <p class="">Bienvenido {{Config::get("var.user", "invitado")}}</p>
+                    <p class="red-text">Bienvenido {{ Auth::user()? Auth::user()->nombre : 'invitado'}}</p>
                 </div>
             </li>
             @forelse ($portadas as $portada)
@@ -24,6 +24,8 @@ $portadas = DB::table('portadas')->get();
             @empty @endforelse
         </ul>
     </div>
+
+    
     <div class="row">
         {{-- NOTICIAS --}}
         <div class="col s12 m9 l9">
@@ -37,7 +39,7 @@ $portadas = DB::table('portadas')->get();
                         <div class="pull-left">
                             <img src="images/noticias/{{$noticia->media or '../logo.png'}}" data-caption="{{$noticia->titulo}}" class="circle materialboxed " height="100">
                         </div>
-                        <div class="justified col s10 m10 l10 offset-s2 offset-m2 offset-l2">
+                        <div class="col s10 m10 l10 offset-s2 offset-m2 offset-l2">
                             <p>{{$noticia->contenido}}
                                 <br>
                                 <blockquote class="pull-right"> Por: {{ $noticia->persona or 'Condominio'}}</blockquote>
@@ -86,9 +88,6 @@ $portadas = DB::table('portadas')->get();
                 </ul>
             </a>
         </div>
-
-
-
     </div>
     </div>
     <script>

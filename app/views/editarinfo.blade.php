@@ -15,7 +15,7 @@
 			<small class="red-text">{{ $errors->first('nombre') }}</small>
 		</div>
 		<div class="input-field col l12 m12 s12 ">
-			{{ Form::label('email', 'Email adress') }}
+			{{ Form::label('email', 'Dirección de Correo') }}
 			{{ Form::email('email', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'ej: foo@bar.com']) }}
 			<small class="red-text">{{ $errors->first('email') }}</small>
 		</div>

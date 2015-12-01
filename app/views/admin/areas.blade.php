@@ -41,6 +41,10 @@
                     title: 'Nombre del Area',
                     width: '40%'
                 },
+                descripcion:{
+                    title:"Descripción",
+                    type: "textarea"
+                },
             },
           recordsLoaded: function()
     {

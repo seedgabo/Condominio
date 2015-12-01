@@ -125,7 +125,8 @@ return array(
 		'Thujohn\Pdf\PdfServiceProvider',            					  // PDF con Laravel
 		'Way\Generators\GeneratorsServiceProvider',	 					  //Way Generator
 		'Artdarek\OAuth\OAuthServiceProvider',      					  //Oauth-4-Laravel
-		"Khill\Lavacharts\Laravel\LavachartsServiceProvider"    //LavaCharts For Google Charts
+		"Khill\Lavacharts\Laravel\LavachartsServiceProvider",   //LavaCharts For Google Charts
+		'Maatwebsite\Excel\ExcelServiceProvider'								// Excel con Laravel	
 
 		),
 
@@ -196,7 +197,8 @@ return array(
 
 		'Carbon'						=> 'Carbon\Carbon',
 		'PDF' 							=> 'Thujohn\Pdf\PdfFacade',
-		'OAuth' 						=> 'Artdarek\OAuth\Facade\OAuth'
+		'OAuth' 						=> 'Artdarek\OAuth\Facade\OAuth',
+		'Excel'							=> 'Maatwebsite\Excel\Facades\Excel'
 		),
 
 );

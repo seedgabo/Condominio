@@ -1,6 +1,6 @@
 @extends('layout')
  @section("head")
-        <script src="//cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
+        <script type="text/javascript" src="{{asset('vendors/ckeditor/ckeditor.js')}}"></script>
  @stop
  @section('contenido')
 <div class="container">

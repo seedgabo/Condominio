@@ -1,8 +1,9 @@
 <?php  $meses = array('Selecionar','ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO', 'AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'); $i=0;?>
-@extends('layout') @section('contenido')
+@extends('layout') 
+@section('contenido')
 <div class="container  row center-align">
-    <h2>MIS PAGOS </h2>
-    <a href="{{url("agregar-recibo")}}" class=" col m12 l12 s12 btn blue black-text btn-block">Agrega un Recibo</a>
+    <h2>Recibos </h2>
+    <a href="{{url("agregar-recibo")}}" class=" col m12 l12 s12 btn blue btn-block"><i class="fa fa-cloud-upload"></i> Agrega un Recibo</a>
     @foreach ($recibos as $recibo)
     <div class="card col  m4 s12 l4" style=" overflow: visible;">
         <div class="card-image">
@@ -18,10 +19,17 @@
     </div>
     @endforeach
 </div>
+<br><br><br>
 <div class="container center-align">
-    <h2>Recibos</h2>
+    <h2>Factura</h2>
     <div class="cardcol l12 m12 s12">
-        <a href="{{'generar-factura'}}" target="_blank" class="btn" title="PDf del recibo cargado actualmente"> Ver Recibo Actual</a>
+        <a href="{{'generar-factura'}}" class="btn btn-block" title="PDf del Factura cargada actualmente">
+            <span class="fa-stack fa-lg">
+              <i class="fa fa-file-o fa-stack-2x"></i>
+              <i class="fa fa-download fa-stack-1x"></i>
+            </span> 
+            Ver Factura Actual
+        </a>
     </div>
 </div>
 

@@ -2,17 +2,11 @@
 $portadas = DB::table('portadas')->get();
 ?>
     @extends('layout') 
-    @section('contenido') {{-- PORTADAS --}}
+    @section('contenido') 
+    {{-- PORTADAS --}}
+    @if(sizeof($portadas)>0)
     <div class="slider">
         <ul class="slides">
-            <li>
-                <img style="opacity: .8" src="{{url('images/portadas/slider0.jpg')}}">
-                <div class="caption left-align">
-                    <h2><i class="fa fa-home fa-2x"></i> {{Config::get('var.nombre')}}</h2>
-                    <h4> <i class="fa fa-location-arrow"></i> {{Config::get('var.ubicacion')}}</h4>
-                    <p class="red-text">Bienvenido {{ Auth::user()? Auth::user()->nombre : 'invitado'}}</p>
-                </div>
-            </li>
             @forelse ($portadas as $portada)
             <li>
                 <img style="opacity: .8" src="{{url('images/portadas/' . $portada->media)}}">
@@ -24,6 +18,7 @@ $portadas = DB::table('portadas')->get();
             @empty @endforelse
         </ul>
     </div>
+    @endif
 
     
     <div class="row">
@@ -34,6 +29,9 @@ $portadas = DB::table('portadas')->get();
                 <li class="collection-item">
                     <div class="center-align">
                         <strong class="uppercase">{{$noticia->titulo}}</strong>
+                        @if ( Auth::check()  && strpos($noticia->persona, Auth::user()->nombre) === 0)
+                            <a class="red-text right" href="{{url('eliminar-noticia'.'/'.$noticia->id)}}"><i class="fa fa-trash"></i> </a>
+                        @endif
                     </div>
                     <div class="row">
                         <div class="pull-left">
@@ -97,5 +95,5 @@ $portadas = DB::table('portadas')->get();
             {});
         })
     </script>
-
+    
     @stop

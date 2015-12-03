@@ -44,7 +44,6 @@ function getMeses()
 	return array("Meses","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 }
 
-
 function sendFacturaMail()
 {
 		Mail::send('pdf.factura',array('mes' => $mes, 'año' => $año, 'factura' => $factura, 'cant_residencias' => $cant_residencias,'persona'=> $persona,'residencia' => $residencia),function($message)
@@ -53,7 +52,6 @@ function sendFacturaMail()
     		 $message->to('seedgabo@gmail.com');
 		});
 }
-
 
 // Funciones para obtener rutas a directorios Publicos
 function condominio_path($file = null)

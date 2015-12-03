@@ -125,7 +125,7 @@ class HomeController extends BaseController {
 				{
 					return Redirect::to('agregar-imagen')->withErrors($validation);
 				}
-				Input::file('file')->move(public_path()."/images/galeria/", Input::get('nombre', Input::file('file')->getClientOriginalName()));
+				Input::file('file')->move(public_path()."/images/galeria/", quitar_tildes(Input::get('nombre') . "." . Input::file('file')->getClientOriginalExtension()));
 				Session::flash('message',"Imagen subida a la Galeria Correctamente");
 				return Redirect::to('ver-galeria');
 			}
@@ -247,7 +247,20 @@ class HomeController extends BaseController {
 			return Redirect::back();
 		}	
 	}
-	
+	public function eliminarnoticia($id)
+	{
+		$noticia =	Noticias::find($id);
+		if (strpos($noticia->persona, Auth::user()->nombre) === 0) {
+			$noticia->delete();
+			Session::flash('message', 'Noticia Borrada Correctamente');
+			return Redirect::to("ver-noticias");
+		}	
+		else
+		{
+			Session::flash('message',"No Posee permisos para realizar esta acción");
+			return Redirect::back();
+		}	
+	}	
 	public function generarFactura()
 	{
 		if (Input::has("persona_id"))
@@ -256,14 +269,13 @@ class HomeController extends BaseController {
 			$persona = User::find(Auth::id()); 
 
 		$residencia = residencias::where("id","=", $persona->residencia_id)->first();
-		$time = new Carbon\Carbon;
+		$time = new Carbon;
 		$mes = Input::get('mes', $time->month);
 		$año = Input::get('año', $time->year);
 		$factura = DB::Select("call generarfacturaporresidencia(?,?,?)", array($residencia->id,$mes,$año));
 		$cant_residencias = Residencias::where("nombre","<>","condominio")->count();
 		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona)->withMes($mes)->withAño($año)->with('cant_residencias',$cant_residencias);;
 		$headers = array('Content-Type' => 'application/pdf');
-		return $html;
 		return PDF::load($html, 'letter', 'portrait')->download('Factura ' . $persona->nombre);
 	}
 

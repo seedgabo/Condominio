@@ -32,10 +32,9 @@ class NoticiasController extends \BaseController {
 	 */
 	public function store()
 	{
-			Auth::once(Input::only('email','password'));
-			$data = Input::get('data');
+			$data = Input::all();
 			$fecha = new Carbon();
-			$fecha->setTimezone('America/Caracas');			
+			$fecha->setTimezone('America/Bogota');			
 			$data= array_add($data,'fecha',$fecha::now());
 			
 			if(Auth::user()->avatar != null)
@@ -58,7 +57,7 @@ class NoticiasController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		return json_encode(Noticias::orderby("updated_at","asc")->find($id));
 	}
 
 

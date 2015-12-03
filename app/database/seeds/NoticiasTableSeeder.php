@@ -15,6 +15,7 @@ class NoticiasTableSeeder extends Seeder {
 	 	
 	 	db::Table('portadas')->delete();
 	 	db::Table('portadas')->insert(array("id"=>1 ,"titulo" => "Mi Residencia esta la WEB!!","media" => "slider1.jpg" , "contenido" => "ResidenciasOnline.com"));
+	 	db::Table('portadas')->insert(array("id"=>2 ,"titulo" => Config::get('var.nombre'),"media" => "slider0.jpg" , "contenido" => "Bienvenido"));
 	 $this->command->info('Noticias Table Seed!');
 	}
 

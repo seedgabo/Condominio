@@ -5,7 +5,7 @@
         </a>
     </li>
     <br>
-    <li data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">
+    <li data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="false" aria-controls="collapseAdmin">
         <strong><a href="#">Administración<i class="fa fa-chevron-circle-right"></i></a></strong>
     </li>
     <div class="{{revisar_expansion('Admin')}}" id="collapseAdmin">
@@ -45,7 +45,7 @@
         </li>
     </div>
 
-    <li data-toggle="collapse" data-target="#collapseEmail" aria-expanded="true" aria-controls="collapeEmail">
+    <li data-toggle="collapse" data-target="#collapseEmail" aria-expanded="false" aria-controls="collapeEmail">
         <strong><a href="#">Email<i class="fa fa-chevron-circle-right"></i></a></strong>
     </li>
     <div class="{{revisar_expansion('Email')}}" id="collapseEmail">
@@ -55,7 +55,7 @@
         <li><a href="{{url('admin/Email/AlDia')}}"><i class="fa fa-envelope"></i> Email a Al Dia</a></li>
     </div>
 
-    <li data-toggle="collapse" data-target="#collapseFinanzas" aria-expanded="true" aria-controls="collapseFinanzas">
+    <li data-toggle="collapse" data-target="#collapseFinanzas" aria-expanded="false" aria-controls="collapseFinanzas">
         <strong><a href="#">Finanzas<i class="fa fa-chevron-circle-right"></i></a></strong>
     </li>
 
@@ -65,7 +65,7 @@
         <li><a href="{{url('admin/Finanzas/cuotasMasivas')}}"><i class="fa fa-credit-card"></i> Asignar Cuotas Masivas</a></li>
     </div>
 
-    <li data-toggle="collapse" data-target="#collapseDesign" aria-expanded="true" aria-controls="collapseDesign">
+    <li data-toggle="collapse" data-target="#collapseDesign" aria-expanded="false" aria-controls="collapseDesign">
         <strong><a href="#">Diseño<i class="fa fa-chevron-circle-right"></i></a></strong>
     </li>
 
@@ -73,11 +73,20 @@
         <li><a href="{{url('admin/Diseño/Portada')}}"><i class="fa fa-book"></i> Portadas</a></li>
     </div> 
     <script>
-        $("[data-toggle='collapse']").click(function(){
+        $("[data-toggle='collapse']").click(function(e){
             if(!$(this).hasClass("collapsed"))
                 $(this).find(".fa").removeClass("fa-chevron-circle-down").addClass("fa-chevron-circle-right");
             else                
                 $(this).find(".fa").removeClass("fa-chevron-circle-right").addClass("fa-chevron-circle-down");
+
+           if($($(this).data("target")).hasClass("in"))
+           {
+            $($(this).data("target")).hasClass("in").removeClass('in');
+           }
+           else
+           {
+              $(".in").removeClass("in");
+           }
         });
     </script>
 </ul>

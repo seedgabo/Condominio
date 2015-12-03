@@ -31,7 +31,10 @@ class EncuestasController extends \BaseController {
 	 */
 	public function store()
 	{
-
+			$respuestaUsuario = EncuestasRespuestas::firstOrCreate(['encuesta_id' =>Input::get('encuesta_id'), 'persona_id' => Auth::id()]);
+			$respuestaUsuario->update(Input::all());
+			$respuestaUsuario->save();
+			return json_encode($respuestaUsuario);
 	}
 
 
@@ -77,9 +80,8 @@ class EncuestasController extends \BaseController {
 	 */
 	public function update($id)
 	{
-			Auth::attempt(Input::only('email','password'),true);
 			$respuestaUsuario = EncuestasRespuestas::firstOrCreate(['encuesta_id' =>$id, 'persona_id' => Auth::id()]);
-			$respuestaUsuario->update(Input::get('data'));
+			$respuestaUsuario->update(Input::all());
 			$respuestaUsuario->save();
 			return json_encode($respuestaUsuario);
 	}

@@ -65,12 +65,11 @@ Route::group(array('prefix' => 'api'), function()
     Route::resource('galeria', 'GaleriaController');
     Route::any("login", array('uses' => function()
     {
-      return json_encode(array_add(Auth::user(),"status",true));
-        if (Auth::attempt(Input::except('dominio'), false))
+        if (Auth::user())
         {
             return json_encode(array_add(Auth::user(),"status",true));
         }
-        return json_encode(array("status",false));
+        return json_encode(array("status" =>false));
     }));
 });
 
@@ -95,6 +94,7 @@ Route::group(array(), function(){
     Route::any('agregar-imagen', array('before'=>'auth' , 'uses' => "HomeController@agregarimagen"));
     Route::any('eliminar-recibo/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarrecibo'));
     Route::any('eliminar-personal/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarpersonal'));
+    Route::any('eliminar-noticia/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarnoticia'));
     Route::any('ver-recibos',array('before' => 'auth', 'uses' => 'HomeController@verrecibos'));
     Route::any('ver-documentos',array('before' => 'auth', 'uses' => 'HomeController@verdocumentos'));
     Route::any('ver-residencia',array('before' => 'auth', 'uses' => 'HomeController@verresidencia'));
@@ -105,7 +105,7 @@ Route::group(array(), function(){
     Route::any('ver-eventos','HomeController@verfullcalendar');
     Route::any('ver-galeria', "HomeController@vergaleria");
     Route::any('ver-noticias', "HomeController@vernoticias");
-        Route::any('generar-factura', 'HomeController@generarFactura' );
+    Route::any('generar-factura', 'HomeController@generarFactura' );
 
 
     // Controladores de login y logout

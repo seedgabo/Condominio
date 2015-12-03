@@ -63,7 +63,7 @@
 }
 
 .sidebar-nav li {
-    text-indent: 12px;
+    text-indent: 10px;
     line-height: 32px;
     font-size: 1.1em;
 }
@@ -72,18 +72,22 @@
     display: block;
     text-decoration: none;
     color: white;
-    -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
+    
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
     color: blue;
-    background: white;
+    background: white;    
+    text-indent: 16px;
+
     -webkit-transition: 0.5s;
     -o-transition: 0.5s;
     transition: 0.5s;
+
+    -webkit-transition: text-indent 1s;
+    -o-transition: text-indent 1s;
+    transition: text-indent 1s;
 }
 
 .sidebar-nav li a:active,

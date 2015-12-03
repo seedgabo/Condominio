@@ -54,7 +54,7 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 			<header id="header" class="">
 				<nav>
 					<div class="nav-wrapper ">
-						<a href="{{ url('/') }}" class="brand-logo center"><img id="brand-logo" class="dance" src="{{asset('images/favicon.png')}}" width="55"></a>
+						<a href="{{ url('/') }}" class="brand-logo center"><img id="brand-logo" src="{{asset('images/favicon.png')}}" width="55"></a>
 						<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 						<ul class="left hide-on-med-and-down">
 							@if (Auth::check() &&Auth::user()->admin)

@@ -64,8 +64,4 @@
 	-ms-transform: rotateY(180deg);
 	-o-transform: rotateY(180deg);
 	transform: rotateY(180deg);
-	-moz-box-shadow: 0px 0px 10px #ffffff; 
-	-webkit-box-shadow: 0px 0px 10px #ffffff; 
-	box-shadow: 0px 0px 10px #ffffff;
-	background-color: rgba(255,255,255,0.5);
 }

@@ -31,7 +31,12 @@
             Ver Factura Actual
         </a>
     </div>
+    <div class="card red white-text">
+        <i class="fa fa-warning"></i> Algunos navegadores presentar problemas al descargar archivos, si aparece un error intente cambiar de navegador
+    </div>
 </div>
+
+<br><br>
 
 {{ Form::open(['method' => 'GET','url'=> 'generar-factura', 'class' => 'container row']) }}
 

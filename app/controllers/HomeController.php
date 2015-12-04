@@ -272,10 +272,10 @@ class HomeController extends BaseController {
 		$time = new Carbon;
 		$mes = Input::get('mes', $time->month);
 		$año = Input::get('año', $time->year);
-		$factura = DB::Select("call generarfacturaporresidencia(?,?,?)", array($residencia->id,$mes,$año));
+		$factura = DB::select(DB::raw(getFactura($residencia->id,$mes,$año)));
 		$cant_residencias = Residencias::where("nombre","<>","condominio")->count();
-		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona)->withMes($mes)->withAño($año)->with('cant_residencias',$cant_residencias);;
-		$headers = array('Content-Type' => 'application/pdf');
+		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona)->withMes($mes)->with('año',$año)->with('cant_residencias',$cant_residencias);;
+		header('Content-Type : application/pdf');
 		return PDF::load($html, 'letter', 'portrait')->download('Factura ' . $persona->nombre);
 	}
 

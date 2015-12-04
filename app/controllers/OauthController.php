@@ -143,7 +143,7 @@ class OauthController extends \BaseController {
             }
 
 
-            $user =Auth::getUser();
+            $user = Auth::user();
             if (Input::get('password') != null)
             {
                 $user->password = Hash::make(Input::get('password'));

@@ -39,6 +39,16 @@ function revisar_expansion ($opcion)
 		return "collapse";
 }
 
+function getFactura ($residencia_id,$mes,$año)
+{
+	return "SELECT facturas.* , residencias.nombre
+	FROM facturas
+	left JOIN residencias ON residencias.id = facturas.residencia_id
+	WHERE (facturas.residencia_id = ". $residencia_id . " OR facturas.residencia_id is NULL)
+	AND facturas.mes = ". $mes ."
+	AND facturas.año =  ". " $año";
+}
+
 function getMeses()
 {
 	return array("Meses","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");

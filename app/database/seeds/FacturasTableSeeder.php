@@ -4,7 +4,7 @@ class FacturasTableSeeder extends Seeder {
 
 	public function run()
 	{
-		DB::table('Facturas')->delete();
+		DB::table('facturas')->delete();
 		$año =Carbon\Carbon::now()->year;
 		for ($i=1; $i <= 12; $i++) 
 		{ 

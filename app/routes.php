@@ -114,43 +114,60 @@ Route::group(array(), function(){
     Route::any('registro',"HomeController@registro");
 });
 
-Route::any("printInput", array('before' => '' , 'uses' =>function()
+
+//miselaneo
+Route::group(array(), function()
 {
-   header('Access-Control-Allow-Origin:*'); 
-   return json_encode(Input::all());
-}));
-
-Route::any('test', function(){
-
-    // Si se solicito Descarga
-    if(Input::has('descargar'))
+    Route::any('artisan', function()
     {
-        Excel::create('ResidenciasOnline', function($excel) {
-            $excel->sheet('Residencias', function($sheet) 
-            {
-                $sheet->fromModel(Residencias::select('residencias.nombre','cant_personas',"personas.nombre as propietario","alicuota","solvencia")
-                    ->join("personas","personas.id","=","residencias.persona_id_propietario")->get());
-                $sheet->freezeFirstRow();
-                $sheet->setAutoFilter();
-            });
-            $excel->sheet('personas', function($sheet) 
-            {
-                $sheet->fromModel(User::select('personas.nombre','email','residencias.nombre as residencia','telefono','avatar','observaciones','admin')
-                    ->join("residencias","residencia_id","=","residencias.id")->get());
-                $sheet->freezeFirstRow();
-                $sheet->setAutoFilter();
-            });
-        })->export('xls');
-    }
-
-
-    else
+        Artisan::call('migrate:refresh');
+        Artisan::call('db:seed');
+        return "hecho";
+    });
+    Route::any("printInput", array('before' => '' , 'uses' =>function()
     {
-        //si se exporto el archivo
-        if(Input::hasFile('file'))
+       header('Access-Control-Allow-Origin:*'); 
+       return json_encode(Input::all());
+    }));
+
+    Route::any('test', function()
+    {
+
+        // Si se solicito Descarga
+        if(Input::has('descargar'))
         {
-            return Excel::load(Input::file('file')->getRealPath(), function($reader){})->get();
+            Excel::create('ResidenciasOnline', function($excel) {
+                $excel->sheet('Residencias', function($sheet) 
+                {
+                    $sheet->fromModel(Residencias::select('residencias.nombre','cant_personas',"personas.nombre as propietario","alicuota","solvencia")
+                        ->join("personas","personas.id","=","residencias.persona_id_propietario")->get());
+                    $sheet->freezeFirstRow();
+                    $sheet->setAutoFilter();
+                });
+                $excel->sheet('personas', function($sheet) 
+                {
+                    $sheet->fromModel(User::select('personas.nombre','email','residencias.nombre as residencia','telefono','avatar','observaciones','admin')
+                        ->join("residencias","residencia_id","=","residencias.id")->get());
+                    $sheet->freezeFirstRow();
+                    $sheet->setAutoFilter();
+                });
+            })->export('xls');
         }
-        return View::make('archivos/excel');
-    }
+
+
+        else
+        {
+            //si se exporto el archivo
+            if(Input::hasFile('file'))
+            {
+                return Excel::load(Input::file('file')->getRealPath(), function($reader){})->get();
+            }
+            return View::make('archivos/excel');
+        }
+    });
+    
+    Route::any('hostname', function()
+    {
+      return gethostname();
+    });
 });

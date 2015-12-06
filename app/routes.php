@@ -118,8 +118,10 @@ Route::group(array(), function(){
 //miselaneo
 Route::group(array(), function()
 {
-    Route::any('artisan', function()
+    Route::any('reset', function()
     {
+        header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
+        header('Access-Control-Allow-Origin: *');
         Artisan::call('migrate:refresh');
         Artisan::call('db:seed');
         return "hecho";

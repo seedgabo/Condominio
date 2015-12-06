@@ -26,7 +26,7 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 	<!-- Compiled and minified JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
 	{{-- Link a FAVICON --}}
-	<link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" /> 
+	<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" /> 
 
 	{{-- Librerias adicionales por plantillas hijas --}} 
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>

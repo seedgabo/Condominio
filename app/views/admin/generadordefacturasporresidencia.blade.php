@@ -25,6 +25,7 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
                 <li>Las cuotas aqui establecidas seran establecidas solo a residencia a la que se asignó</li>
                 <li>El cobro sera por el monto total</li>
             </ul>
+            <a target="_blank" href="{{url('admin/Finanzas/generarResumendeCobrosMes')}}" class="btn btn-success">Ver Resumen de Cobros Mensual</a>
         </div>
     </div>
 
@@ -46,7 +47,7 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
 
         <div class="form-group">
             {{ Form::label('residencia_id', 'Residencia:') }} 
-            {{ Form::select('residencia_id[]', $residencias_opt ,$residencia_id, ['id' => 'residencia_id', 'class' => 'chosen-select form-control', 'multiple']) }} 
+            {{ Form::select('residencia_id[]', $residencias_opt ,$residencia_id, ['id' => 'residencia_id', 'class' => 'chosen-select form-control', 'multiple','data-placeholder'=>"Selecciona las Resdencias"]) }} 
             <small class="text-danger">{{ $errors->first('residencia_id') }}</small>
         </div>
 
@@ -123,8 +124,8 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
         </div>
         <input type="hidden" name="mes" value="{{ $mes or $time->month}}" />
         <input type="hidden" name="año" value="{{ $año or $time->year}}" />
-        <div class="btn-group pull-right">
-            {{ Form::submit("Generar", ['class' => 'btn btn-flat']) }}
+        <div class="btn-group ">
+            <button type="submit"  class="btn btn-info"><i class='fa fa-file-pdf-o'></i> Generar</button>
         </div>
         {{ Form::close() }}
     </div>

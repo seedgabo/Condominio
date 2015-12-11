@@ -57,6 +57,7 @@
                  <th style="text-align: center;">Concepto:</th>
                  <th style="text-align: center;">Cuota Total:</th>
                  <th style="text-align: center;">Monto a pagar:</th>
+                 <th style="text-align: center;">SUBTOTAL:</th>
              </tr>
          </thead>
          <tbody>
@@ -72,11 +73,24 @@
                     <td style="text-align: right !important;"> {{number_format($cuota->monto /$cant_residencias,2,",",".")}}   <?php $sum += $cuota->monto / $cant_residencias ?>
                 @endif
                  {{Config::get('var.moneda_abreviada',"$")}}</td>
+                 <td style="text-align: right !important;">{{number_format($sum,2,",",".")}} {{Config::get('var.moneda_abreviada',"$")}} </td>
              </tr>
           @empty
           @endforelse
+          <tr><td colspan="4" style="font-style:italic; text-indent: 4rem;">Gastos Extraordinarios</td></tr>
+      
+        @if ($maestra['is_fondo'])
+            <tr>
+              <td> Fondo de  Reserva: ({{$maestra['fondo_%']}}%)</td>
+              <td style="text-align: right !important;">{{number_format(($sum/$residencia->alicuota*100)*$maestra['fondo_%']/100,2,",",".")}} {{Config::get('var.moneda_abreviada',"$")}}</td>
+              <td style="text-align: right !important;"> {{number_format(($sum)*$maestra['fondo_%']/100,2,",",".")}}   
+              <?php $sum += $sum*$maestra['fondo_%']/100 ?> {{Config::get('var.moneda_abreviada',"$")}}
+              <td style="text-align: right !important;">{{number_format($sum,2,",",".")}} {{Config::get('var.moneda_abreviada',"$")}} </td>
+            </tr>
+          @endif
           <tfoot>
               <tr>
+                  <th></th>
                   <th></th>
                   <th style="text-align: right !important;">SUBTOTAL:</th>
                   <th style="text-align: right !important;">{{number_format($sum,2,",",".")}} {{Config::get('var.moneda_abreviada',"$")}}</th>
@@ -85,7 +99,7 @@
          </tbody>
      </table>
      <div class="well well-lg">
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt delectus quia provident quam, quis voluptate reiciendis nihil! Saepe, magnam minus ea molestias dignissimos atque vero nihil aut culpa quasi, non cumque quos modi eos nulla quis. Veniam velit temporibus fuga asperiores eveniet tempora est architecto et ea repellat, tempore magni tenetur ut quaerat, sit dolor necessitatibus enim, deserunt placeat odio fugit. Debitis, nobis labore, quibusdam illo dolore non vitae fugit.
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis aliquid ab eveniet quasi, facere atque iste, dicta repellat eos repellendus odio velit, dignissimos quibusdam minus voluptas consectetur voluptatum omnis porro autem quos est amet totam. Corporis, voluptate, nemo. Minima enim rerum, ex earum ab inventore necessitatibus sed aut voluptatibus alias.
      </div>
 </body>
 </html>

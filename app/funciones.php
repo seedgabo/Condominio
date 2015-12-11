@@ -29,7 +29,7 @@ function traducir_fecha($cadena, $diferencia = false)
 	return $texto;
 }
 
-function revisar_expansion ($opcion)
+function revisar_expansion($opcion)
 {
 	if ((Request::segment(2) == $opcion))
 		return "collapse in";
@@ -39,7 +39,7 @@ function revisar_expansion ($opcion)
 		return "collapse";
 }
 
-function getFactura ($residencia_id,$mes,$año)
+function getFactura($residencia_id,$mes,$año)
 {
 	return "SELECT facturas.* , residencias.nombre
 	FROM facturas
@@ -54,14 +54,33 @@ function getMeses()
 	return array("Meses","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 }
 
-function sendFacturaMail()
+function sendFacturaMail($to)
 {
 		Mail::send('pdf.factura',array('mes' => $mes, 'año' => $año, 'factura' => $factura, 'cant_residencias' => $cant_residencias,'persona'=> $persona,'residencia' => $residencia),function($message)
 		{
-				 $message->from('Gabriel@residenciasOnline.com', 'Tu Residencia');
-    		 $message->to('seedgabo@gmail.com');
+				 $message->from(Config::get('var.correo'), Config::get('var.nombre'));
+    		 $message->to($to);
 		});
 }
+
+function getdeuda($residencia_id,$mes,$año)
+{
+	$maestra =  json_decode(File::get(app_path("config/maestra.php")),true);
+
+	$total  = Facturas::wherenull("residencia_id")->where("mes","=",$mes)->where("año","=",$año)->where("porcentual","=",1)->sum('monto')*(Residencias::find($residencia_id)->alicuota/100);
+	$total += Facturas::wherenull("residencia_id")->where("mes","=",$mes)->where("año","=",$año)->where("porcentual","=",0)->sum('monto')/(Residencias::where("nombre","<>","condominio")->count());
+	$total += Facturas::where("residencia_id","=", $residencia_id)->where("mes","=",$mes)->where("año","=",$año)->sum('monto');
+	
+	if($maestra['is_fondo'])
+	{
+		$total += $total*($maestra['fondo_%']/100);
+	}
+	return $total;
+}
+
+
+
+
 
 // Funciones para obtener rutas a directorios Publicos
 function condominio_path($file = null)

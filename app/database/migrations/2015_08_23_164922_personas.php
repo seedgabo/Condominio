@@ -12,12 +12,13 @@ class Personas extends Migration {
  
 			// id auto incremental primary key
 			$tabla->increments('id');
-			//varchar 50
+
 			$tabla->string('nombre', 100);
-			//varchar 100
+
 			$tabla->string('email', 100)->unique();
 
 			$tabla->string('telefono',50)->nullable();
+
 			$tabla->string('observaciones',200)->nullable();
 
 			//varchar 200 para encriptar los passwords
@@ -30,6 +31,7 @@ class Personas extends Migration {
  			$tabla->bigInteger('residencia_id')->nullable();
 
  			$tabla->boolean('admin')->default('0');
+
 			$tabla->rememberToken()->nullable();
 			$tabla->timestamps();
 		});

@@ -19,6 +19,7 @@ $residencias_opt = Residencias::orderby("id")->where("nombre","<>","condominio")
 	            <li>Las cuotas son establecidas como particulares y por lo tanto el cobro se hace por el total del monto</li>
 	            <li>Las cuotas asignadas se hacen de manera individual y puden ser visualizadas en el modulo de cuotas por residencias</li>
 	        </ul>
+          <a target="_blank" href="{{url('admin/Finanzas/generarResumendeCobrosMes')}}" class="btn btn-success">Ver Resumen de Cobros Mensual</a>
 	    </div>
 		</div>
 
@@ -61,7 +62,7 @@ $residencias_opt = Residencias::orderby("id")->where("nombre","<>","condominio")
 			    <div class="form-group @if($errors->first('residencia_id')) has-error @endif">
 			        {{ Form::label('residencia_id', 'Residencias:', ['class' => 'col-sm-3 control-label']) }}
 			        <div class="col-sm-6">
-			            {{ Form::select('residencia_id[]',$residencias_opt, null, ['id' => 'residencia_id', 'class' => 'chosen-select form-control', 'required' => 'required', 'multiple']) }}
+			            {{ Form::select('residencia_id[]',$residencias_opt, null, ['id' => 'residencia_id', 'class' => 'chosen-select form-control', 'required' => 'required', 'multiple','data-placeholder'=>"Selecciona las Resdencias"]) }}
 			            <small class="text-danger">{{ $errors->first('residencia_id') }}</small>
 			        </div>
 			    </div>

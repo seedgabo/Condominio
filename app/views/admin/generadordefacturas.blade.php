@@ -16,6 +16,7 @@ $query = "?" . http_build_query(Input::only('mes','año'));
             <li>Escoga <span class="text-danger">Porcentual</span> para establecer el cobro a traves del porcentaje asignado a cada Residencias</li>
             <li>Escoga <span class="text-danger">Residencial</span> para establecer el cobro como una cuota a todos por igual</li>
         </ul>
+    <a target="_blank" href="{{url('admin/Finanzas/generarResumendeCobrosMes')}}" class="btn btn-success">Ver Resumen de Cobros Mensual</a>
     </div>
 </div>
 
@@ -109,12 +110,11 @@ $query = "?" . http_build_query(Input::only('mes','año'));
 	</div>
 	<input type="hidden" name="mes" value="{{ $mes or $time->month}}" />
 	<input type="hidden" name="año" value="{{ $año or $time->year}}" /> 
-	<div class="btn-group pull-right">
-		{{ Form::submit("Generar", ['class' => 'btn btn-flat']) }}
+	<div class="btn-group ">
+      <button type="submit"  class="btn btn-info"><i class='fa fa-file-pdf-o'></i> Generar</button>
 	</div>
 	{{ Form::close() }}
 </div>
-
 
 <script>
 	$(document).ready(function() {
@@ -137,8 +137,8 @@ $query = "?" . http_build_query(Input::only('mes','año'));
 		});
 
 		$(function () {
-  $('[data-toggle="tooltip"]').tooltip({html:true})
-})
+			 $('[data-toggle="tooltip"]').tooltip({html:true})
+		})
 	});
 </script>
 @stop

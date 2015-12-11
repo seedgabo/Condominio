@@ -4,7 +4,8 @@
 View::share('time', new Carbon);
 
 // controlador Admin
-Route::group(array('prefix' => 'admin'), function(){
+Route::group(array('prefix' => 'admin'), function()
+{
     Route::any('/', 'GraphController@Graphs');
     Route::any('eventos', 'AdminController@eventos');
     Route::any('areas', 'AdminController@areas');
@@ -28,10 +29,16 @@ Route::group(array('prefix' => 'admin'), function(){
 });
 
 // Controlador Finanzas
-Route::group(array('prefix' => 'admin/Finanzas'), function(){
+Route::group(array('prefix' => 'admin/Finanzas'), function()
+{
     Route::any('cuotas', 'FinanzasController@facturas');
     Route::any('cuotasPorResidencia', 'FinanzasController@facturasPorResidencia');
     Route::any('cuotasMasivas', 'FinanzasController@cuotasMasivas');
+    Route::any('parametros', 'FinanzasController@parametros');
+    Route::any('gestion', 'FinanzasController@gestionResidencias');
+
+    Route::any('generarResumendeCobrosMes', 'FinanzasController@generarResumendeCobrosMes');
+
     Route::any('eliminarconcepto/{id}','FinanzasController@eliminarconcepto');
     Route::any('eliminarconceptomasivo/{concepto}','FinanzasController@eliminarconceptomasivo');
 });
@@ -85,7 +92,8 @@ Route::group(array(), function()
 });
 
 // Controlador Home
-Route::group(array(), function(){
+Route::group(array(), function()
+{
     Route::any('/', 'HomeController@inicio');
     Route::get('directiva', 'HomeController@verdirectiva');
     Route::any('agregar-noticia',array('before' => 'auth', 'uses' =>  'HomeController@agregarnoticia'));
@@ -107,6 +115,7 @@ Route::group(array(), function(){
     Route::any('ver-noticias', "HomeController@vernoticias");
     Route::any('generar-factura', 'HomeController@generarFactura' );
 
+    Route::any('demo', function(){Auth::loginUsingId(2, true); Return Redirect::to('');});
 
     // Controladores de login y logout
     Route::post('user', 'HomeController@login');
@@ -130,46 +139,14 @@ Route::group(array(), function()
     {
        header('Access-Control-Allow-Origin:*'); 
        return json_encode(Input::all());
-    }));
-
-    Route::any('test', function()
-    {
-
-        // Si se solicito Descarga
-        if(Input::has('descargar'))
-        {
-            Excel::create('ResidenciasOnline', function($excel) {
-                $excel->sheet('Residencias', function($sheet) 
-                {
-                    $sheet->fromModel(Residencias::select('residencias.nombre','cant_personas',"personas.nombre as propietario","alicuota","solvencia")
-                        ->join("personas","personas.id","=","residencias.persona_id_propietario")->get());
-                    $sheet->freezeFirstRow();
-                    $sheet->setAutoFilter();
-                });
-                $excel->sheet('personas', function($sheet) 
-                {
-                    $sheet->fromModel(User::select('personas.nombre','email','residencias.nombre as residencia','telefono','avatar','observaciones','admin')
-                        ->join("residencias","residencia_id","=","residencias.id")->get());
-                    $sheet->freezeFirstRow();
-                    $sheet->setAutoFilter();
-                });
-            })->export('xls');
-        }
-
-
-        else
-        {
-            //si se exporto el archivo
-            if(Input::hasFile('file'))
-            {
-                return Excel::load(Input::file('file')->getRealPath(), function($reader){})->get();
-            }
-            return View::make('archivos/excel');
-        }
-    });
-    
+    }));    
     Route::any('hostname', function()
     {
       return gethostname();
+    });
+
+
+    Route::any('test', function()
+    {
     });
 });

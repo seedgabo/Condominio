@@ -261,6 +261,7 @@ class HomeController extends BaseController {
 			return Redirect::back();
 		}	
 	}	
+
 	public function generarFactura()
 	{
 		if (Input::has("persona_id"))
@@ -274,9 +275,11 @@ class HomeController extends BaseController {
 		$año = Input::get('año', $time->year);
 		$factura = DB::select(DB::raw(getFactura($residencia->id,$mes,$año)));
 		$cant_residencias = Residencias::where("nombre","<>","condominio")->count();
-		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona)->withMes($mes)->with('año',$año)->with('cant_residencias',$cant_residencias);;
+		$maestra =  json_decode(File::get(app_path("config/maestra.php")),true);
+
+		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona)->withMes($mes)->with('año',$año)->withMaestra($maestra)->with('cant_residencias',$cant_residencias);
 		header('Content-Type : application/pdf');
-		return PDF::load($html, 'letter', 'portrait')->download('Factura ' . $persona->nombre);
+		return PDF::load($html, 'letter', 'portrait')->show('Factura ' . $persona->nombre);
 	}
 
 	public function login()

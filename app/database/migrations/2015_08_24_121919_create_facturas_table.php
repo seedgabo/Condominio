@@ -19,6 +19,7 @@ class CreateFacturasTable extends Migration {
 			$tabla->integer('año');
 			$tabla->biginteger('residencia_id')->nullable();
 			$tabla->boolean("porcentual")->nullable()->default(true);
+			$tabla->string("categoria",50)->nullable();
 			$tabla->decimal("monto",20,3);
 			$tabla->string("concepto",50);
 			$tabla->timestamps();

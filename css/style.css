@@ -65,3 +65,9 @@
 	-o-transform: rotateY(180deg);
 	transform: rotateY(180deg);
 }
+
+.top
+{
+	bottom: auto !important;
+	top: 1px  !important;
+}

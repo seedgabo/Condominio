@@ -120,6 +120,36 @@ class FinanzasController extends \BaseController {
 		return View::make('admin/cuotasMasivas')->withConceptosmasivos($conceptosMasivos);
 	}
 
+	public function parametros()
+	{
+	   $maestra =  json_decode(File::get(app_path("config/maestra.php")),true);
+
+	   if(Request::method()== "POST")
+	   {
+     		$maestra["is_fondo"] = Input::get('is_fondo', false);
+     		$maestra["fondo_%"] = Input::get('fondo_%', 14);
+	   }
+     File::put(app_path("config/maestra.php"), json_encode($maestra));
+     
+     return View::make('admin/parametros')->withMaestra($maestra);
+	}
+
+	public function generarResumendeCobrosMes()
+	{
+	   $i= 0;
+	   $time = New Carbon();
+	   $mes = Input::get("mes", $time->month);
+	   $año = Input::get("año", $time->year);
+	   $residencias = Residencias::get();
+	    foreach ($residencias as $residencia) {
+	        $deudas[$i]['monto'] = getdeuda($residencia->id, $time->month, $time->year);
+	        $deudas[$i++]['residencia'] = $residencia;
+	    }
+	   $html = View::make('pdf/estadoFacturasMes')->withDeudas($deudas)->withMes($mes)->withAño($año);
+	   header('Content-Type : application/pdf');
+	   return PDF::load($html, 'letter', 'portrait')->show('Resumen de Cobros ' . $mes . "/" .$año);
+	}
+
 	public function eliminarconcepto($id)
 	{
 		Facturas::where("id","=",$id)->delete();

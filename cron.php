@@ -3,7 +3,7 @@
 		$ch = curl_init();
 
 		// set URL and other appropriate options
-		curl_setopt($ch, CURLOPT_URL, "http://demo.residenciasonline.com/reset");
+		curl_setopt($ch, CURLOPT_URL, "http://residenciasonline.com/demo/reset");
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 
 		// grab URL and pass it to the browser

@@ -145,6 +145,17 @@ Route::group(array(), function()
       return gethostname();
     });
 
+    Route::any('contacto', function(){
+        $email = Input::get('emailContact');
+        Mail::send('emails.contacto',array('contacto' => $email),function($message)
+        {
+             $message->from(Config::get('var.correo'), Config::get('var.nombre'));
+             $message->to('sistema@residenciasonline.com');
+        });
+        Session::flash('message', "Contacto enviado!");
+       return  Redirect::to('/');
+    });
+
 
     Route::any('test', function()
     {

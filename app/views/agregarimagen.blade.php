@@ -1,4 +1,8 @@
-@extends('layout') @section ("contenido")
+<?php $albums= Galeria::distinct()->lists('album') ?>
+
+@extends('layout') 
+
+@section ("contenido")
 
 <div class=" container row">
 
@@ -16,11 +20,25 @@
             <input class="file-path validate" type="text">
         </div>
     </div>
+   
 
     <div class="input-field">
         <input name="nombre" id="nombre" type="text" required="required" maxlength="30" length="30" class="validate">
         <label for="nombre">Nombre de la Imagen</label>
     </div>
+
+    <div class="input-field">
+        <input name="album" list="albums" id="album" type="text" required="required" maxlength="30" length="30" class="validate" value="{{$albums[0] or ''}}">
+        <label for="album">Nombre del Album</label>
+    </div>
+
+
+    <datalist id="albums">
+    @forelse ($albums as $album)
+      <option value="{{$album}}">
+    @empty
+    @endforelse
+    </datalist>
     
     <div class="col offset-l4 l4">
         {{ Form::submit("Subir", ['class' => 'btn']) }}

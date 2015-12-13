@@ -54,6 +54,14 @@ function getMeses()
 	return array("Meses","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 }
 
+function getTransacciones()
+{
+	return array("Efectivo","Cheque","Transferencia","Letra","Depósito","Otro");
+}
+
+
+
+
 function sendFacturaMail($to)
 {
 		Mail::send('pdf.factura',array('mes' => $mes, 'año' => $año, 'factura' => $factura, 'cant_residencias' => $cant_residencias,'persona'=> $persona,'residencia' => $residencia),function($message)

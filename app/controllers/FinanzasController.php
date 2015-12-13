@@ -147,7 +147,8 @@ class FinanzasController extends \BaseController {
 	    }
 	   $html = View::make('pdf/estadoFacturasMes')->withDeudas($deudas)->withMes($mes)->withAño($año);
 	   header('Content-Type : application/pdf');
-	   return PDF::load($html, 'letter', 'portrait')->show('Resumen de Cobros ' . $mes . "/" .$año);
+		 $headers = array('Content-Type' => 'application/pdf');
+		 return Response::make(PDF::load($html, 'A4', 'portrait')->show('Resumen de Cobros ' . $mes . "/" .$año), 200, $headers);
 	}
 
 	public function eliminarconcepto($id)

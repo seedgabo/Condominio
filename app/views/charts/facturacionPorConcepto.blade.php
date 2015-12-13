@@ -1,7 +1,7 @@
 <?php 
 $mes = Input::get('mes', $time->month);
 $año = Input::get('año', $time->year );
-$conceptos = Facturas::where('mes','=',$mes)->select('concepto','monto')
+$conceptos = Facturas::where('mes','=',$mes)->where('año','=',$año)->wherenull("residencia_id")->select('concepto','monto')
 ->orderby('monto','asc')->get();
 
 $stocksTable = Lava::DataTable();

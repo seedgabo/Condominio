@@ -8,6 +8,7 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="google-site-verification" content="nCYyxZBXHh47-5gKHv0E7QcyyOYPihhituEsGQttmgU" />
 	<title>@yield('title', Config::get('var.nombre', 'Tu Condominio Online'))</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -176,7 +177,7 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 			<div class="row">
 				<div class="col l6 s12">
 					<h6 class="black-text">¿Quieres tu propio servicio de Condominio online?</h6>
-					<form action="http://www.tucondominio.com" method="GET">
+					<form action="{{url('contacto')}}" method="GET">
 						<input type="email" name="emailContact" class="form-control col s12 m8 l8" id="" placeholder="Deja tu Correo">
 						<button type="submit" class="btn col s12 offset-l1 offset-m1 m3 l3">Enviar</button>
 					</form>

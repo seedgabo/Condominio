@@ -37,9 +37,9 @@ $message = Session::get('message');
 
         <!-- Page Content -->
 
-            <div id="menu-buttons" class="btn-group-vertical" role="group" style="position: fixed; z-index: 1000; bottom: 0px; left: 0px;">
-                <button class="btn btn-primary menu-toggle"><i class="fa fa-bars"></i> <span style="display:" class="menu-text">Menu</span></button>
-                <a class="btn btn-success" href="{{url()}}"><i class="fa fa-home"></i><span style="display:" class="menu-text"> volver </span></a> 
+            <div id="menu-buttons" class="btn-group-vertical" role="group" style="position: fixed; z-index: 1000; right:0px;">
+                <a class="btn btn-primary menu-toggle"><i class="fa fa-bars"></i> <span class="menu-text">Menu</span></a>
+                <a class="btn btn-success" href="{{url()}}"><i class="fa fa-home"></i> <span class="menu-text"> Volver </span></a>
             </div>
         <div id="page-content-wrapper">
             @yield('content','')
@@ -50,10 +50,9 @@ $message = Session::get('message');
         <script>
             $(".menu-toggle").click(function(e)
             {
-                e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
                 $("span.menu-text").toggle('slow');
-                $("#menu-buttons").toggleClass('top');
+                $("#menu-buttons").toggleClass('left');
             });
         </script>
 </body>

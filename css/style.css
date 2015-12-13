@@ -66,8 +66,10 @@
 	transform: rotateY(180deg);
 }
 
-.top
+.left
 {
-	bottom: auto !important;
-	top: 1px  !important;
+	right: auto !important;
+	-webkit-transition: 0.3s;
+	-o-transition: 0.3s;
+	transition: 0.3s;
 }

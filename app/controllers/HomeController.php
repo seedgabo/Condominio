@@ -126,6 +126,7 @@ class HomeController extends BaseController {
 					return Redirect::to('agregar-imagen')->withErrors($validation);
 				}
 				Input::file('file')->move(public_path()."/images/galeria/", quitar_tildes(Input::get('nombre') . "." . Input::file('file')->getClientOriginalExtension()));
+				Event::fire('register.image', array(public_path()."/images/galeria/",quitar_tildes(Input::get('nombre') . "." . Input::file('file')->getClientOriginalExtension()),Input::get('album')));
 				Session::flash('message',"Imagen subida a la Galeria Correctamente");
 				return Redirect::to('ver-galeria');
 			}
@@ -279,7 +280,8 @@ class HomeController extends BaseController {
 
 		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona)->withMes($mes)->with('año',$año)->withMaestra($maestra)->with('cant_residencias',$cant_residencias);
 		header('Content-Type : application/pdf');
-		return PDF::load($html, 'letter', 'portrait')->show('Factura ' . $persona->nombre);
+		$headers = array('Content-Type' => 'application/pdf');
+		return Response::make(PDF::load($html, 'A4', 'portrait')->show('mi_factura'), 200, $headers);
 	}
 
 	public function login()

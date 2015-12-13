@@ -16,8 +16,8 @@ class FacturasTableSeeder extends Seeder {
 		}
 		Facturas::insert($facturas);
 		DB::table('recibos')->delete();
-		Recibos::create(array('concepto'=>'Contrato con Sistema Web de Condominio Online','monto' => '0','persona_id'=>'0'));
-	$this->command->info('Facturas Table Seed!');
+		Recibos::create(array('concepto'=>'Contrato con Sistema Web de Condominio Online','monto' => '1','persona_id'=>'0','transaccion' =>"Transferencia","path" => "recibo_online.png"));
+		$this->command->info('Facturas Table Seed!');
 	}
 
 }

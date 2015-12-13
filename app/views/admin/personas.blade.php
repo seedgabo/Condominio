@@ -116,12 +116,12 @@
                         },
                     }
                 }); 
-$(".dataTables_paginate").removeClass("dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_simple_numbers");
-$(".dataTables_length").css("display", "inline").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-$(".dataTables_filter").css("display", "inline");
-tabla.search("{{Input::get('query','')}}").draw();
-}
-});
+            $(".dataTables_paginate").removeClass("dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_simple_numbers");
+            $(".dataTables_length").css("display", "inline").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+            $(".dataTables_filter").css("display", "inline");
+            tabla.search("{{Input::get('query','')}}").draw();
+            }
+    });
 $('#table').jtable('load');
 
 });

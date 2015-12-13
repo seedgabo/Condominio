@@ -14,13 +14,18 @@
         <small class="red-text">{{ $errors->first('monto') }}</small>
     </div>
 
+
+    <div class="form-group @if($errors->first('transaccion')) has-error @endif">
+        {{ Form::label('transaccion', 'Tipo de Transsacción') }}
+        {{ Form::select('transaccion',getTransacciones(), null, ['id' => 'transaccion', 'class' => 'form-control', 'required' => 'required']) }}
+        <small class="text-danger">{{ $errors->first('transaccion') }}</small>
+    </div>
+
     <input class type="file" name="archivo" accept="image/*" />
     <small class="red-text">{{ $errors->first('archivo') }}</small>
+
     <br>
     <br>
-
-
-
     <div class="card yellow darken-3 white-text">
         <i class="fa fa-lg fa-warning"></i> Si es un recibo de pago de residencia active esta opción
     </div>

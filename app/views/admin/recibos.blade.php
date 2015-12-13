@@ -45,6 +45,12 @@
 				monto: {
 					title: 'Monto',
 				},
+				transaccion:
+				{
+					title: "Tipo de Transacción",
+					create: false,
+					edit: false
+				},
 				path:
 				{
 					title: 'imagen',

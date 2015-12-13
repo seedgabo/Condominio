@@ -49,7 +49,7 @@
        <tr>
          <th style="text-align: center;">Residencia</th>
          <th style="text-align: center;">Monto</th>
-         <th style="text-align: center;">Deuda Total</th>
+         <th style="text-align: center;">Total</th>
        </tr>
      </thead>
      <tbody>

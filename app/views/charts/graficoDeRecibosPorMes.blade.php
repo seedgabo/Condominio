@@ -3,7 +3,7 @@ $meses = getMeses();
 $año = Input::get('año', $time->year );
 
 $facturas = Facturas::groupby('mes')->select(DB::raw("mes ,año , sum(monto) as total"))
-->where("año","=", Input::get('año', $time->year))->get();
+->where("año","=", $año)->get();
 $stocksTable = Lava::DataTable();
 $stocksTable->addStringColumn('Epoca')
 ->addNumberColumn('Total $');

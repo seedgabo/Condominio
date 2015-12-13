@@ -18,7 +18,7 @@ class CreateSolvenciaTable extends Migration {
 			$table->bigInteger('residencia_id');
 			$table->integer("mes");
 			$table->integer("año");
-			$table->float("monto");
+			$table->decimal("monto",20,3);
 			$table->timestamp("facturado_el");
 			$table->timestamp("cancelado_el");
 			$table->integer("estado");   // 0 => Moroso , 1 => AlDía, 2 => Crédito

@@ -74,7 +74,6 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 							<li class="tooltipped" data-delay="10" data-tooltip="Documentos"><a href="{{url('ver-documentos')}}"><i class="fa fa-paperclip "></i></a></li>
 							<li class="tooltipped" data-delay="10" data-tooltip="Calendario"><a href="{{url('ver-eventos')}}"><i class="fa fa-calendar "></i></a></li>
 							<li><a class="tooltipped modal-trigger" data-delay="10" data-tooltip="Personal" href="{{url('ver-personal')}}"><i class="fa fa-users"></i></a></li>
-							<li><a class="tooltipped modal-trigger" data-delay="10" data-tooltip="Revisar Solvencia" href="#solvencia"><i class="fa fa-th"></i></a></li>
 							<li><a class="dropdown-button valign-wrapper" href="#!" data-beloworigin="true" data-hover="true" data-activates="dropdown1">
 							@if (Auth::check() && Auth::user()->avatar != null)
 							<img class="left avatar circle valign" src="{{Auth::user()->avatar}}" alt="">
@@ -97,7 +96,6 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 							<li><a href="{{url('ver-documentos')}}"><i class="fa fa-paperclip left"></i>Documetación</a></li>
 							<li><a href="{{url('ver-residencia')}}"><i class="fa fa-home left"></i>Residencia</a></li>
 							<li><a href="{{url('Usuario-Edit')}}"><i class="fa fa-pencil left"></i> Editar</a></li>
-							<li><a class="modal-trigger" href="#solvencia">Revisar Solvencia</a></li>
 							@if (Auth::user()->admin)
 							<li><a href="{{url('admin')}}" title="Entrar como Administrador">Admin</a></li>
 							@endif @endif
@@ -139,37 +137,6 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 		</div>
 	</div>
 
-	<!-- Modal de Solvencias -->
-	<div id="solvencia" class="modal modal-fixed-footer">
-		<div class="modal-content ">
-			<h3 class="center-align">Solvencia</h3>
-			<table class="table highlight centered bordered">
-				<thead>
-					<tr>
-						<th>RESIDENCIA</th>
-						<th>DUEÑO</th>
-						<th>ESTADO</th>
-					</tr>
-				</thead>
-				<tbody>                    
-				@forelse ($residencias as $residencia)
-					<tr>
-						<td>{{$residencia->nombre }}</td>
-						<td>{{$residencia->dueño or "<span class='grey-text'>No Registrado</span>"}}</td>
-						@if ($residencia->solvencia)
-						<td class="green-text">{{ trans('literales.solvente') }}</td>
-						@else
-						<td class="red-text">{{ Lang::choice('literales.moroso', 12) }}</td>
-						@endif
-					</tr>
-					@empty No hay Residencias @endforelse
-				</tbody>
-			</table>
-		</div>
-		<div class="modal-footer">
-			<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Listo</a>
-		</div>
-	</div>
 
 	{{-- Footer --}}
 	<footer  style="background-image: url(http://www.img.lirent.net/2014/10/Android-Lollipop-wallpapers-Download.jpg)" class="page-footer"> 

@@ -56,6 +56,7 @@ Route::group(array('prefix' => 'ajax'), function()
     Route::any('personal/{action?}', 'AjaxController@personal');
     Route::any('encuestas/{action?}', 'AjaxController@encuestas');
     Route::any('residencias/{action?}', 'AjaxController@residencias');
+    Route::any('solvencias/{action?}', 'AjaxController@solvencias');
     Route::any('email', 'AjaxController@email');
     Route::any("resultados-encuesta/{id}", 'AjaxController@resultadosEncuesta');
     Route::any("cambiarsolvencia",'AjaxController@cambiarsolvencia');

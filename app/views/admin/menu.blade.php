@@ -63,6 +63,7 @@
         <li><a href="{{url('admin/Finanzas/cuotas')}}"><i class="fa fa-money"></i> Cuotas Generales</a></li>
         <li><a href="{{url('admin/Finanzas/cuotasPorResidencia')}}"><i class="fa fa-dollar"></i> Cuotas por Residencia</a></li>
         <li><a href="{{url('admin/Finanzas/cuotasMasivas')}}"><i class="fa fa-credit-card"></i> Asignar Cuotas Masivas</a></li>
+        <li><a href="{{url('admin/Finanzas/gestion')}}"><i class="fa fa-cc-mastercard"></i> Gestionar Pagos</a></li>
         <li><a href="{{url('admin/Finanzas/parametros')}}"><i class="fa fa-paragraph"></i> Parametros</a></li>
     </div>
 

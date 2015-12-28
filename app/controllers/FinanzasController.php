@@ -134,6 +134,19 @@ class FinanzasController extends \BaseController {
      return View::make('admin/parametros')->withMaestra($maestra);
 	}
 
+	public function  gestionResidencias()
+	{
+		if (Input::has('residencia'))
+		{
+			$residencias = Residencias::where("nombre",'LIKE','%'.Input::get('residencia').'%')->distinct()->orderby("id")->paginate(12);
+		}
+		else
+		{
+			$residencias = Residencias::distinct()->orderby("id")->paginate(12);
+		}
+		return View::make('admin/gestionResidencias',compact('residencias'));
+	}
+
 	public function generarResumendeCobrosMes()
 	{
 	   $i= 0;

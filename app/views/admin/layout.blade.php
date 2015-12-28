@@ -33,14 +33,14 @@ $message = Session::get('message');
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             @include('admin/menu')
-        </div>
 
-        <!-- Page Content -->
-
-            <div id="menu-buttons" class="btn-group-vertical" role="group" style="position: fixed; z-index: 1000; right:0px;">
+            <div id="menu-buttons" class="btn-group-vertical" role="group" style="position: fixed; z-index: 1000; bottom:0px;">
                 <a class="btn btn-primary menu-toggle"><i class="fa fa-bars"></i> <span class="menu-text">Menu</span></a>
                 <a class="btn btn-success" href="{{url()}}"><i class="fa fa-home"></i> <span class="menu-text"> Volver </span></a>
             </div>
+        </div>
+
+        <!-- Page Content -->
         <div id="page-content-wrapper">
             @yield('content','')
         </div>
@@ -52,7 +52,7 @@ $message = Session::get('message');
             {
                 $("#wrapper").toggleClass("toggled");
                 $("span.menu-text").toggle('slow');
-                $("#menu-buttons").toggleClass('left');
+                $("#menu-buttons").toggleClass('bottom');
             });
         </script>
 </body>

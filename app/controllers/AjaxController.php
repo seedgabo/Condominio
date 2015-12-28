@@ -293,6 +293,51 @@ class AjaxController extends BaseController {
 			}
 		}
 	}
+	public function solvencias($action)
+	{
+		if (isset($action))
+		{
+			if ($action=="solventar" ) 
+			{
+				$data = Solvencia::firstOrCreate(Input::all());
+			  $data->estado = 1;
+			  $data->save();
+				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
+			}
+			if($action=="adeudar")
+			{
+				$data = Solvencia::firstOrCreate(Input::all());
+			  $data->estado = 0;
+			  $data->save();
+				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
+			}
+				if($action=="acreditar")
+			{
+				$data = Solvencia::firstOrCreate(Input::all());
+			  $data->estado = 2;
+			  $data->save();
+				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
+			}			
+			if($action=="obtener")
+			{
+				$data = Solvencia::firstOrCreate(Input::all());
+				$data = array_add($data,'estado_org', $data->getOriginal('estado'));
+				return  Response::json($data, 200);
+			}
+			if($action=="establecer")
+			{
+				Solvencia::where('id',"=", Input::get('id'))->update(Input::except('id','_token'));
+				$data = Solvencia::find(Input::get('id'));
+				return  Response::json($data, 200);
+			}
+				if($action=="vistar")
+			{
+				$data = Solvencia::firstOrCreate(Input::all());
+				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
+			}
+		}
+	}
+
 	public function resultadosEncuesta($id)
 	{
 		if(Input::has('respuesta'))

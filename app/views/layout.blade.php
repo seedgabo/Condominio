@@ -74,12 +74,15 @@ $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.p
 							<li class="tooltipped" data-delay="10" data-tooltip="Documentos"><a href="{{url('ver-documentos')}}"><i class="fa fa-paperclip "></i></a></li>
 							<li class="tooltipped" data-delay="10" data-tooltip="Calendario"><a href="{{url('ver-eventos')}}"><i class="fa fa-calendar "></i></a></li>
 							<li><a class="tooltipped modal-trigger" data-delay="10" data-tooltip="Personal" href="{{url('ver-personal')}}"><i class="fa fa-users"></i></a></li>
-							<li><a class="dropdown-button valign-wrapper" href="#!" data-beloworigin="true" data-hover="true" data-activates="dropdown1">
-							@if (Auth::check() && Auth::user()->avatar != null)
-							<img class="left avatar circle valign" src="{{Auth::user()->avatar}}" alt="">
-							@endif
-							{{str_limit(Auth::user()->nombre,20,"...")}}
-							<i class="right fa fa-caret-down"></i></a></li>
+							<li>
+								<a class="dropdown-button valign-wrapper" href="#!" data-beloworigin="true" data-hover="true" data-activates="dropdown1">
+								@if (Auth::check() && Auth::user()->avatar != null)
+									<img class="left avatar circle valign" src="{{Auth::user()->avatar}}" alt="">
+								@endif
+									{{str_limit(Auth::user()->nombre,20,"...")}}
+								<i class="right fa fa-caret-down"></i>
+								</a>
+							</li>
 							@endif
 						</ul>
 

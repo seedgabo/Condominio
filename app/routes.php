@@ -43,7 +43,6 @@ Route::group(array('prefix' => 'admin/Finanzas'), function()
     Route::any('eliminarconceptomasivo/{concepto}','FinanzasController@eliminarconceptomasivo');
 });
 
-
 //Controlador de AJAX
 Route::group(array('prefix' => 'ajax'), function()
 {
@@ -80,7 +79,6 @@ Route::group(array('prefix' => 'api'), function()
         return json_encode(array("status" =>false));
     }));
 });
-
 
 // Controlador Oauth
 Route::group(array(), function()
@@ -124,7 +122,6 @@ Route::group(array(), function()
     Route::any('registro',"HomeController@registro");
 });
 
-
 //miselaneo
 Route::group(array(), function()
 {
@@ -136,11 +133,13 @@ Route::group(array(), function()
         Artisan::call('db:seed');
         return "hecho";
     });
-    Route::any("printInput", array('before' => '' , 'uses' =>function()
+
+    Route::any("printInput",function()
     {
        header('Access-Control-Allow-Origin:*'); 
        return json_encode(Input::all());
-    }));    
+    });  
+
     Route::any('hostname', function()
     {
       return gethostname();
@@ -156,9 +155,6 @@ Route::group(array(), function()
         Session::flash('message', "Contacto enviado!");
        return  Redirect::to('/');
     });
-
-
-    Route::any('test', function()
-    {
-    });
 });
+
+// Hola Mundo 

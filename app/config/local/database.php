@@ -76,10 +76,10 @@ return array(
 
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
-			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
+			'host'     => 'SEEDGABO-LAPTOP\SQLEXPRESS',
+			'database' => 'mibase',
+			'username' => 'seed',
+			'password' => 'gab23gab',
 			'prefix'   => '',
 		),
 

@@ -194,7 +194,7 @@ class HomeController extends BaseController {
 		if (Input::has(array("nombre","cargo","cedula")))
 		{
 			$rules =  array(
-				'nombre' => 'required|min:8|max:50',
+				'nombre' => 'required|min:6|max:50',
 				'cedula' => 'required|min:1000|numeric',
 				'telefono' => 'required|min:7',
 				'cargo'  => 'required|min:4|max:30',

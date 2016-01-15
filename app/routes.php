@@ -122,7 +122,7 @@ Route::group(array(), function()
     Route::any('registro',"HomeController@registro");
 });
 
-//miselaneo
+//Miselaneo
 Route::group(array(), function()
 {
     Route::any('reset', function()
@@ -156,5 +156,3 @@ Route::group(array(), function()
        return  Redirect::to('/');
     });
 });
-
-// Hola Mundo 

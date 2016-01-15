@@ -11,7 +11,7 @@ class News extends Migration {
 		{
 			$tabla->increments('id');
 			$tabla->string('titulo', 50)->unique();
-			$tabla->string('contenido', 5000);
+			$tabla->string('contenido', 4000);
 			$tabla->string('persona', 200)->nullable();
 			$tabla->date('fecha')->nullable();
 			$tabla->string('media',200)->nullable();

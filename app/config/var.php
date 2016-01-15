@@ -12,7 +12,7 @@ return array(
 
 'correo' => "Tucondominio@online.com",
 
-'keycode' => "",
+'keycode' => "prueba",
 
 'cuenta-bancaria' => '',
 

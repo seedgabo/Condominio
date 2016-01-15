@@ -15,7 +15,7 @@
 <script src="{{asset('jtable/localization/jquery.jtable.es.js')}}"></script>
 
 {{--Incluir datatables  --}}
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.8/js/dataTables.jqueryui.min.js"></script>
 
 @stop
@@ -23,42 +23,55 @@
 <div id="table" class=""></div>
 <script type="text/javascript" src="{{url('ajax/personas/residencia')}}"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#table').jtable({
+    $(document).ready(function()
+    {
+        $('#table').jtable(
+        {
             title: 'Personas',
             jqueryuiTheme: true,
-            actions: {
+            dialogShowEffect:'puff',
+            dialogHideEffect:'slide',
+            actions:
+            {
                 listAction: "{{url('ajax/personas/list')}}",
                 createAction: "{{url('ajax/personas/create')}}",
                 updateAction: "{{url('ajax/personas/edit')}}",
                 deleteAction: "{{url('ajax/personas/remove')}}",
             },
-            fields: {
-                id: {
+            fields:
+            {
+                id:
+                {
                     title: 'ID',
                     key: true,
                     list: false
                 },
-                nombre: {
+                nombre:
+                {
                     title: 'Nombre',
                 },
-                email:{
+                email:
+                {
                     title: 'Email',
                     type: 'email'
                 },
-                telefono:{
+                telefono:
+                {
                     title: 'Telefono',
                     type: 'number'
                 },
-                residencia_id:{
+                residencia_id:
+                {
                     title: 'Residencia',
                     options: opciones,
                 },
-                observaciones:{
+                observaciones:
+                {
                     title: 'Observaciones',
                     type: 'textarea'
                 },
-                avatar:{
+                avatar:
+                {
                     title: "Avatar",
                     create: false,
                     edit: false,
@@ -66,7 +79,7 @@
                     {
                         if (data.record.avatar)
                         {
-                           return " <img width='32' class='avatar' src='"+ data.record.avatar +"' alt=''>";
+                            return " <img width='32' class='avatar' src='" + data.record.avatar + "' alt=''>";
                         }
                         else
                         {
@@ -74,64 +87,31 @@
                         }
                     }
                 },
-                admin:{
-                    title : "Administrador",
+                admin:
+                {
+                    title: "Administrador",
                     type: 'radiobutton',
-                    options: { 0 : 'Usuario', 1 : 'Admin' },
+                    options:
+                    {
+                        0: 'Usuario',
+                        1: 'Admin'
+                    },
                     defaultValue: 'false',
                 },
                 residencia_id:
-                {   
+                {
                     options: opciones,
                     title: "Residencia",
                 }
             },
             recordsLoaded: function()
-            {
-                var tabla=  $('table.jtable').DataTable
-                ({
-                    responsive: true,
-                    "language": {
-                        "sProcessing":     "Procesando...",
-                        "sLengthMenu":     "Mostrar _MENU_ registros",
-                        "sZeroRecords":    "No se encontraron resultados",
-                        "sEmptyTable":     "NingÃºn dato disponible en esta tabla",
-                        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix":    "",
-                        "sSearch":         "Buscar:",
-                        "sUrl":            "",
-                        "sInfoThousands":  ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst":    "Primero",
-                            "sLast":     "Ãšltimo",
-                            "sNext":     "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        },
-                    }
-                }); 
-            $(".dataTables_paginate").removeClass("dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_simple_numbers");
-            $(".dataTables_length").css("display", "inline").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-            $(".dataTables_filter").css("display", "inline");
-            tabla.search("{{Input::get('query','')}}").draw();
+            {        
+                @include('tables/datatable')             
             }
+        });
+             $('#table').jtable('load');
     });
-$('#table').jtable('load');
-
-});
-function buscar (array,filtro)
-{
-    array.filter(function(item) {
-        return (item.name === "nick");
-    });
-}
-
 
 </script>
+
 @stop

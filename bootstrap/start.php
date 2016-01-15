@@ -25,7 +25,6 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment(array(
-	'siasoft' => array('p3plcpnl0432.prod.phx3.secureserver.net'),
 	'webTest' => array('srv75.main-hosting.eu'),
 	'local' => array('SeeDGabo-Laptop')
 ));

@@ -126,7 +126,7 @@
 
 			<div class="btn-group pull-right">
 
-				{{ Form::submit("Enviar", ['class' => 'btn btn-success']) }}
+				{{ Form::submit("Enviar", ['id' => 'enviar','class' => 'btn btn-success']) }}
 
 			</div>
 

@@ -44,6 +44,7 @@ $message = Session::get('message');
         <div id="page-content-wrapper">
             @yield('content','')
         </div>
+    </div>
 
 
         <!-- Menu Toggle Script -->

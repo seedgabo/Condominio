@@ -207,6 +207,7 @@ class AjaxController extends BaseController {
 			}
 			if ($action=="edit" ) 
 			{
+				return  Auth::user();
 				User::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => User::find(Input::get('id')),'Result'=>"OK") ;
 			}

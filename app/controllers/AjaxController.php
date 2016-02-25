@@ -294,6 +294,8 @@ class AjaxController extends BaseController {
 			}
 		}
 	}
+
+
 	public function solvencias($action)
 	{
 		if (isset($action))
@@ -339,6 +341,7 @@ class AjaxController extends BaseController {
 		}
 	}
 
+
 	public function resultadosEncuesta($id)
 	{
 		if(Input::has('respuesta'))
@@ -358,6 +361,7 @@ class AjaxController extends BaseController {
 		$respuesta = EncuestasRespuestas::where("persona_id","=",Auth::id())->where("encuesta_id","=",$id)->first();
 		return View::make('renderpie')->withEncuesta($encuesta)->withResultados($resultados)->withRespuesta($respuesta);
 	}
+
 	public function cambiarsolvencia()
 	{
 		$residencia= Residencias::find(Input::get('id'));
@@ -365,6 +369,7 @@ class AjaxController extends BaseController {
 		$residencia->save();
 		return $residencia;
 	}
+
 	public function email()
 	{
 
@@ -431,7 +436,6 @@ class AjaxController extends BaseController {
 			}
 
 			return  json_encode($salida);
-
 		}
 
 		return "error No Ha Seleccionado ningun Destinatario";

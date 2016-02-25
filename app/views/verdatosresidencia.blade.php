@@ -22,7 +22,9 @@
 						<h3 class="red-text"> Moroso</h3>	
 					@endif
 					<strong>Nombre de la Residencia:</strong>  {{$residencia->nombre}} <br>
+					@if (User::where('id','=',$residencia->persona_id_propietario)->first() != null)
 					<strong>Dueño: </strong> <img height="24" class="circle" src="{{User::where('id','=',$residencia->persona_id_propietario)->first()->avatar}}" alt="Sin imagen">	{{$residencia->Dueño}}   <br>
+					@endif
 					<strong>Alicuota: </strong>	{{$residencia->alicuota}} % <br>
 					<strong>Cantidad de Residentes: </strong>	{{$residencia->cant_personas}} <br>
 				</p>

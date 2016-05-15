@@ -56,6 +56,7 @@ $message = Session::get('message');
 						<a href="{{ url('/') }}" class="brand-logo center"><img id="brand-logo" src="{{asset('images/favicon.png')}}" width="55"></a>
 						<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 						<ul class="left hide-on-med-and-down">
+						@if(Auth::check())
 							<li>
 								<a class="dropdown-button valign-wrapper" href="#!" data-beloworigin="true" data-hover="true" data-activates="dropdown1" data-constrainwidth="false" data-alignment="right">
 									@if (Auth::check() && Auth::user()->avatar != null)
@@ -65,6 +66,7 @@ $message = Session::get('message');
 									<i class="right fa fa-caret-down"></i>
 								</a>
 							</li>
+						@endif
 						</ul>
 						<ul class="right hide-on-med-and-down">
 							@if (!Auth::check())

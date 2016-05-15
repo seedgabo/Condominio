@@ -1,10 +1,30 @@
-@extends('layout') 
-{{-- Comentario --}} 
+@extends('layout')
+{{-- Comentario --}}
 @section('contenido')
 <div class="row">
 	<div class="col s12 m8 l8">
 		  <h3 class="center">Directiva</h3>
-		@include('vertabla')
+			<table class="table card responsive-table centered bordered highlight">
+			    <thead>
+			        <tr>
+			            <th class="text" style="text-transform: uppercase" data-field="Nombre">Nombre</th>
+			            <th class="text" style="text-transform: uppercase" data-field="Cargo">Cargo</th>
+			            <th class="text" style="text-transform: uppercase" data-field="Telefono">Telefono</th>
+			            <th class="text" style="text-transform: uppercase" data-field="Email">Email</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        @forelse ($directiva as $persona)
+			            <tr style="text-transform: capitalize">
+							<td>{{$persona->nombre}}</td>
+							<td>{{$persona->cargo}}</td>
+							<td><a href="tel:{{$persona->telefono}}">{{$persona->telefono}}</a></td>
+							<td><a href="mailto:{{$persona->email}}">{{$persona->email}}</a></td>
+			            </tr>
+					@empty
+			        @endforelse
+			    </tbody>
+			</table>
 	</div>
 <div class="col s12 m4 l4">
 <h3 class="center">Ubicación</h3>

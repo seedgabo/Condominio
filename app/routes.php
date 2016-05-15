@@ -101,17 +101,19 @@ Route::group(array(), function()
     Route::any('agregar-imagen', array('before'=>'auth' , 'uses' => "HomeController@agregarimagen"));
     Route::any('eliminar-recibo/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarrecibo'));
     Route::any('eliminar-personal/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarpersonal'));
+    Route::any('eliminar-vehiculo/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarVehiculo'));
     Route::any('eliminar-noticia/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarnoticia'));
     Route::any('ver-recibos',array('before' => 'auth', 'uses' => 'HomeController@verrecibos'));
     Route::any('ver-documentos',array('before' => 'auth', 'uses' => 'HomeController@verdocumentos'));
     Route::any('ver-residencia',array('before' => 'auth', 'uses' => 'HomeController@verresidencia'));
     Route::any('ver-personal',array('before' => 'auth', 'uses' => 'HomeController@verpersonal'));
+    Route::any('ver-vehiculos',array('before' => 'auth', 'uses' => 'HomeController@vervehiculos'));
     Route::any('ver-encuestas',array('before' => 'auth', 'uses' => 'HomeController@verencuestas'));
-    Route::any('Usuario-Edit',array('before' => 'auth' ,'uses' => 'HomeController@usuarioEdit'));
-    Route::any('editar-residencia',array('before' => 'auth', 'uses' => 'HomeController@editarResidencia'));
     Route::any('ver-eventos','HomeController@verfullcalendar');
     Route::any('ver-galeria', "HomeController@vergaleria");
     Route::any('ver-noticias', "HomeController@vernoticias");
+    Route::any('Usuario-Edit',array('before' => 'auth' ,'uses' => 'HomeController@usuarioEdit'));
+    Route::any('editar-residencia',array('before' => 'auth', 'uses' => 'HomeController@editarResidencia'));
     Route::any('generar-factura', 'HomeController@generarFactura' );
 
     Route::any('demo', function(){Auth::loginUsingId(2, true); Return Redirect::to('');});
@@ -136,9 +138,9 @@ Route::group(array(), function()
 
     Route::any("printInput",function()
     {
-       header('Access-Control-Allow-Origin:*'); 
+       header('Access-Control-Allow-Origin:*');
        return json_encode(Input::all());
-    });  
+    });
 
     Route::any('hostname', function()
     {

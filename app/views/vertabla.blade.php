@@ -8,13 +8,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($tabla as $fila)
-        <tr style="text-transform: capitalize">
-            @foreach ($fila as $dato)
-            <td>{{$dato}} </td>
-            @endforeach
-        </tr>
+        @foreach ($tabla as $fila)                
+            <tr style="text-transform: capitalize">
+                @foreach ($fila as $dato)
+                <td>{{$dato}} </td>
+                @endforeach
+            </tr>
         @endforeach
     </tbody>
 </table>
-

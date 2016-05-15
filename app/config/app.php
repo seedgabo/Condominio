@@ -52,7 +52,7 @@ return array(
 	|
 	*/
 
-	'locale' => 'es',
+	'locale' => 'es_co',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -126,7 +126,7 @@ return array(
 		'Way\Generators\GeneratorsServiceProvider',	 					  //Way Generator
 		'Artdarek\OAuth\OAuthServiceProvider',      					  //Oauth-4-Laravel
 		"Khill\Lavacharts\Laravel\LavachartsServiceProvider",   //LavaCharts For Google Charts
-		'Maatwebsite\Excel\ExcelServiceProvider'								// Excel con Laravel	
+		'Maatwebsite\Excel\ExcelServiceProvider'								// Excel con Laravel
 
 		),
 

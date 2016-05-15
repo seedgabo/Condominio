@@ -13,7 +13,7 @@
 				<small> {{$persona->cargo}}</small>
 				<span class="secondary-content">
 					@if ($persona->residencia_id == Auth::user()->residencia_id)
-					<a href="{{url("eliminar-personal/".$persona->id)}}" class="link"> <i class="fa fa-trash fa-2x"></i></a> 
+					<a href="{{url("eliminar-personal/".$persona->id)}}" class="link"> <i class="fa fa-trash fa-2x"></i></a>
 					@else
 					{{Residencias::find($persona->residencia_id)->nombre }} <br>
 					@endif
@@ -37,7 +37,7 @@
 				<small> {{$persona->cargo}}</small>
 				<span class="secondary-content">
 					@if ($persona->residencia_id == Auth::user()->residencia_id)
-					<a href="{{url("eliminar-personal/".$persona->id)}}" class="link"> <i class="fa fa-trash fa-2x"></i></a> 
+					<a href="{{url("eliminar-personal/".$persona->id)}}" class="link"> <i class="fa fa-trash fa-2x"></i></a>
 					@else
 					{{Residencias::find($persona->residencia_id)->nombre }} <br>
 					@endif
@@ -50,8 +50,7 @@
 			@endforelse
 		</ul>
 	</div>
-	<!-- Modal Trigger -->
-	
+
 </div>
 
 <!-- Modal Structure -->

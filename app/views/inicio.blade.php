@@ -1,8 +1,8 @@
-<?php 
+<?php
 $portadas = DB::table('portadas')->get();
 ?>
-    @extends('layout') 
-    @section('contenido') 
+    @extends('layout')
+    @section('contenido')
     {{-- PORTADAS --}}
     @if(sizeof($portadas)>0)
     <div class="slider">
@@ -20,7 +20,7 @@ $portadas = DB::table('portadas')->get();
     </div>
     @endif
 
-    
+
     <div class="row">
         {{-- NOTICIAS --}}
         <div class="col s12 m9 l9">
@@ -72,7 +72,7 @@ $portadas = DB::table('portadas')->get();
                     @forelse($eventos as $evento)
                     <li class="collection-item ">
                         <strong class="center-align">
-                        {{ $evento->razon }}    
+                        {{ $evento->razon }}
                     </strong>
                         <br> {{traducir_fecha(Carbon::parse($evento->fecha_ini)->formatLocalized('%a %d/%b/%y') ." - ")}} {{traducir_fecha(Carbon::parse($evento->fecha_fin)->formatLocalized('%a %d/%b/%y'))}}
                         <p class="green-text">{{traducir_fecha(Carbon::now()->diffForHumans(Carbon::parse($evento->fecha_ini . $evento->tiempo_ini))) }}</p>
@@ -95,5 +95,5 @@ $portadas = DB::table('portadas')->get();
             {});
         })
     </script>
-    
+
     @stop

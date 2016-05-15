@@ -2,9 +2,9 @@
 
 class HomeController extends BaseController {
 
-	
+
 	public function inicio()
-	{		
+	{
 		$noticias =	DB::table('noticias')->take(20)->orderby('created_at','desc')->orderby('id','asc')->get();
 		$eventos = DB::table('eventos')
 		->where('fecha_ini','>=',Carbon::today())
@@ -13,7 +13,7 @@ class HomeController extends BaseController {
 		->orderby('tiempo_ini','asc')
 		->get();
 		return  View::make('inicio')->with('noticias',$noticias)->withEventos($eventos);
-	}	
+	}
 	public function agregarnoticia()
 	{
 		if (Request::isMethod('post'))
@@ -21,8 +21,8 @@ class HomeController extends BaseController {
 			$rules =  array(
 				'media' => 'mimes:jpg,jpeg,gif,bmp,png|max:10240|',
 				'titulo' => 'required|min:3,max:30',
-				'contenido' => 'required' 
-				);
+				'contenido' => 'required'
+			);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
@@ -30,12 +30,12 @@ class HomeController extends BaseController {
 			}
 			$data= Input::except('_token','media');
 			$fecha = new Carbon();
-			$fecha->setTimezone('America/Caracas');			
+			$fecha->setTimezone('America/Caracas');
 			$data= array_add($data,'fecha',$fecha::now());
 			if(Auth::user()->avatar != null)
-				$imagen ="<img class='avatar circle' src='" . Auth::user()->avatar ."'/>";
+			$imagen ="<img class='avatar circle' src='" . Auth::user()->avatar ."'/>";
 			else
-				$imagen ='  <i class="fa fa-2x fa-user"></i>';
+			$imagen ='  <i class="fa fa-2x fa-user"></i>';
 			$data= array_add($data,'persona', Auth::user()->nombre . " de Residencia " . Residencias::find(Auth::user()->residencia_id)->nombre . $imagen);
 			if (Input::hasFile('media'))
 			{
@@ -57,7 +57,7 @@ class HomeController extends BaseController {
 				'razon' =>'required|min:6|max:30',
 				'fecha_ini' =>'required',
 				'fecha_fin' =>'required'
-				);
+			);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
@@ -88,7 +88,7 @@ class HomeController extends BaseController {
 				'monto' => 'required|numeric|min:0',
 				'mes' => 'numeric|min:1|max:12|required_with:isFactura',
 				'año' => 'numeric|min:2000|max:2099|required_with:isFactura'
-				);
+			);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
@@ -119,7 +119,7 @@ class HomeController extends BaseController {
 			{
 				$rules =  array(
 					'file' => 'mimes:jpg,jpeg,gif,bmp,png|max:10240|'
-					);
+				);
 				$validation = Validator::make(Input::except('_token'),$rules);
 				if ($validation->fails())
 				{
@@ -142,15 +142,15 @@ class HomeController extends BaseController {
 		->orderby('tiempo_ini','asc')
 		->get();
 		$eventos = Eventos::select('razon as title',
-			DB::raw('CONCAT(fecha_ini,"T",tiempo_ini) as start'),
-			DB::raw('CONCAT(fecha_fin,"T",tiempo_fin) as end'))
+		DB::raw('CONCAT(fecha_ini,"T",tiempo_ini) as start'),
+		DB::raw('CONCAT(fecha_fin,"T",tiempo_fin) as end'))
 		->get();
 		return View::make('vercalendario')->withEventos($eventos->toJson())->withProximos($proximos);
 	}
 	public function verdirectiva()
 	{
-		$tabla = DB::table('directiva')->select('nombre','cargo')->get();
-		return View::make('directiva')->with('tabla',$tabla);
+		$directiva = Directiva::select("nombre","cargo","telefono","email")->get();
+		return View::make('directiva')->with('directiva', $directiva);
 	}
 	public function verrecibos()
 	{
@@ -169,18 +169,20 @@ class HomeController extends BaseController {
 	}
 	public function verresidencia()
 	{
-		$residencia = DB::table('residencias')
-		->select("personas.nombre as Dueño","personas.*","residencias.*")
+		$residencia = Input::get('residencia', Auth::user()->residencia_id);
+		$residencia = Residencias::
+		select("personas.nombre as Dueño","personas.*","residencias.*")
 		->leftjoin('personas',"personas.id","=","residencias.persona_id_propietario")
-		->where("residencias.id", "=", Auth::user()->residencia_id)
-		->first(); 
-		$residentes = DB::table('personas')
-		->select("personas.*")
+		->where("residencias.id", "=", $residencia)
+		->first();
+		$residentes = User::
+		select("personas.*")
 		->join("residencias","personas.residencia_id","=","residencias.id")
-		->where("residencias.id", "=" , $residencia->id)
+		->where("residencias.id", "=" , $residencia)
 		->get();
-		$personal = Personal::where("residencia_id","=",Auth::user()->residencia_id)->get();
-		return View::make('verdatosresidencia')->withResidencia($residencia)->withResidentes($residentes)->withPersonal($personal);
+		$personal = Personal::where("residencia_id","=", $residencia)->get();
+		$vehiculos  = Vehiculo::where("residencia_id","=",$residencia)->get();
+		return View::make('verdatosresidencia')->withResidencia($residencia)->withResidentes($residentes)->withPersonal($personal)->withVehiculos($vehiculos);
 	}
 	public function vernoticias()
 	{
@@ -199,7 +201,7 @@ class HomeController extends BaseController {
 				'telefono' => 'required|min:7',
 				'cargo'  => 'required|min:4|max:30',
 				'email'  => 'email'
-				);
+			);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
@@ -211,8 +213,27 @@ class HomeController extends BaseController {
 			Session::flash('message', 'Personal Agregado Correctamente');
 		}
 		$personal = Personal::all();
-		$tupersonal = Personal::where("residencia_id","=",Auth::user()->residencia_id) ->get();
+		$tupersonal = Auth::user()->residencia->personal;
 		return View::make('verpersonal')->withPersonal($personal)->withTupersonal($tupersonal);
+	}
+	public function vervehiculos()
+	{
+		if (Input::method() == "POST")
+		{
+
+			$validation = Validator::make(Input::except('_token'),Vehiculo::$rules);
+			if ($validation->fails())
+			{
+				return Redirect::back()->withErrors($validation);
+			}
+			$datos = Input::except('_token');
+			$datos = array_add($datos,"residencia_id",Auth::user()->residencia_id);
+			Vehiculo::FirstorCreate ($datos);
+			Session::flash('message', 'Vehiculo Agregado Correctamente');
+		}
+		$vehiculos = Vehiculo::all();
+		$tusvehiculos = Auth::user()->residencia->vehiculos;
+		return View::make('vervehiculos')->withVehiculos($vehiculos)->withTusvehiculos($tusvehiculos);
 	}
 	public function verencuestas()
 	{
@@ -227,12 +248,12 @@ class HomeController extends BaseController {
 			$recibo->delete();
 			Session::flash('message', 'Recibo o Factura Borrado Correctamente');
 			return Redirect::to("ver-recibos");
-		}	
+		}
 		else
 		{
 			Session::flash('message',"No Posee permisos para realizar esta acción");
 			return Redirect::back();
-		}	
+		}
 	}
 	public function eliminarpersonal($id)
 	{
@@ -241,12 +262,12 @@ class HomeController extends BaseController {
 			$persona->delete();
 			Session::flash('message', 'Personal Borrado Correctamente');
 			return Redirect::to("ver-personal");
-		}	
+		}
 		else
 		{
 			Session::flash('message',"No Posee permisos para realizar esta acción");
 			return Redirect::back();
-		}	
+		}
 	}
 	public function eliminarnoticia($id)
 	{
@@ -255,20 +276,35 @@ class HomeController extends BaseController {
 			$noticia->delete();
 			Session::flash('message', 'Noticia Borrada Correctamente');
 			return Redirect::to("ver-noticias");
-		}	
+		}
 		else
 		{
 			Session::flash('message',"No Posee permisos para realizar esta acción");
 			return Redirect::back();
-		}	
-	}	
+		}
+	}
+
+	public function eliminarvehiculo($id)
+	{
+		$vehiculo =	Vehiculo::find($id);
+		if ($vehiculo->residencia_id == Auth::user()->residencia_id) {
+			$vehiculo->delete();
+			Session::flash('message', 'Vehiculo Eliminado Correctamente');
+			return Redirect::back();
+		}
+		else
+		{
+			Session::flash('message',"No Posee permisos para realizar esta acción");
+			return Redirect::back();
+		}
+	}
 
 	public function generarFactura()
 	{
 		if (Input::has("persona_id"))
-			$persona = User::find(Input::get('persona_id'));
+		$persona = User::find(Input::get('persona_id'));
 		else
-			$persona = User::find(Auth::id()); 
+		$persona = User::find(Auth::id());
 
 		$residencia = residencias::where("id","=", $persona->residencia_id)->first();
 		$time = new Carbon;
@@ -286,7 +322,7 @@ class HomeController extends BaseController {
 
 	public function login()
 	{
-		
+
 		$credentials =Input::only('email','password');
 		if(Auth::attempt($credentials, Input::get('remember', true)))
 		{
@@ -310,14 +346,14 @@ class HomeController extends BaseController {
 			if(Input::get("keycode")!= Config::get('var.keycode'))
 			{
 				Session::flash('message', "El Codigo suministrado por el condominio no coincide");
-				return Redirect::to("registro");	
+				return Redirect::to("registro");
 			}
-			 //Validar Campos
+			//Validar Campos
 			$rules =  array(
 				'nombre' => 'required|min:8|max:30|',
 				'email' => 'required|email|unique:personas,email',
 				'password' =>'required|min:8|max:50'
-				);
+			);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
@@ -326,7 +362,7 @@ class HomeController extends BaseController {
 
 
 
-		    //registrar usuario
+			//registrar usuario
 			$input = Input::except('password','keycode','_token');
 			$input = array_add($input,"password",Hash::make(Input::get("password")));
 			$id= DB::table('personas')->insertGetId($input);
@@ -351,8 +387,8 @@ class HomeController extends BaseController {
 			$rules =  array(
 				'nombre' => 'required|min:8|max:30|',
 				'email' => 'required|email|unique:personas,email,'.Auth::user()->id,
-				'residencia_id' => 'required|exists:residencias,id' 
-				);
+				'residencia_id' => 'exists:residencias,id'
+			);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
@@ -362,11 +398,12 @@ class HomeController extends BaseController {
 			{
 				Auth::user()->Update(Input::except('_token'));
 				Session::flash('message', 'Usuario Actualizado Correctamente');
-				return Redirect::to("/");
+				return Redirect::back();
 			}
 		}
-		
-		return View::make("editarinfo")->withResidencias($residencias);
+		$tupersonal = Auth::user()->residencia->personal;
+		$tusvehiculos   = Auth::user()->residencia->vehiculos;
+		return View::make("editarinfo")->withResidencias($residencias)->withTupersonal($tupersonal)->withTusvehiculos($tusvehiculos);
 	}
 	public function editarResidencia()
 	{
@@ -376,8 +413,8 @@ class HomeController extends BaseController {
 			$rules =  array(
 				'nombre' => 'required|min:4|max:50',
 				'cant_personas' => 'required|numeric|min:0',
-				'persona_id_propietario' =>'required|numeric|exists:personas,id' 
-				);
+				'persona_id_propietario' =>'required|numeric|exists:personas,id'
+			);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
@@ -392,5 +429,5 @@ class HomeController extends BaseController {
 		}
 	}
 
-	
+
 }

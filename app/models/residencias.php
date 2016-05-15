@@ -1,4 +1,4 @@
-<?php 
+<?php
 class Residencias extends Eloquent {
 
 	protected $table ="residencias";
@@ -13,4 +13,7 @@ class Residencias extends Eloquent {
 		return $this->hasMany('personal','residencia_id');
 	}
 
+	public function vehiculos(){
+		return $this->hasMany('Vehiculo','residencia_id');
+	}
 }

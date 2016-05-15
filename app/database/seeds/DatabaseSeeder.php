@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder {
 		// $this->command->info('Personal Table Seed!');
 		$this->Call('SolvenciaTableSeeder');
 		// $this->command->info('Solvencia Table Seed!');
+		$this->Call('VehiculosTableSeeder');
+		// $this->command->info('Vehiculos Table Seed!');
 	}
 
 

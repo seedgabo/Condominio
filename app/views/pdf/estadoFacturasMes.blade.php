@@ -28,21 +28,21 @@
                  </td>
              </tr>
          </thead>
- </table> 
+ </table>
 
 <table class="table" style=" text-transform: uppercase;">
      <div style="text-align: center !important;">
-        <a href="{{url()}}">{{Config::get('var.nombre')}}</a> 
+        <a href="{{url()}}">{{Config::get('var.nombre')}}</a>
      </div>
            <thead>
                <tr>
                    <td>{{Config::get('var.ubicacion')}}</td>
-                   <td style="text-align: right; vertical-align: middle;">   
-                     Estado de Cobro del Mes:    
+                   <td style="text-align: right; vertical-align: middle;">
+                     Estado de Cobro del Mes:
                    </td>
               </tr>
            </thead>
-</table>   
+</table>
 
    <table class="table table-bordered">
      <thead>
@@ -64,7 +64,7 @@
         @endforelse
      </tbody>
    </table>
-  
+
   <div class="well">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A omnis blanditiis nam cumque ratione commodi quibusdam architecto, earum nobis, voluptate consequuntur pariatur doloribus. Nemo architecto iusto ducimus labore. Corporis sapiente iste minus dolor laudantium omnis culpa ut quos obcaecati blanditiis dolorem accusantium quia necessitatibus, id vero asperiores autem reiciendis nam. </div>
 
 </body>

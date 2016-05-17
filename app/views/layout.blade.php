@@ -79,7 +79,8 @@ $message = Session::get('message');
 								<li class="tooltipped" data-delay="10" data-tooltip="Galeria"><a href="{{url('ver-galeria')}}"><i class="fa fa-picture-o "></i></a></li>
 								<li class="tooltipped" data-delay="10" data-tooltip="Documentos"><a href="{{url('ver-documentos')}}"><i class="fa fa-paperclip "></i></a></li>
 								<li class="tooltipped" data-delay="10" data-tooltip="Calendario"><a href="{{url('ver-eventos')}}"><i class="fa fa-calendar "></i></a></li>
-								<li><a class="tooltipped modal-trigger" data-delay="10" data-tooltip="Personal" href="{{url('ver-personal')}}"><i class="fa fa-users"></i></a></li>
+								<li class="tooltipped" data-delay="10" data-tooltip="Personal" ><a href="{{url('ver-personal')}}"><i class="fa fa-users"></i></a></li>
+								<li class="tooltipped" data-delay="10" data-tooltip=Vehiculos ><a href="{{url('ver-vehiculos')}}"><i class="fa fa-car"></i></a></li>
 							@endif
 						</ul>
 

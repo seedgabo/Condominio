@@ -3,8 +3,10 @@
 	<div class="container">
 
 		<div class="row">
+			<div class="card">
+
 			{{-- Tu Perfil Card --}}
-			<div class="card col m6 large">
+			<div class=" col m6">
 				<h2 class="center">Tus Datos</h2>
 
 				{{ Form::model(Auth::user(),['method' => 'Post', 'class' => 'form-horizontal row']) }}
@@ -22,6 +24,11 @@
 					<small class="red-text">{{ $errors->first('email') }}</small>
 				</div>
 				<div class="input-field col l12 s12 m12">
+					{{ Form::label('cedula', Lang::get('literales.cedula') ) }}
+					{{ Form::text('cedula', null, ['class' => 'form-control','length'=>'30']) }}
+					<small class="red-text">{{ $errors->first('cedula') }}</small>
+				</div>
+				<div class="input-field col l12 s12 m12">
 					{{ Form::label('telefono', 'Teléfono:') }}
 					{{ Form::text('telefono', null, ['class' => 'form-control','length'=>'30']) }}
 					<small class="red-text">{{ $errors->first('telefono') }}</small>
@@ -37,7 +44,7 @@
 			</div>
 
 			{{-- Residencia Card --}}
-			<div class="card col m6 large">
+			<div class="col m6 ">
 				<h2 class="center">Tu Residencia</h2>
 				{{ Form::model(Residencias::find(Auth::user()->residencia_id),['method' => 'Post','url' =>'editar-residencia', 'class' => 'form-horizontal']) }}
 				<div class="input-field">
@@ -61,8 +68,10 @@
 				{{ Form::close() }}
 			</div>
 
+			</div>
+
 			{{-- Otros Datos Card --}}
-			<div class="card col m6">
+			<div class="card col m6 offset-m3">
 				<h2 class="center"> Otros Datos</h2>
 				<ul class="collection with-header">
 					<li class="collection-header center"> <h5>Tu Personal</h5></li>
@@ -85,7 +94,7 @@
 						</li>
 					@endforelse
 				</ul>
-				<a class="waves-effect blue waves-light btn modal-trigger" href="#modal1"><i class="fa fa-users left"></i> Agregar Personal</a>
+				<a class="waves-effect blue waves-light btn modal-trigger" href="#modalPersonal"><i class="fa fa-users left"></i> Agregar Personal</a>
 
 
 
@@ -95,7 +104,7 @@
 						<li class="collection-item">
 							<strong>{{$vehiculo->nombre}}</strong>  <br>
 							{{"Placa: ".$vehiculo->placa}} <br>
-							<small> {{$vehiculo->residencia->nombre}}</small>
+							<small> {{$vehiculo->color}}</small>
 							<span class="secondary-content">
 								@if ($vehiculo->residencia_id == Auth::user()->residencia_id)
 									<a href="{{url("eliminar-vehiculo/".$vehiculo->id)}}" class="link"> <i class="fa fa-trash fa-2x"></i></a>
@@ -114,11 +123,36 @@
 
 
 
+
+				<ul class="collection with-header">
+					<li class="collection-header center"> <h5>Tus Visitantes Frecuentes</h5></li>
+					@forelse ($tusvisitantes as $visitante)
+						<li class="collection-item">
+							<strong>{{$visitante->nombre}}</strong>  <br>
+							{{ Lang::get('literales.cedula') . ": ". number_format($visitante->cedula,0,",",".") }} <br>
+							<small class="left"> Telefono: {{$visitante->telefono}}</small>
+							<small class="right"> {{$visitante->residencia->nombre}}</small>
+							<span class="secondary-content">
+								@if ($visitante->residencia_id == Auth::user()->residencia_id)
+									<a href="{{url("eliminar-visitante/".$visitante->id)}}" class="link"> <i class="fa fa-trash fa-2x"></i></a>
+								@else
+									{{$visitante->residencia->nombre}} <br>
+								@endif
+							</span>
+						</li>
+					@empty
+						<li class="collection-item">
+							No Posees Visitantes Frecuentes
+						</li>
+					@endforelse
+				</ul>
+				<a class="waves-effect blue waves-light btn modal-trigger" href="#modalVisitante"><i class="fa fa-hand-peace-o left"></i> Agregar Visitante</a>
+
 			</div>
 
 
 			<!-- Modal Personal Estructura -->
-			<div id="modal1" class="modal">
+			<div id="modalPersonal" class="modal">
 				<div class="modal-content">
 					<h4>Agregar Personal</h4>
 					{{ Form::open(['method' => 'POST', 'class' => 'form-horizontal', 'url' => 'ver-personal']) }}
@@ -186,6 +220,40 @@
 				</div>
 			</div>
 
+
+			<!-- Modal Visitante Estructura -->
+			<div id="modalVisitante" class="modal">
+				<div class="modal-content">
+					<h4>Agregar Visitante</h4>
+					{{ Form::open(['method' => 'POST', 'class' => 'form-horizontal', 'url' => 'ver-visitantes']) }}
+					<div class="input-field">
+						{{Form::label('', "Nombre del Visitante")}}
+						{{Form::text('nombre',null,['required' => 'required', 'min' => '6', 'length' => '50'])}}
+						<small class="red-text">{{ $errors->first('nombre') }}</small>
+					</div>
+					<div class="input-field">
+						{{Form::label('cedula', Lang::get('literales.cedula'))}}
+						{{Form::number('cedula',null,['required' => 'required', 'min' => '3'])}}
+						<small class="red-text">{{ $errors->first('nombre') }}</small>
+					</div>
+					<div class="input-field">
+						{{Form::label('telefono', "Telefono")}}
+						{{Form::text('telefono',null,['min' => '3', 'length' => '50'])}}
+						<small class="red-text">{{ $errors->first('nombre') }}</small>
+					</div>
+					<div class="input-field">
+						{{Form::label('email', "Email")}}
+						{{Form::email('email',null,[ 'min' => '3', 'length' => '50'])}}
+						<small class="red-text">{{ $errors->first('nombre') }}</small>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="btn-group pull-right">
+						{{ Form::submit("Agregar Visitante", ['class' => 'btn']) }}
+					</div>
+					{{ Form::close() }}
+				</div>
+			</div>
 
 		</div>
 

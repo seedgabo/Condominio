@@ -4,7 +4,7 @@
 
 @section('header')
 
-   <script type="text/javascript" src="{{asset('vendors/ckeditor/ckeditor.js')}}"></script>
+    <script type="text/javascript" src="{{asset('vendors/ckeditor/ckeditor.js')}}"></script>
 
 @stop
 
@@ -12,149 +12,152 @@
 
 @section('content')
 
-<div class="container-fluid" role="tabpanel">
+    <div class="container-fluid" role="tabpanel">
 
-	<!-- Nav tabs -->
+        <!-- Nav tabs -->
 
-	<ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs" role="tablist">
 
-		<li role="presentation" class="active">
+            <li role="presentation" class="active">
 
-			<a href="#personas" aria-controls="personas" role="tab" data-toggle="tab">Personas</a>
+                <a href="#personas" aria-controls="personas" role="tab" data-toggle="tab">Personas</a>
 
-		</li>
+            </li>
 
-		<li role="presentation">
+            <li role="presentation">
 
-			<a id="emailtab" href="#email" aria-controls="email" role="tab" data-toggle="tab">Email</a>
+                <a id="emailtab" href="#email" aria-controls="email" role="tab" data-toggle="tab">Email</a>
 
-		</li>
+            </li>
 
-	</ul>
+        </ul>
 
-	
 
-	<!-- Tab panes -->
 
-	<div class="tab-content">
+        <!-- Tab panes -->
 
-		<div role="tabpanel" class="tab-pane  active" id="personas">
+        <div class="tab-content">
 
-			<div class="col-md-12">
+            <div role="tabpanel" class="tab-pane  active" id="personas">
 
-				<a onclick="selectall()" class="btn">Seleccionar Todos</a>
+                <div class="col-md-12">
 
-				<a onclick="unselectall()" class="btn">Quitar Todos</a>
+                    <a onclick="selectall()" class="btn">Seleccionar Todos</a>
 
-				<a class="btn btn-flat btn-block" onclick="$('#emailtab').trigger('click')" >Siguiente</a>
+                    <a onclick="unselectall()" class="btn">Quitar Todos</a>
 
-			</div>
+                    <a class="btn btn-flat btn-block" onclick="$('#emailtab').trigger('click')" >Siguiente</a>
 
-			{{ Form::open(['method' => 'POST','url' => 'ajax/email','files' => true , 'class' => 'form']) }}
+                </div>
 
-			@foreach ($correos as $nombre => $correo)
+                {{ Form::open(['method' => 'POST','url' => 'ajax/email','files' => true , 'class' => 'form']) }}
 
+                @foreach ($correos as $nombre => $correo)
 
 
-			<div class="form-group col-md-3">
 
-				<div class="checkbox">
+                    <div class="form-group col-md-3">
 
-					<label for="{{'correos['.$i.']'}}">
+                        <div class="checkbox">
 
-						{{ Form::checkbox("to[".$i."]", $correo,true) }} <strong>{{$nombre}}</strong> <br> <small>{{$correo}} </small>
+                            <label for="{{'correos['.$i.']'}}">
 
-					</label>
+                                {{ Form::checkbox("to[".$i."]", $correo,true) }} <strong>{{$nombre}}</strong> <br> <small>{{$correo}} </small>
 
-				</div>
+                            </label>
 
-				<small class="text-danger">{{ $errors->first("to[". $i++ ."]") }}</small>
+                        </div>
 
-			</div>
+                        <small class="text-danger">{{ $errors->first("to[". $i++ ."]") }}</small>
 
-			@endforeach
+                    </div>
 
-			<div class="col-md-12">
+                @endforeach
 
-				<a onclick="selectall()" class="btn">Seleccionar Todos</a>
+                <div class="col-md-12">
 
-				<a onclick="unselectall()" class="btn">Quitar Todos</a>
+                    <a onclick="selectall()" class="btn">Seleccionar Todos</a>
 
-				<a class="btn btn-primary btn-lg btn-block" onclick="$('#emailtab').trigger('click')" >Siguiente</a>
+                    <a onclick="unselectall()" class="btn">Quitar Todos</a>
 
-			</div>
+                    <a class="btn btn-primary btn-lg btn-block" onclick="$('#emailtab').trigger('click')" >Siguiente</a>
 
-		</div>
+                </div>
 
-		<div role="tabpanel" class="tab-pane fade" id="email">
+            </div>
 
-			<div class="form-group">
+            <div role="tabpanel" class="tab-pane fade" id="email">
 
-				{{ Form::label('title', 'Titulo Del Mensaje:') }}
 
-				{{ Form::text('title', "", ['class' => 'form-control', 'required' => 'required']) }}
+                    <div class="form-group">
 
-				<small class="text-danger">{{ $errors->first('title') }}</small>
+                        {{ Form::label('title', 'Titulo Del Mensaje:') }}
 
-			</div>    
+                        {{ Form::text('title', "", ['class' => 'form-control', 'required' => 'required']) }}
 
+                        <small class="text-danger">{{ $errors->first('title') }}</small>
 
+                    </div>
 
-			<div class="form-group">
 
-				{{ Form::label('contenido', 'Contenido del Mensaje:') }}
+                    <div class="col-md-9">
+                    <div class="form-group">
 
-				{{ Form::textarea('contenido', "", ['id' => 'ckeditor', 'class' => 'ckeditor', 'required' => 'required']) }}
+                        {{ Form::label('contenido', 'Contenido del Mensaje:') }}
 
-				<small class="text-danger">{{ $errors->first('contenido') }}</small>
+                        {{ Form::textarea('contenido', "", ['id' => 'ckeditor', 'class' => 'ckeditor', 'required' => 'required']) }}
 
-			</div>
+                        <small class="text-danger">{{ $errors->first('contenido') }}</small>
+                    </div>
+                    </div>
+                    <div class="col-md-3">
+                        @include('comun.variablesDinamicas')
+                    </div>
 
-			<div class="form-group">
+                    <div class="form-group col-md-12">
 
-				{{ Form::label('file', 'Adjuntar Archivo:') }}
+                        {{ Form::label('file', 'Adjuntar Archivo:') }}
 
-				{{Form::file('file',[])}}
+                        {{Form::file('file',[])}}
 
-				<small class="text-danger">{{ $errors->first('file') }}</small>
+                        <small class="text-danger">{{ $errors->first('file') }}</small>
 
-				<span class="label label-info">Suba un archivo Valido menor a 10Mb</span>
+                        <span class="label label-info">Suba un archivo Valido menor a 10Mb</span>
 
-			</div>
+                    </div>
 
 
 
-			<div class="btn-group pull-right">
+                    <div class="btn-group pull-right">
 
-				{{ Form::submit("Enviar", ['id' => 'enviar','class' => 'btn btn-success']) }}
+                        {{ Form::submit("Enviar", ['id' => 'enviar','class' => 'btn btn-success']) }}
 
-			</div>
+                    </div>
 
-			{{ Form::close() }}
+                    {{ Form::close() }}
 
-		</div>
+            </div>
 
-	</div>
+        </div>
 
-</div>
+    </div>
 
 
 
-<script type="text/javascript">
-	function selectall()
-	{
+    <script type="text/javascript">
+    function selectall()
+    {
 
-		var checkboxes = $(':checkbox');
+        var checkboxes = $(':checkbox');
 
-		checkboxes.prop('checked', true);
-	}
-	function unselectall()
-	{
+        checkboxes.prop('checked', true);
+    }
+    function unselectall()
+    {
 
-		var checkboxes = $(':checkbox');
+        var checkboxes = $(':checkbox');
 
-		checkboxes.prop('checked', false);
-	}
-</script>
-
+        checkboxes.prop('checked', false);
+    }
+    </script>
 @stop

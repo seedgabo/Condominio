@@ -165,7 +165,8 @@ class HomeController extends BaseController {
 	public function verdocumentos()
 	{
 		$list  = File::files(public_path()."/docs");
-		return View::make('verdocumentos')->withDocs($list);
+		$documentos = Documento::where("activo" ,"=","1")->get();
+		return View::make('verdocumentos')->withDocs($list)->withDocumentos($documentos);
 	}
 	public function verresidencia()
 	{
@@ -196,7 +197,7 @@ class HomeController extends BaseController {
 		if (Input::has(array("nombre","cargo","cedula")))
 		{
 			$rules =  array(
-				'nombre' => 'required|min:6|max:50',
+				'nombre' => 'required|min:3|max:50',
 				'cedula' => 'required|min:1000|numeric',
 				'telefono' => 'required|min:7',
 				'cargo'  => 'required|min:4|max:30',
@@ -231,9 +232,28 @@ class HomeController extends BaseController {
 			Vehiculo::FirstorCreate ($datos);
 			Session::flash('message', 'Vehiculo Agregado Correctamente');
 		}
-		$vehiculos = Vehiculo::all();
-		$tusvehiculos = Auth::user()->residencia->vehiculos;
+		$vehiculos = Vehiculo::orderBy("residencia_id","asc")->get();
+		$tusvehiculos = Auth::user()->residencia->vehiculos->sortBy('residencia_id');
 		return View::make('vervehiculos')->withVehiculos($vehiculos)->withTusvehiculos($tusvehiculos);
+	}
+	public function vervisitantes()
+	{
+		if (Input::method() == "POST")
+		{
+
+			$validation = Validator::make(Input::except('_token'),Visitante::$rules);
+			if ($validation->fails())
+			{
+				return Redirect::back()->withErrors($validation);
+			}
+			$datos = Input::except('_token');
+			$datos = array_add($datos,"residencia_id",Auth::user()->residencia_id);
+			Visitante::FirstorCreate ($datos);
+			Session::flash('message', 'Visitante Frecuente Agregado Correctamente');
+		}
+		$visitantes    = Visitante::orderBy("residencia_id","asc")->get();
+		$tusvisitantes = Auth::user()->residencia->visitantes->sortBy('residencia_id');
+		return View::make('vervisitantes')->withVisitantes($visitantes)->withTusvisitantes($tusvisitantes);
 	}
 	public function verencuestas()
 	{
@@ -283,7 +303,6 @@ class HomeController extends BaseController {
 			return Redirect::back();
 		}
 	}
-
 	public function eliminarvehiculo($id)
 	{
 		$vehiculo =	Vehiculo::find($id);
@@ -298,7 +317,6 @@ class HomeController extends BaseController {
 			return Redirect::back();
 		}
 	}
-
 	public function generarFactura()
 	{
 		if (Input::has("persona_id"))
@@ -319,7 +337,20 @@ class HomeController extends BaseController {
 		$headers = array('Content-Type' => 'application/pdf');
 		return Response::make(PDF::load($html, 'A4', 'portrait')->show('mi_factura'), 200, $headers);
 	}
-
+	public function generarDocumento($id){
+		$documento = Documento::find($id);
+		if($documento->activo == 0){
+			return "<h1> Este documento ya no esta dispoible</h1>";
+		}
+		$persona = Input::has('persona') ? User::find(Input::get('persona')) : Auth::user();
+        $residencia = Input::has('residencia') ? Residencias::find(Input::get('residencia')) : $persona->residencia;
+        $titulo = $documento->titulo;
+        $contenido = $documento->contenido;
+        $html = View::make('pdf.basic',["persona" => $persona, "residencia" => $residencia, 'contenido' => $contenido]);
+        header('Content-Type : application/pdf');
+		$headers = array('Content-Type' => 'application/pdf');
+		return Response::make(PDF::load($html, 'A4', 'portrait')->show($titulo), 200, $headers);
+	}
 	public function login()
 	{
 
@@ -378,7 +409,6 @@ class HomeController extends BaseController {
 		$residencias =Residencias::union($nulos)->lists("nombre","id");
 		return View::make('formularioregistro')->withResidencias($residencias);
 	}
-
 	public function usuarioEdit()
 	{
 		$residencias = Residencias::lists('nombre','id');
@@ -387,7 +417,8 @@ class HomeController extends BaseController {
 			$rules =  array(
 				'nombre' => 'required|min:8|max:30|',
 				'email' => 'required|email|unique:personas,email,'.Auth::user()->id,
-				'residencia_id' => 'exists:residencias,id'
+				'residencia_id' => 'exists:residencias,id',
+				'cedula' => 'required|min:3|max:10',
 			);
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
@@ -403,7 +434,9 @@ class HomeController extends BaseController {
 		}
 		$tupersonal = Auth::user()->residencia->personal;
 		$tusvehiculos   = Auth::user()->residencia->vehiculos;
-		return View::make("editarinfo")->withResidencias($residencias)->withTupersonal($tupersonal)->withTusvehiculos($tusvehiculos);
+		$tusvisitantes = Auth::user()->residencia->visitantes;
+		return View::make("editarinfo")->withResidencias($residencias)
+		->withTupersonal($tupersonal)->withTusvehiculos($tusvehiculos)->withTusvisitantes($tusvisitantes);
 	}
 	public function editarResidencia()
 	{

@@ -15,3 +15,13 @@
 
 {{--Incluir datatables  --}}
 <script type="text/javascript" src="{{asset('DataTables/datatables.min.js')}}"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.bootstrap.min.js"></script>
+
+
+<style media="screen">
+    .ui-state-default{
+        padding: 7px;
+        margin: 7px;
+        font-size: 14px;
+    }
+</style>

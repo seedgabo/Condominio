@@ -15,7 +15,8 @@ $portadas = DB::table('portadas')->get();
                     <p class="">{{ $portada->contenido }}</p>
                 </div>
             </li>
-            @empty @endforelse
+            @empty
+            @endforelse
         </ul>
     </div>
     @endif
@@ -45,7 +46,10 @@ $portadas = DB::table('portadas')->get();
                         </div>
                     </div>
                 </li>
-                @empty No hay Noticias @endforelse
+                @empty
+                    No hay Noticias
+                @endforelse
+                <li class="collection-item"><a class="btn btn-block btn-small" href="{{url('agregar-noticia')}}"><i class="fa fa-plus-circle"></i> Agregar Noticia</a></li>
             </ul>
         </div>
 
@@ -60,7 +64,8 @@ $portadas = DB::table('portadas')->get();
                 <a href="{{url('ver-recibos')}}" class="collection-item waves-effect"><i class="fa fa-credit-card fa-fw fa-lg"></i> Pagos y Facturas </a>
                 <a href="{{url('ver-eventos')}}" class="collection-item waves-effect"><i class="fa fa-calendar fa-fw fa-lg"></i> Calendario</a>
                 <a href="{{url('ver-noticias')}}" class="collection-item waves-effect"><i class="fa fa-newspaper-o"></i> Noticias </a>
-                <a href="{{url('ver-personal')}}" class="collection-item waves-effect"><i class="fa fa-th"></i> Personal </a>
+                <a href="{{url('ver-personal')}}" class="collection-item waves-effect"><i class="fa fa-th"></i> Listado de Personal </a>
+                <a href="{{url('ver-vehiculos')}}" class="collection-item waves-effect"><i class="fa fa-car"></i> Listado de Vehiculos  </a>
             </ul>
 
             {{-- Eventos --}}
@@ -83,6 +88,7 @@ $portadas = DB::table('portadas')->get();
                     @empty
                     <li class="collection-item">No hay Eventos Próximos</li>
                     @endforelse
+                    <li class="collection-item"><a class="btn btn-block btn-small" href="{{url('agregar-evento')}}"><i class="fa fa-plus-circle"></i> Agregar Evento</a></li>
                 </ul>
             </a>
         </div>

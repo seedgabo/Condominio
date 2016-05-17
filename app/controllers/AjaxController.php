@@ -7,12 +7,12 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = Eventos::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				Eventos::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => Eventos::find(Input::get('id')),'Result'=>"OK") ;
@@ -42,12 +42,12 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = Areas::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				Areas::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => Areas::find(Input::get('id')),'Result'=>"OK") ;
@@ -69,12 +69,12 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = Directiva::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				Directiva::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => Directiva::find(Input::get('id')),'Result'=>"OK") ;
@@ -96,12 +96,12 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = Noticias::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				Noticias::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => Noticias::find(Input::get('id')),'Result'=>"OK") ;
@@ -125,12 +125,12 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = Recibos::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				Recibos::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => Recibos::find(Input::get('id')),'Result'=>"OK") ;
@@ -162,12 +162,12 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = Residencias::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				Residencias::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => Residencias::find(Input::get('id')),'Result'=>"OK") ;
@@ -200,12 +200,12 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = User::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				return  Auth::user();
 				User::where("id" ,Input::get("id"))->update(Input::except("id"));
@@ -236,12 +236,12 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = Personal::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				Personal::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => Personal::find(Input::get('id')),'Result'=>"OK") ;
@@ -267,16 +267,86 @@ class AjaxController extends BaseController {
 			}
 		}
 	}
+	public function vehiculos($action)
+	{
+		if (isset($action))
+		{
+			if ($action=="create" )
+			{
+				$data = Vehiculo::firstOrCreate(Input::all());
+				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
+			}
+			if ($action=="edit" )
+			{
+				Vehiculo::where("id" ,Input::get("id"))->update(Input::except("id"));
+				return $respuesta = array('Record' => Vehiculo::find(Input::get('id')),'Result'=>"OK") ;
+			}
+			if($action=="remove")
+			{
+				Vehiculo::where('id',Input::get("id"))->delete();
+				return  '{"Result":"OK"}';
+			}
+			if($action=="list")
+			{
+				$Records = Vehiculo::get();
+				$respuesta= array('Records' => $Records, 'Result' => "OK");
+				return json_encode($respuesta);
+			}
+			if($action=="residencia")
+			{
+				$nulos = DB::table('residencias')->select(DB::raw("'NO POSEE' as DisplayText, NULL as Value"));
+				$respuesta = Residencias::
+				select("nombre as DisplayText","id as Value")->union($nulos)->orderby('value','asc')->distinct()
+				->get();
+				return	"var opciones=" .json_encode($respuesta);
+			}
+		}
+	}
+	public function visitantes($action)
+	{
+		if (isset($action))
+		{
+			if ($action=="create" )
+			{
+				$data = Visitante::firstOrCreate(Input::all());
+				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
+			}
+			if ($action=="edit" )
+			{
+				Visitante::where("id" ,Input::get("id"))->update(Input::except("id"));
+				return $respuesta = array('Record' => Visitante::find(Input::get('id')),'Result'=>"OK") ;
+			}
+			if($action=="remove")
+			{
+				Visitante::where('id',Input::get("id"))->delete();
+				return  '{"Result":"OK"}';
+			}
+			if($action=="list")
+			{
+				$Records = Visitante::get();
+				$respuesta= array('Records' => $Records, 'Result' => "OK");
+				return json_encode($respuesta);
+			}
+			if($action=="residencia")
+			{
+				$nulos = DB::table('residencias')->select(DB::raw("'NO POSEE' as DisplayText, NULL as Value"));
+				$respuesta = Residencias::
+				select("nombre as DisplayText","id as Value")->union($nulos)->orderby('value','asc')->distinct()
+				->get();
+				return	"var opciones=" .json_encode($respuesta);
+			}
+		}
+	}
 	public function encuestas($action)
 	{
 		if (isset($action))
 		{
-			if ($action=="create" ) 
+			if ($action=="create" )
 			{
 				$data = Encuestas::firstOrCreate(Input::all());
 				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
 			}
-			if ($action=="edit" ) 
+			if ($action=="edit" )
 			{
 				Encuestas::where("id" ,Input::get("id"))->update(Input::except("id"));
 				return $respuesta = array('Record' => Encuestas::find(Input::get('id')),'Result'=>"OK") ;
@@ -300,7 +370,7 @@ class AjaxController extends BaseController {
 	{
 		if (isset($action))
 		{
-			if ($action=="solventar" ) 
+			if ($action=="solventar" )
 			{
 				$data = Solvencia::firstOrCreate(Input::all());
 			  $data->estado = 1;
@@ -320,7 +390,7 @@ class AjaxController extends BaseController {
 			  $data->estado = 2;
 			  $data->save();
 				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
-			}			
+			}
 			if($action=="obtener")
 			{
 				$data = Solvencia::firstOrCreate(Input::all());
@@ -372,72 +442,42 @@ class AjaxController extends BaseController {
 
 	public function email()
 	{
-
 		if (Input::has('to'))
-
 		{
-
-			$validator = Validator::make(Input::all(), 
-
+			$validator = Validator::make(Input::all(),
 				array('contenido'=> 'required|min:8',
-
 					'title'=> 'required|min:3|max:50',
-
 					'to'=> 'required',
-
 					'file' => 'max:10240|mimes:jpeg,bmp,png,doc,docx,xls,xlsx,pdf,jpg,gif,sql,txt,ppt,pptx'
-
 					));
-
 			if ($validator->fails())
-
 			{
-
 				$salida ['message'] =  $validator->messages()->first();
-
 				return Redirect::back()->withErrors($validator);
-
 			}
-
-
-
-			foreach (Input::get('to') as $to) 
-
+			foreach (Input::get('to') as $to)
 			{
-
-				Mail::send('emails.basic', array('title' => Input::get('title'), 'contenido' => Input::get('contenido')), function($message) use ($to)
-
+				$persona = User::where("email","=",$to)->first();
+				$residencia = $persona->residencia;
+				Mail::send('emails.basic',
+				array('title' => Input::get('title'), 'contenido' => Input::get('contenido'), 'persona'=> $persona , 'residencia' => $residencia),
+				function($message) use ($to)
 				{
-
 					$message->to($to)->subject(Input::get('title'));
-
 					if(Input::hasFile('file'))
-
 					{
-
 						$message->attach(Input::file('file')->getRealPath(), array('as' =>Input::file('file')->getClientOriginalName()));
-
 					}
-
 				});
 
 			};
-
-
-
-			$salida['message'] = "Mensaje Enviado entregado a los Destinatarios:  ";
-
 			$salida['status']  = "ok";
-
+			$salida['message'] = "Mensaje Enviado entregado a los Destinatarios:  ";
 			foreach (Input::get('to') as $key => $correo) {
-
 				$salida['message'] .= $correo  .",  ";
-
 			}
-
 			return  json_encode($salida);
 		}
-
 		return "error No Ha Seleccionado ningun Destinatario";
 	}
 }

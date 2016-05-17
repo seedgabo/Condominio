@@ -1,5 +1,5 @@
 <?php
-function quitar_tildes($cadena) 
+function quitar_tildes($cadena)
 {
 	$no_permitidas= array ("á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","À","Ã","Ì","Ò","Ù","Ã™","Ã ","Ã¨","Ã¬","Ã²","Ã¹","ç","Ç","Ã¢","ê","Ã®","Ã´","Ã»","Ã‚","ÃŠ","ÃŽ","Ã”","Ã›","ü","Ã¶","Ã–","Ã¯","Ã¤","«","Ò","Ã","Ã„","Ã‹");
 	$permitidas= array ("a","e","i","o","u","A","E","I","O","U","n","N","A","E","I","O","U","a","e","i","o","u","c","C","a","e","i","o","u","A","E","I","O","U","u","o","O","i","a","e","U","I","A","E");
@@ -14,16 +14,16 @@ function traducir_fecha($cadena, $diferencia = false)
 	$texto = str_replace($recibido,$traducido,$cadena);
 	if (ends_with($texto,"Antes"))
 	{
-		$texto = "Dentro de " .str_replace("Antes","",$texto); 
+		$texto = "Dentro de " .str_replace("Antes","",$texto);
 	}
 	if (ends_with($texto,"Despues"))
 	{
-		$texto = "Hace " .str_replace("Despues","",$texto); 
+		$texto = "Hace " .str_replace("Despues","",$texto);
 	}
 
 	if($diferencia == true)
 	{
-		$texto = str_replace(["Dentro de ", "Hace "],"",$texto); 
+		$texto = str_replace(["Dentro de ", "Hace "],"",$texto);
 	}
 
 	return $texto;
@@ -78,7 +78,7 @@ function getdeuda($residencia_id,$mes,$año)
 	$total  = Facturas::wherenull("residencia_id")->where("mes","=",$mes)->where("año","=",$año)->where("porcentual","=",1)->sum('monto')*(Residencias::find($residencia_id)->alicuota/100);
 	$total += Facturas::wherenull("residencia_id")->where("mes","=",$mes)->where("año","=",$año)->where("porcentual","=",0)->sum('monto')/(Residencias::where("nombre","<>","condominio")->count());
 	$total += Facturas::where("residencia_id","=", $residencia_id)->where("mes","=",$mes)->where("año","=",$año)->sum('monto');
-	
+
 	if($maestra['is_fondo'])
 	{
 		$total += $total*($maestra['fondo_%']/100);

@@ -2,11 +2,11 @@
 
 class OauthController extends \BaseController {
 
-	public function loginWithFacebook() 
+	public function loginWithFacebook()
     {
         $code = Input::get('code');
         $fb = OAuth::consumer( 'Facebook' );
-        if (!empty($code)) 
+        if (!empty($code))
         {
             $token = $fb->requestAccessToken( $code );
             $result = json_decode( $fb->request( '/me?fields=email,name,gender,birthday' ), true );
@@ -26,18 +26,18 @@ class OauthController extends \BaseController {
                 return Redirect::to("/");
             }
         }
-        else 
+        else
         {
             $url = $fb->getAuthorizationUri();
             return Redirect::to( (string)$url );
         }
     }
 
-    public function RegisterWithFacebook() 
+    public function RegisterWithFacebook()
     {
         $code = Input::get('code');
         $fb = OAuth::consumer( 'Facebook' );
-        if (!empty($code)) 
+        if (!empty($code))
         {
             $token = $fb->requestAccessToken( $code );
             $result = json_decode( $fb->request( '/me?fields=email,name' ), true );
@@ -49,7 +49,10 @@ class OauthController extends \BaseController {
                 $user->save();
                 Auth::login($user, false);
                 Session::flash('message',"<img src='".$user->avatar ."' height='70' alt=''> Registrado  con Facebook <br> Bienvenido " . $result['name']);
-                return Redirect::to("register/completar-registro");
+				if(Auth::user()->residencia_id == null)
+					return Redirect::to("register/completar-registro");
+				else
+					return Redirect::to("/");
             }
             else
             {
@@ -57,7 +60,7 @@ class OauthController extends \BaseController {
                 return Redirect::to("/");
             }
         }
-        else 
+        else
         {
             $url = $fb->getAuthorizationUri();
             return Redirect::to( (string)$url );
@@ -93,7 +96,7 @@ class OauthController extends \BaseController {
         }
     }
 
-    public function RegisterWithGoogle() 
+    public function RegisterWithGoogle()
     {
         $code = Input::get( 'code' );
         $googleService = OAuth::consumer( 'Google' );
@@ -108,7 +111,10 @@ class OauthController extends \BaseController {
                 $user->save();
                 Auth::login($user, false);
                 Session::flash('message',"<img src='".$user->avatar ."' height='70' alt=''> Registrado  con Facebook <br> Bienvenido " . $result['name']);
-                return Redirect::to("register/completar-registro");
+                if(Auth::user()->residencia_id == null)
+					return Redirect::to("register/completar-registro");
+				else
+					return Redirect::to("/");
             }
             else
             {
@@ -124,17 +130,23 @@ class OauthController extends \BaseController {
 
     public function completarRegistro()
     {
+		if(Auth::user()->residencia_id != null){
+			Session::flash("message",'Usted ya completó el registro satisfactoriamente');
+ 			return Redirect::to("/");
+		}
+
         if(Input::has('keycode') )
         {
             //Verificar Keycode
             if(Input::get("keycode")!= Config::get('var.keycode'))
             {
                 Session::flash('message', "El Codigo suministrado por el condominio no coincide");
-                return Redirect::to("register/completar-registro");    
+                return Redirect::to("register/completar-registro");
             }
              //Validar Campos
             $rules =  array(
-                'password' =>'min:8|max:50'
+                'password' =>'min:8|max:50',
+				'telefono' => 'min:3|max:50'
                 );
             $validation = Validator::make(Input::except('_token'),$rules);
             if ($validation->fails())
@@ -150,8 +162,9 @@ class OauthController extends \BaseController {
             }
 
             $user->residencia_id = Input::get('residencia_id');
+			$user->telefono  = Input::get('telefono');
             $user->save();
-            Session::flash('message',"<img src='".$user->avatar ."' height='70' alt=''> Sesion iniciada con Facebook<br> Bienvenido " . Auth::user()->nombre) ;
+            Session::flash('message',"<img src='".$user->avatar ."' height='70' alt=''> Sesion iniciada <br> Bienvenido " . Auth::user()->nombre) ;
             return Redirect::to("/");
 
         }

@@ -13,6 +13,7 @@
             $('#table').jtable
             ({
                 title: 'Residencias',
+                columnSelectable : false,
                 jqueryuiTheme: true,
                 actions: {
                     listAction: "{{url('ajax/residencias/list')}}",

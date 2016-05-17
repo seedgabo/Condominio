@@ -16,4 +16,12 @@ class Residencias extends Eloquent {
 	public function vehiculos(){
 		return $this->hasMany('Vehiculo','residencia_id');
 	}
+
+	public function visitantes(){
+		return $this->hasMany('Visitante',"residencia_id");
+	}
+
+	public function propietario(){
+		return $this->belongsTo("User","persona_id_propietario","id");
+	}
 }

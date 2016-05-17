@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder {
 		// $this->command->info('Solvencia Table Seed!');
 		$this->Call('VehiculosTableSeeder');
 		// $this->command->info('Vehiculos Table Seed!');
+		$this->Call('VisitantesTableSeeder');
+		// $this->command->info('Visitantes Table Seed!');
 	}
 
 

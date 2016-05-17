@@ -52,7 +52,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => Config::get("var.correo", "seedgabo@gmail.com"), 'name' => 'Condominio'),
+	'from' => array('address' => Config::get("var.correo", "seedgabo@gmail.com"), 'name' => 'Administración Residencias'),
 
 	/*
 	|--------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 <?php
 
 class AdminController extends BaseController {
-	
+
 	public function eventos()
 	{
 		return View::make('admin.eventos');
@@ -29,6 +29,14 @@ class AdminController extends BaseController {
 	public function personal()
 	{
 		return View::make("admin.personal");
+	}
+	public function vehiculos()
+	{
+		return View::make("admin.vehiculos");
+	}
+	public function visitantes()
+	{
+		return View::make("admin.visitantes");
 	}
 	public function encuestas()
 	{
@@ -58,8 +66,9 @@ class AdminController extends BaseController {
 		}
 		return View::make('admin.galeria')->withFiles($files);
 	}
-	public function documentos()
-	{
+
+	//Funciones para Documentos
+	public function documentos(){
 		$files =File::files(public_path()."/docs");
 		if (Input::hasFile('file'))
 		{
@@ -78,7 +87,61 @@ class AdminController extends BaseController {
 			else
 				return "No Se Pudo Eliminar El Documento";
 		}
-		return View::make('admin.documentos')->withFiles($files);
+		$documentos = Documento::all();
+		return View::make('admin.documentos')->withFiles($files)->withDocumentos($documentos);
+	}
+
+	public function agregarDocumento(){
+		if(Input::method() == "POST"){
+			$validator = Validator::make($data = Input::all(), Documento::$rules);
+			if ($validator->fails())
+			{
+				return Redirect::back()->withErrors($validator)->withInput();
+			}
+			Documento::create(Input::all());
+			Session::flash('success', "Documento Agregado");
+			return Redirect::to('admin/Documentos');
+		}
+		return View::make('admin.documento-editor');
+	}
+
+	public function editarDocumento($id){
+		$documento = Documento::find($id);
+		if(Input::method() == "POST"){
+			$validator = Validator::make($data = Input::all(), Documento::$rules);
+			if ($validator->fails())
+			{
+				return Redirect::back()->withErrors($validator)->withInput();
+			}
+			$documento->fill(Input::all())->save();
+			Session::flash('success', "Documento Editado");
+			return Redirect::to('admin/Documentos');
+		}
+
+		return View::make('admin.documento-editor')->withDocumento($documento);
+	}
+
+	public function eliminarDocumento($id){
+		 Documento::find($id)->delete();
+		Session::flash('success', "Documento Eliminado");
+		return Redirect::to('admin/Documentos');
+
+	}
+
+	public function toggleDocumento($id){
+		 $documento = Documento::find($id);
+		 if ($documento->activo == 0) {
+			 $documento->activo = 1;
+			 $documento->save();
+			 Session::flash('success', "Documento Activado");
+		 }
+		 else{
+			$documento->activo = 0;
+			$documento->save();
+			Session::flash('success', "Documento Desactivado");
+		 }
+		return Redirect::to('admin/Documentos');
+
 	}
 
 

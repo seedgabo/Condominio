@@ -19,6 +19,10 @@ return array(
 
 	'cedula'   => 'Cedula de Identidad',
 
-	'condominio' => 'Condominio'
+	'condominio' => 'Condominio',
+
+	'estacionamiento' => 'Estacionamiento|Estacionamientos',
+
+	'doc_mercantil' => "Rif",
 
 );

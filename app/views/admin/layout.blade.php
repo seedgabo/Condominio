@@ -1,4 +1,4 @@
-<?php 
+<?php
 $message = Session::get('message');
 ?>
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ $message = Session::get('message');
     <title>Adminitración de {{Config::get('var.nombre')}}</title>
 
     <link rel="stylesheet" href=" {{ asset('css/simple-sidebar.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}"> 
+    <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
 
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -23,7 +23,7 @@ $message = Session::get('message');
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
     {{-- Link a FAVICON --}}
-    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" /> 
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
     @yield('header', '')
 </head>
 
@@ -42,6 +42,12 @@ $message = Session::get('message');
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
+            @if(Session::get('success') != null)
+                <div class="alert alert-success alert-dismissible" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  {{Session::get('success')}}
+                </div>
+            @endif
             @yield('content','')
         </div>
     </div>

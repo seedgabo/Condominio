@@ -1,4 +1,5 @@
 @extends('layout')
+<?php $residencias= Residencias::lists("nombre","id"); ?>
 @section('contenido')
 <div class="container">
 	<div class="row">
@@ -19,7 +20,7 @@
 					@if ($residencia->solvencia)
 						<h3 class="green-text">Al Día</h3>
 					@else
-						<h3 class="red-text"> Moroso</h3>	
+						<h3 class="red-text"> Moroso</h3>
 					@endif
 					<strong>Nombre de la Residencia:</strong>  {{$residencia->nombre}} <br>
 					@if (User::where('id','=',$residencia->persona_id_propietario)->first() != null)
@@ -29,7 +30,7 @@
 					<strong>Cantidad de Residentes: </strong>	{{$residencia->cant_personas}} <br>
 				</p>
 				<div class="divider"></div>
-				<h5>Residentes:</h5>	
+				<h5>Residentes:</h5>
 				<ol>
 					@forelse ($residentes as $residente)
 					<li><img height="24" class="circle" src="{{$residente->avatar}}" alt="Sin imagen">{{$residente->nombre}}</li>
@@ -38,16 +39,27 @@
 					@endforelse
 				</ol>
 				<div class="divider"></div>
-				<h5>Personal:</h5>	
+				<h5>Personal:</h5>
 				<ol>
 					@forelse ($personal as $persona)
 					<li>{{$persona->nombre}} <small>{{$persona->cargo}}</small></li>
 					@empty
 					<li>No Hay Personal Registrado</li>
 					@endforelse
-				</ol>					
+				</ol>
 			</div>
 		</div>
+
+		{{ Form::open(['method' => 'GET', 'url' => 'ver-residencia', 'class' => 'form-horizontal']) }}
+		<h5>Ver Datos de Residencia:</h5>
+		<div class="">
+			{{ Form::label('residencia', 'Residencia:') }}
+			{{ Form::select('residencia', $residencias, Auth::user()->residencia_id,['class' => '', 'required' => 'required',]) }}
+			<small class="red-text">{{ $errors->first('residencia') }}</small>
+		</div>
+
+		{{ Form::submit('Ver', ['class' => 'btn cyan']) }}
+		{{ Form::close() }}
 	</div>
 </div>
 @stop

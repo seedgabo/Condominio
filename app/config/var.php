@@ -2,7 +2,7 @@
 
 return array(
 
-'nombre' =>"Conjunto Residencial de Prueba", 
+'nombre' =>"Conjunto Residencial de Prueba",
 
 'ubicacion' => "Bogotá DC <br>  Calle 9sur #8-39 <br> Colombia",
 
@@ -10,13 +10,15 @@ return array(
 
 'lat'   => -74.0878306,
 
-'correo' => "Tucondominio@online.com",
+'email' => "Tucondominio@online.com",
 
 'keycode' => "prueba",
 
 'cuenta-bancaria' => '',
 
-'telefono' => '',
+'telefono' => '2800120',
+
+'documento' => 'J762621929-1',
 
 
 // DATOS DE PAIS

@@ -28,11 +28,11 @@
                  </td>
              </tr>
          </thead>
- </table> 
+ </table>
 
 <table class="table" style=" text-transform: uppercase;">
      <div style="text-align: center !important;">
-        <a href="{{url()}}">{{Config::get('var.nombre')}}</a> 
+        <a href="{{url()}}">{{Config::get('var.nombre')}}</a>
      </div>
            <thead>
                <tr>
@@ -40,16 +40,16 @@
                    <td style="text-align: right; vertical-align: middle;">
                    {{$residencia->nombre}}<br>
                    {{$persona->nombre}}  <br>
-                   {{$persona->email}}         
+                   {{$persona->email}}
                    </td>
               </tr>
            </thead>
-</table>   
+</table>
 
     <div style="width: 15%" class="btn btn-xs btn-default">
     Alicuota: {{$residencia->alicuota}} %
     </div>
-     <div style="border-top: 1px solid #CABCEA;"></div> 
+     <div style="border-top: 1px solid #CABCEA;"></div>
 
      <table class="table table-bordered">
          <thead>
@@ -62,14 +62,14 @@
          </thead>
          <tbody>
           @forelse ($factura as $cuota)
-             <tr> 
+             <tr>
                 <td>{{$cuota->concepto}}</td>
                 <td style="text-align: right !important;">{{number_format($cuota->monto,2,",",".")}} {{Config::get('var.moneda_abreviada',"$")}}</td>
                 @if ($cuota->residencia_id != null)
                     <td style="text-align: right !important;">{{number_format($cuota->monto,2,",",".")}}   <?php $sum += $cuota->monto ?>
                 @elseif($cuota->porcentual == 1)
                     <td style="text-align: right !important;">{{number_format($cuota->monto * $residencia->alicuota /100,2,",",".")}}  <?php $sum += $cuota->monto* $residencia->alicuota /100 ?>
-                @else 
+                @else
                     <td style="text-align: right !important;"> {{number_format($cuota->monto /$cant_residencias,2,",",".")}}   <?php $sum += $cuota->monto / $cant_residencias ?>
                 @endif
                  {{Config::get('var.moneda_abreviada',"$")}}</td>
@@ -78,12 +78,12 @@
           @empty
           @endforelse
           <tr><td colspan="4" style="font-style:italic; text-indent: 4rem;">Gastos Extraordinarios</td></tr>
-      
+
         @if ($maestra['is_fondo'])
             <tr>
               <td> Fondo de  Reserva: ({{$maestra['fondo_%']}}%)</td>
               <td style="text-align: right !important;">{{number_format(($sum/$residencia->alicuota*100)*$maestra['fondo_%']/100,2,",",".")}} {{Config::get('var.moneda_abreviada',"$")}}</td>
-              <td style="text-align: right !important;"> {{number_format(($sum)*$maestra['fondo_%']/100,2,",",".")}}   
+              <td style="text-align: right !important;"> {{number_format(($sum)*$maestra['fondo_%']/100,2,",",".")}}
               <?php $sum += $sum*$maestra['fondo_%']/100 ?> {{Config::get('var.moneda_abreviada',"$")}}
               <td style="text-align: right !important;">{{number_format($sum,2,",",".")}} {{Config::get('var.moneda_abreviada',"$")}} </td>
             </tr>

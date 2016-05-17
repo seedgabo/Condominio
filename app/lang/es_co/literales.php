@@ -19,5 +19,9 @@ return array(
 
 	'cedula'   => 'Cedula de Ciudadanía',
 
-	'condominio' => 'Conjunto Residencial'
+	'condominio' => 'Conjunto Residencial',
+
+	'estacionamiento' => 'Parqueadero|Parqueaderos',
+
+	'doc_mercantil' => "Rut",
 );

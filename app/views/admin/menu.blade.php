@@ -35,6 +35,12 @@
             <a href="{{url('admin/Personal')}}"><i class="fa fa-users"></i> Personal</a>
         </li>
         <li>
+            <a href="{{url('admin/Vehiculos')}}"><i class="fa fa-car"></i> Vehiculos</a>
+        </li>
+        <li>
+            <a href="{{url('admin/Visitantes')}}"><i class="fa fa-hand-peace-o"></i> Visitantes</a>
+        </li>
+        <li>
             <a href="{{url('admin/Residencias')}}"> <i class="fa fa-home"></i> Residencias</a>
         </li>
         <li>
@@ -73,12 +79,12 @@
 
     <div class="{{revisar_expansion('Dise%C3%B1o')}}" id="collapseDesign">
         <li><a href="{{url('admin/Diseño/Portada')}}"><i class="fa fa-book"></i> Portadas</a></li>
-    </div> 
+    </div>
     <script>
         $("[data-toggle='collapse']").click(function(e){
             if(!$(this).hasClass("collapsed"))
                 $(this).find(".fa").removeClass("fa-chevron-circle-down").addClass("fa-chevron-circle-right");
-            else                
+            else
                 $(this).find(".fa").removeClass("fa-chevron-circle-right").addClass("fa-chevron-circle-down");
 
            if($($(this).data("target")).hasClass("in"))

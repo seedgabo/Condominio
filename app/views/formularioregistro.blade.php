@@ -1,11 +1,11 @@
 @extends('layout')
 @section('contenido')
-<br> 
+<br>
 <div class="row container">
 
     <div class="center-align">
 
-        <a href="{{url('register/facebook')}}" class="waves-effect waves-light btn btn-small blue darken-2"><i class="left fa fa-facebook"></i> Registrate con tu cuenta de facebook</a> 
+        <a href="{{url('register/facebook')}}" class="waves-effect waves-light btn btn-small blue darken-2"><i class="left fa fa-facebook"></i> Registrate con tu cuenta de facebook</a>
         <a href="{{url('register/google')}}" class="waves-effect waves-light btn btn-small red"><i class="left fa fa-google"></i> Registrate con tu cuenta de  Google</a>
 
     </div>
@@ -31,7 +31,12 @@
         {{ Form::label('nombre', 'Nombre Completo:') }}
         <small class="red-text">{{ $errors->first('nombre') }}</small>
     </div>
-        <div class="input-field">
+    <div class="input-field col l12 s12 m12">
+        {{ Form::label('cedula', Lang::get('literales.cedula') ) }}
+        {{ Form::text('cedula', null, ['class' => 'form-control','length'=>'30']) }}
+        <small class="red-text">{{ $errors->first('cedula') }}</small>
+    </div>
+    <div class="input-field">
         {{ Form::text('telefono', null, ['class' => 'form-control','length' => '50']) }}
         {{ Form::label('telefono', 'Telefono:') }}
         <small class="red-text">{{ $errors->first('telefono') }}</small>

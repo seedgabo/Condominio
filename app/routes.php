@@ -14,10 +14,17 @@ Route::group(array('prefix' => 'admin'), function()
     Route::any('Recibos', 'AdminController@Recibos');
     Route::any('Personas', 'AdminController@Personas');
     Route::any('Personal', 'AdminController@Personal');
+    Route::any('Vehiculos', 'AdminController@Vehiculos');
+    Route::any('Visitantes', 'AdminController@Visitantes');
     Route::any('Encuestas', 'AdminController@Encuestas');
     Route::any('Residencias', 'AdminController@Residencias');
     Route::any('Galeria', 'AdminController@Galeria');
+
     Route::any('Documentos', 'AdminController@documentos');
+    Route::any('agregar-documento-dinamico', 'AdminController@agregarDocumento');
+    Route::any('editar-documento-dinamico/{id}', 'AdminController@editarDocumento');
+    Route::any('eliminar-documento-dinamico/{id}', 'AdminController@eliminarDocumento');
+    Route::any('cambiar-documento-dinamico/{id}', 'AdminController@toggleDocumento');
 
     Route::any('Email', 'AdminController@emailPorUsuario');
     Route::any('Email/Dueños', 'AdminController@EmailPorResidencia');
@@ -53,6 +60,8 @@ Route::group(array('prefix' => 'ajax'), function()
     Route::any('recibos/{action?}', 'AjaxController@recibos');
     Route::any('personas/{action?}', 'AjaxController@personas');
     Route::any('personal/{action?}', 'AjaxController@personal');
+    Route::any('vehiculos/{action?}', 'AjaxController@vehiculos');
+    Route::any('visitantes/{action?}', 'AjaxController@visitantes');
     Route::any('encuestas/{action?}', 'AjaxController@encuestas');
     Route::any('residencias/{action?}', 'AjaxController@residencias');
     Route::any('solvencias/{action?}', 'AjaxController@solvencias');
@@ -108,15 +117,16 @@ Route::group(array(), function()
     Route::any('ver-residencia',array('before' => 'auth', 'uses' => 'HomeController@verresidencia'));
     Route::any('ver-personal',array('before' => 'auth', 'uses' => 'HomeController@verpersonal'));
     Route::any('ver-vehiculos',array('before' => 'auth', 'uses' => 'HomeController@vervehiculos'));
+    Route::any('ver-visitantes',array('before' => 'auth', 'uses' => 'HomeController@vervisitantes'));
     Route::any('ver-encuestas',array('before' => 'auth', 'uses' => 'HomeController@verencuestas'));
     Route::any('ver-eventos','HomeController@verfullcalendar');
     Route::any('ver-galeria', "HomeController@vergaleria");
     Route::any('ver-noticias', "HomeController@vernoticias");
     Route::any('Usuario-Edit',array('before' => 'auth' ,'uses' => 'HomeController@usuarioEdit'));
     Route::any('editar-residencia',array('before' => 'auth', 'uses' => 'HomeController@editarResidencia'));
-    Route::any('generar-factura', 'HomeController@generarFactura' );
+    Route::any('generar-factura',array('before' => 'auth', 'uses' => 'HomeController@generarFactura'));
+    Route::any('generar-documento/{id}', array('before' => 'auth', 'uses' => 'HomeController@generarDocumento'));
 
-    Route::any('demo', function(){Auth::loginUsingId(2, true); Return Redirect::to('');});
 
     // Controladores de login y logout
     Route::post('user', 'HomeController@login');
@@ -127,6 +137,11 @@ Route::group(array(), function()
 //Miselaneo
 Route::group(array(), function()
 {
+    Route::any('demo', function()
+    {
+        Auth::loginUsingId(2, true);
+        Return Redirect::to('');
+    });
     Route::any('reset', function()
     {
         header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
@@ -135,18 +150,15 @@ Route::group(array(), function()
         Artisan::call('db:seed');
         return "hecho";
     });
-
     Route::any("printInput",function()
     {
        header('Access-Control-Allow-Origin:*');
        return json_encode(Input::all());
     });
-
     Route::any('hostname', function()
     {
       return gethostname();
     });
-
     Route::any('contacto', function(){
         $email = Input::get('emailContact');
         Mail::send('emails.contacto',array('contacto' => $email),function($message)
@@ -156,5 +168,18 @@ Route::group(array(), function()
         });
         Session::flash('message', "Contacto enviado!");
        return  Redirect::to('/');
+    });
+
+    Route::any('documento-preview',function(){
+        $persona = Input::has('persona') ? User::find(Input::get('persona')) : Auth::user();
+        $residencia = Input::has('residencia') ? Residencias::find(Input::get('residencia')) : $persona->residencia;
+
+        $documento = Input::get("titulo", 'Mi Documento');
+        $contenido = Input::get("contenido");
+
+        $html = View::make('pdf.basic',["persona" => $persona, "residencia" => $residencia, 'contenido' => $contenido]);
+        header('Content-Type : application/pdf');
+		$headers = array('Content-Type' => 'application/pdf');
+		return Response::make(PDF::load($html, 'A4', 'portrait')->show($documento), 200, $headers);
     });
 });

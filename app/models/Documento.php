@@ -6,9 +6,13 @@ class Documento extends \Eloquent {
 	public static $rules = [
 		'titulo' => 'required|min:3:unique:documentos:titulo',
 		'contenido' => 'required|min:3',
+		'morosos' => 'boolean',
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = ['titulo','contenido','activo'];
+	protected $fillable = ['titulo','contenido','activo','morosos'];
 
+	public function scopeActivo($query){
+		return $query->where("activo","=",1);
+	}
 }

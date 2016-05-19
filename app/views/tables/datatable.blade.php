@@ -30,14 +30,10 @@
          },
          "decimal": ",",
          "thousands": ".",
-         buttons: {
-         'copy' : 'Copiar', 'excel' :'Exportar a Excel', 'pdf': 'Exportar a Pdf' ,'print' :'Imprimir', 'colvis':'Ver'
-         }
      },
      responsive: true,
      ordering: false,
      "lengthMenu": [ [10, 25, 50,100 ,-1], [10, 25, 50, 100 ,"Todos"] ],
-     stateSave: true,
      dom: 'rtlip',
      buttons: [
          {
@@ -114,6 +110,7 @@
     $(".jtable").addClass("table table-striped table-bordered table-hover display compact");
     $(".dataTables_length").addClass("pull-right");
     $(".dt-buttons.btn-group");
+
 // Apply the search
 tabla.columns().every( function ()
 {

@@ -11,6 +11,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
+
 	if(Auth::check() && Auth::user()->residencia_id == null)
 	{
 		Session::flash('message', 'Antes de Acceder elige tu Residencia');
@@ -38,7 +39,7 @@ Route::filter('auth.basic', function()
 
 Route::filter('basic.once', function()
 {
-		// return json_encode(Request::header('Authorization'));
+
     return Auth::onceBasic();
 });
 
@@ -67,12 +68,18 @@ Route::filter('admin', function()
 
 // Filtro de las Api
 Route::filter('api', function(){
-	   header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
+	    header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
 		header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization,  Key');
+		header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization,  Key, Auth-Token');
 		if(Request::method() != "OPTIONS")
 		{
-			return Auth::onceBasic('email');
+			if(Request::header("Auth-Token", null) != null){
+				$user = User::find(Crypt::decrypt(Request::header("Auth-Token")));
+				Auth::setUser($user);
+			}
+			else{
+				return Auth::onceBasic('email');
+			}
 		}
 });
 

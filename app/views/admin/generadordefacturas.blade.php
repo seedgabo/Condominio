@@ -1,10 +1,10 @@
-<?php  
+<?php
 $meses = getMeses();
 $i=0;
 $query = "?" . http_build_query(Input::only('mes','año'));
 ?>
 
-@extends('admin.layout') 
+@extends('admin.layout')
 @section('content')
 
 
@@ -26,10 +26,10 @@ $query = "?" . http_build_query(Input::only('mes','año'));
 	{{ Form::open(['method' => 'GET', 'class' => 'form form-inline']) }}
 	<div class="form-group ">
 		{{ Form::label('mes', 'Mes:') }}
-		{{ Form::select('mes', $meses, $mes, ['class' => 'form-control', 'required' => 'required']) }}
+		{{ Form::select('mes', $meses, $mes, ['class' => 'form-control ', 'required' => 'required']) }}
 		<small class="text-danger">{{ $errors->first('mes') }}</small>
 	</div>
-	<div class="form-group ">
+	<div class="form-group md-form">
 		{{ Form::label('año', 'Año:') }}
 		{{ Form::number('año', $año, ['class' => 'form-control', 'required' => 'required','min'=>'1999','max'=>'2099']) }}
 		<small class="text-danger">{{ $errors->first('año') }}</small>
@@ -47,20 +47,20 @@ $query = "?" . http_build_query(Input::only('mes','año'));
 <div class="col-md-12 col-sm-12 list-group" id="campos">
 	{{ Form::open(['method' => 'POST','url' => url('admin/Finanzas/cuotas'), 'class' => 'form form-inline', "id" => "Facturas"]) }}
 	<input type="hidden" name="mes" value="{{ $mes or $time->month}}" />
-	<input type="hidden" name="año" value="{{ $año or $time->year}}" /> 
-	@if (isset($array)) 
+	<input type="hidden" name="año" value="{{ $año or $time->year}}" />
+	@if (isset($array))
 	@forelse ($array as $element)
 
 	{{-- agregando todos los campos del mes --}}
 	<input type="hidden" name="id[]" value="{{$element->id}}">
 	<div class="col-md-12 list-group-item">
 		<div class=" form-group">
-			<label>Activo: </label>
+            <label>Activo: </label>
 			<input id="nombre[]" name="nombre[]" value="{{$element->concepto}}" type="text" class="form-control">
 		</div>
 
 		<div class="form-group">
-			<label for="monto[]">Monto: </label>
+			<label >Monto: </label>
 			<input id="monto[]" name="monto[]" value="{{$element->monto}}" type="number" step="any" class="form-control">
 		</div>
 
@@ -91,8 +91,8 @@ $query = "?" . http_build_query(Input::only('mes','año'));
        {{Form::select('porcentual[]', array("1"=>"Porcentual", "0"=>"Residencial"), 1, ["class" => "form-control", "required" => "Required"])}}
 		</div>
 		</div>
-	
-	@endforelse 
+
+	@endforelse
 	@endif
 	<a class="btn btn-primary adder col-md-8 col-sm-8"> Agregar Campo <i class="fa fa-plus"></i></a>
 	<button type="submit" class="btn btn-success col-sm-offset-1 col-md-offset-1 col-sm-3"> Actualizar <i class="fa fa-send"></i></button>
@@ -109,7 +109,7 @@ $query = "?" . http_build_query(Input::only('mes','año'));
 		<small class="text-danger">{{ $errors->first('persona_id') }}</small>
 	</div>
 	<input type="hidden" name="mes" value="{{ $mes or $time->month}}" />
-	<input type="hidden" name="año" value="{{ $año or $time->year}}" /> 
+	<input type="hidden" name="año" value="{{ $año or $time->year}}" />
 	<div class="btn-group ">
       <button type="submit"  class="btn btn-info"><i class='fa fa-file-pdf-o'></i> Generar</button>
 	</div>

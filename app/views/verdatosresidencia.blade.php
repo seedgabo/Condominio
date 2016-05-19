@@ -6,7 +6,7 @@
 		{{-- Carta de Residencia --}}
 		<div class="card  hoverable">
 			<div class="card-image waves-effect waves-block waves-light">
-				<img height="300" class="activator" src="{{asset('images/condominio/logo.png')}}">
+				<img height="300" class="activator" src="{{asset('images/condominio/portada.png')}}">
 			</div>
 			<div class="card-content center-align activator">
 				<span class="card-title  grey-text text-darken-4">

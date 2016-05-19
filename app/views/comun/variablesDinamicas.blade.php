@@ -6,7 +6,7 @@
     <div class="panel-body">
         <div class="btn-group-vertical" role="group" aria-label="Variables insertables">
             <div class="btn-group" role="group">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                <button class="btn btn-info-outline waves-effect dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
                     <i class="fa fa-home"></i> Residencia <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
@@ -20,7 +20,7 @@
 
 
             <div class="btn-group" role="group">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                <button class="btn btn-info-outline waves-effect dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
                     <i class="fa fa-user"></i> Persona <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
@@ -33,7 +33,7 @@
             </div>
 
             <div class="btn-group" role="group">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                <button class="btn btn-info-outline waves-effect dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
                     <i class="fa fa-building"></i> Conjunto Residencial <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
@@ -50,7 +50,7 @@
             </div>
 
             <div class="btn-group" role="group">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                <button class="btn btn-info-outline waves-effect dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
                     <i class="fa fa-male"></i> Propietario <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
@@ -63,7 +63,7 @@
             </div>
 
             <div class="btn-group" role="group">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                <button class="btn btn-info-outline waves-effect dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
                     <i class="fa fa-clock-o"></i> Tiempo <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">

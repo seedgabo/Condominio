@@ -24,6 +24,8 @@ $message = Session::get('message');
 
     {{-- Link a FAVICON --}}
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
+        <!-- <link rel="stylesheet" type="text/css" href="{{asset('css/mdb.min.css')}}"> -->
+        <!-- <script src="{{asset('js/mdb.min.js')}}"></script> -->
     @yield('header', '')
 </head>
 
@@ -34,9 +36,9 @@ $message = Session::get('message');
         <div id="sidebar-wrapper">
             @include('admin/menu')
 
-            <div id="menu-buttons" class="btn-group-vertical" role="group" style="position: fixed; z-index: 1000; bottom:0px;">
-                <a class="btn btn-primary menu-toggle"><i class="fa fa-bars"></i> <span class="menu-text">Menu</span></a>
-                <a class="btn btn-success" href="{{url()}}"><i class="fa fa-home"></i> <span class="menu-text"> Volver </span></a>
+            <div id="menu-buttons" class="btn-group" role="group" style="position: fixed; z-index: 10; bottom:0px;">
+                <a class="btn btn-primary menu-toggle"><i class="fa fa-bars"></i><span class="menu-text">Menu</span></a>
+                <a class="btn btn-success" href="{{url()}}"><i class="fa fa-home"></i><span class="menu-text"> Volver </span></a>
             </div>
         </div>
 

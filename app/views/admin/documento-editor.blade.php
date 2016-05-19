@@ -19,6 +19,7 @@
         </div>
 
 
+
         <div class="col-md-9">
         <div class="form-group">
 
@@ -28,9 +29,18 @@
 
             <small class="text-danger">{{ $errors->first('contenido') }}</small>
         </div>
+
         </div>
         <div class="col-md-3">
             @include('comun.variablesDinamicas')
+            <div class="form-group">
+                <div class="checkbox{{ $errors->has('morosos') ? ' has-error' : '' }}">
+                    <label for="morosos">
+                        {{ Form::checkbox('morosos', true, null, ['id' => 'morosos']) }} <b> Disponible para {{Lang::choice('literales.moroso', 10)}} </b>
+                    </label>
+                </div>
+                <small class="text-danger">{{ $errors->first('morosos') }}</small>
+            </div>
             <button type="submit" class="btn btn-success btn-block"><i class="fa fa-upload"></i> Subir</button>
         </div>
 

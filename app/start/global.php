@@ -48,7 +48,14 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 
 App::error(function(Exception $exception, $code)
 {
-	Log::error($exception);
+    $pathInfo = Request::getPathInfo();
+    $message = $exception->getMessage() ?: 'Exception';
+    Log::error("$code - $message @ $pathInfo\r\n$exception");
+
+    if (Config::get('app.debug')) {
+        return;
+    }
+	return Response::view('error.404',['code' => $code, 'message' => $message], $code);
 });
 
 /*

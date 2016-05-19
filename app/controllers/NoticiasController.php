@@ -34,16 +34,16 @@ class NoticiasController extends \BaseController {
 	{
 			$data = Input::all();
 			$fecha = new Carbon();
-			$fecha->setTimezone('America/Bogota');			
+			$fecha->setTimezone('America/Bogota');
 			$data= array_add($data,'fecha',$fecha::now());
-			
+
 			if(Auth::user()->avatar != null)
 				$imagen ="<img class='avatar circle' src='" . Auth::user()->avatar ."'/>";
 
 			else
 				$imagen ='  <i class="fa fa-2x fa-user"></i>';
 			$data= array_add($data,'persona', Auth::user()->nombre . " de Residencia " . Residencias::find(Auth::user()->residencia_id)->nombre . $imagen);
-			
+
 			$noticia = Noticias::create($data);
 			return 	$noticia;
 	}

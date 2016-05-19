@@ -79,6 +79,9 @@ Route::group(array('prefix' => 'api'), function()
     Route::resource('portadas', 'PortadasController');
     Route::resource('eventos', 'EventosController');
     Route::resource('galeria', 'GaleriaController');
+    Route::resource('documentos', 'DocumentosController');
+    Route::any('generar-documento/{id}', array('uses' => 'HomeController@generarDocumento'));
+
     Route::any("login", array('uses' => function()
     {
         if (Auth::user())

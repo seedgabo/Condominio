@@ -9,9 +9,17 @@ class DocumentosController extends \BaseController {
 	 */
 	public function index()
 	{
-		$documentos = Documento::all();
-
-		return View::make('documentos.index', compact('documentos'));
+		$documentos = Documento::activo()->get();
+		$list  = [];
+		foreach (File::files(public_path()."/docs")  as $documento) {
+			$list[]  =  array("url" => $documento, "titulo" => substr(strrchr($documento,'/'),1) );
+		}
+		$docs = array_where($list, function ($key, $documento ){
+			return $documento["titulo"] != 'index.html';
+		});
+		$data["documentos_dinamicos"] = $documentos;
+		$data["documentos_clasicos"] = array_values($docs);
+		return Response::json($data, 200);
 	}
 
 	/**
@@ -35,12 +43,12 @@ class DocumentosController extends \BaseController {
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			return Response::json($validator->errors, 300);
 		}
 
-		Documento::create($data);
+		$documento = Documento::create($data);
 
-		return Redirect::route('documentos.index');
+		return  Response::json($documento,200);
 	}
 
 	/**
@@ -83,12 +91,12 @@ class DocumentosController extends \BaseController {
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			return Response::json($validator->errors, 300);
 		}
 
 		$documento->update($data);
 
-		return Redirect::route('documentos.index');
+		return Response::json($documento, 200);
 	}
 
 	/**
@@ -100,8 +108,7 @@ class DocumentosController extends \BaseController {
 	public function destroy($id)
 	{
 		Documento::destroy($id);
-
-		return Redirect::route('documentos.index');
+		return $id;
 	}
 
 }

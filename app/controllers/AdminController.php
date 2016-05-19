@@ -98,7 +98,9 @@ class AdminController extends BaseController {
 			{
 				return Redirect::back()->withErrors($validator)->withInput();
 			}
-			Documento::create(Input::all());
+			$documento = Documento::create(Input::all());
+			$documento->morosos = Input::get('morosos', false);
+			$documento->save();
 			Session::flash('success', "Documento Agregado");
 			return Redirect::to('admin/Documentos');
 		}
@@ -113,6 +115,7 @@ class AdminController extends BaseController {
 			{
 				return Redirect::back()->withErrors($validator)->withInput();
 			}
+			$documento->morosos = Input::get('morosos', false);
 			$documento->fill(Input::all())->save();
 			Session::flash('success', "Documento Editado");
 			return Redirect::to('admin/Documentos');

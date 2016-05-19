@@ -62,10 +62,31 @@
 }
 #brand-logo:hover
 {
-	-webkit-transform: rotateY(180deg);
-	-ms-transform: rotateY(180deg);
-	-o-transform: rotateY(180deg);
-	transform: rotateY(180deg);
+	animation-name: logo;
+    animation-duration: 1s;
+	animation-timing-function: ease-in-out;;
+	animation-fill-mode: forwards;
+}
+.giant{
+	animation-name: giant;
+    animation-duration: 1s;
+	animation-timing-function: ease-in-out;;
+	animation-fill-mode: forwards;
+}
+@keyframes logo {
+    0% {width: 120px;}
+    50% {width: 140px; -webkit-transform:rotateZ(-10deg);
+    -ms-transform:  rotateZ(-10deg);
+    -o-transform:  rotateZ(-10deg);
+    transform:  rotateZ(-10deg); }
+    100% {width: 120px;}
+
+}
+@keyframes giant {
+    0% {width: 120px;}
+    50% {width: 460px; margin-top:33%; }
+    100% {width: 120px;}
+
 }
 
 .bottom

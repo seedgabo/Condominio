@@ -8,12 +8,13 @@
     <ul class="list-group">
         @forelse ($documentos as $documento)
             <li  class="list-group-item">
-                {{$documento->titulo}}
-                <div class="btn-group " role="group">
+                <b>{{$documento->titulo}}</b>
+                <div class="btn-group pull-right" role="group">
+                    <a href="{{url('generar-documento/' . $documento->id)}}" class="btn btn-xs btn-success"> <i class="fa fa-eye"></i> Ver </a>
                     <a class="btn btn-primary btn-xs" href="{{url('admin/editar-documento-dinamico/'.$documento->id)}}"><i class="fa fa-pencil"></i> Editar </a>
                     <a class="btn btn-default btn-xs" href="{{url('admin/cambiar-documento-dinamico/'.$documento->id)}}"> @if($documento->activo == 1) <i class="fa fa-check-square text-sucess"></i> Activado @else <i class="fa fa-square text-warning"></i> Desactivado  @endif </a>
-                        <a class="btn btn-danger btn-xs" onclick="return confirm('Desea Eliminar este elemento');" href="{{url('admin/eliminar-documento-dinamico/'.$documento->id)}}"><i class="fa fa-trash"></i> Eliminar </a>
-                    </div>
+                    <a class="btn btn-danger btn-xs" onclick="return confirm('Desea Eliminar este elemento');" href="{{url('admin/eliminar-documento-dinamico/'.$documento->id)}}"><i class="fa fa-trash"></i> Eliminar </a>
+                </div>
                 </li>
             @empty
                 <h4> No Hay documentos Dinamicos Generados</h4>
@@ -33,8 +34,11 @@
                     <?php continue ?>
                 @endif
                 <li id ="{{$i}}" class="list-group-item">
-                    {{link_to_asset('docs/'.substr(strrchr($file,'/'),1), substr(strrchr($file,'/'),1), $attributes = array('class'=> 'btn btn-default btn-xs'))}}
-                    <a href="#" onclick="eliminardocumento('{{substr(strrchr($file,'/'),1)}}','#{{$i++}}')" class="btn btn-danger btn-xs" role="button"><i class="fa fa-trash"></i> Eliminar</a>
+                    <b>{{substr(strrchr($file,'/'),1)}}</b>
+                    <div class="btn-group pull-right">
+                        <a href="{{url('docs/'.substr(strrchr($file,'/'),1))}}" class="btn btn-xs btn-success"> <i class="fa fa-eye"></i> Ver </a>
+                        <a href="#" onclick="eliminardocumento('{{substr(strrchr($file,'/'),1)}}','#{{$i++}}')" class="btn btn-danger btn-xs" role="button"><i class="fa fa-trash"></i> Eliminar</a>
+                    </div>
                 </li>
             @empty
                 <h4> No Hay documentos Cargados</h4>

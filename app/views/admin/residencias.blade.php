@@ -16,7 +16,7 @@
                 columnSelectable : false,
                 jqueryuiTheme: true,
                 actions: {
-                    listAction: "{{url('ajax/residencias/list')}}",
+                    listAction:   "{{url('ajax/residencias/list')}}",
                     createAction: "{{url('ajax/residencias/create')}}",
                     updateAction: "{{url('ajax/residencias/edit')}}",
                     deleteAction: "{{url('ajax/residencias/remove')}}",

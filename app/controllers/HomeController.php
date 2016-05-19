@@ -337,10 +337,14 @@ class HomeController extends BaseController {
 		$headers = array('Content-Type' => 'application/pdf');
 		return Response::make(PDF::load($html, 'A4', 'portrait')->show('mi_factura'), 200, $headers);
 	}
-	public function generarDocumento($id){
+	public function generarDocumento($id)
+	{
 		$documento = Documento::find($id);
 		if($documento->activo == 0){
-			return "<h1> Este documento ya no esta dispoible</h1>";
+			return "<h1> Este documento ya no esta disponible</h1>";
+		}
+		if(Auth::user()->solvencia == 0 && $documento->morosos == 0){
+			return "<h1>Usted no puede acceder a este documento</h1> <h4> Contacte a su administrador</h4>";
 		}
 		$persona = Input::has('persona') ? User::find(Input::get('persona')) : Auth::user();
         $residencia = Input::has('residencia') ? Residencias::find(Input::get('residencia')) : $persona->residencia;

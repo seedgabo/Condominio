@@ -55,7 +55,7 @@ class EncuestasController extends \BaseController {
 		$resultados[5]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","5")->count('respuesta');
 		$resultados[6]= EncuestasRespuestas::where('encuesta_id',"=",$encuesta->id)->where("respuesta","=","6")->count('respuesta');
 		$respuesta = EncuestasRespuestas::where("persona_id","=",Auth::id())->where("encuesta_id","=",$id)->first();
-		$data = array('encuesta' => $encuesta , 'resultados' => $resultados , 'respuestausuario' => $respuesta);
+		$data = array('encuesta' => $encuesta , 'resultados' =>  array_values($resultados) , 'respuestausuario' => $respuesta);
 		return  $data;
 	}
 

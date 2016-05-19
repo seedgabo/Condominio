@@ -11,10 +11,10 @@ class FinanzasController extends \BaseController {
 			$monto = Input::get("monto");
 			$id= Input::get('id');
 			$porcentual= Input::get('porcentual');
-			foreach (Input::get('nombre') as $key => $value) 
+			foreach (Input::get('nombre') as $key => $value)
 			{
 				$elemento =	Facturas:: find($id[$i]);
-				$array = array('mes' => Input::get("mes"), 
+				$array = array('mes' => Input::get("mes"),
 					'año' => Input::get("año"),
 					'concepto'=> $value,
 					'monto' => $monto[$i],
@@ -31,15 +31,15 @@ class FinanzasController extends \BaseController {
 			}
 			return Redirect::to(URL::previous());
 		}
-		
-		
+
+
 		// definimos un tiempo predeterminado
 		$time = new Carbon;
-		$array = Facturas::where("mes", "=" ,Input::get('mes', $time->month)) 
+		$array = Facturas::where("mes", "=" ,Input::get('mes', $time->month))
 		->where("año","=",Input::get('año', $time->year))
 		->whereNull('residencia_id')
 		->get();
-		
+
 		$personas_opt= User::lists('nombre','id');
 		return View::make('admin.generadordefacturas')
 		->withArray($array)
@@ -50,17 +50,17 @@ class FinanzasController extends \BaseController {
 
 	public function facturasPorResidencia()
 	{
-		
+
 		if(Request::isMethod("post"))
 		{
 			$i=0;
 			$residencia_id  =  Input::get('residencia_id',null);
 			$monto = Input::get("monto");
 			$id= Input::get('id');
-			foreach (Input::get('nombre') as $key => $value) 
+			foreach (Input::get('nombre') as $key => $value)
 			{
 				$elemento =	Facturas:: find($id[$i]);
-				$array = array('mes' => Input::get("mes"), 
+				$array = array('mes' => Input::get("mes"),
 					'año' => Input::get("año"),
 					'concepto'=> $value,
 					'monto' => $monto[$i],
@@ -77,11 +77,11 @@ class FinanzasController extends \BaseController {
 			}
 			return Redirect::to(URL::previous());
 		}
-		
-		
+
+
 		// definimos un tiempo predeterminado
 		$time = new Carbon;
-		$array = Facturas::where("mes", "=" ,Input::get('mes', $time->month)) 
+		$array = Facturas::where("mes", "=" ,Input::get('mes', $time->month))
 		->where("año","=",Input::get('año', $time->year))
 		->where(function($query){
 				if (Input::get('residencia_id') != '')
@@ -89,7 +89,7 @@ class FinanzasController extends \BaseController {
 			})
 		->whereNotNull('residencia_id')
 		->get();
-		
+
 		$personas_opt= User::lists('nombre','id');
 		return View::make('admin.generadordefacturasporresidencia')
 		->withArray($array)
@@ -103,7 +103,7 @@ class FinanzasController extends \BaseController {
 	{
 		if (Request::isMethod("POST"))
 		{
-			foreach (Input::get('residencia_id') as $key => $residencia_id) 
+			foreach (Input::get('residencia_id') as $key => $residencia_id)
 			{
 				$array = ["residencia_id" => $residencia_id] + Input::only('mes','año','concepto','monto');
 				$cambios[] =Facturas::firstorCreate($array);
@@ -130,7 +130,7 @@ class FinanzasController extends \BaseController {
      		$maestra["fondo_%"] = Input::get('fondo_%', 14);
 	   }
      File::put(app_path("config/maestra.php"), json_encode($maestra));
-     
+
      return View::make('admin/parametros')->withMaestra($maestra);
 	}
 

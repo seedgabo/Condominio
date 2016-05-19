@@ -20,8 +20,6 @@ $portadas = DB::table('portadas')->get();
         </ul>
     </div>
     @endif
-
-
     <div class="row">
         {{-- NOTICIAS --}}
         <div class="col s12 m9 l9">
@@ -35,13 +33,13 @@ $portadas = DB::table('portadas')->get();
                         @endif
                     </div>
                     <div class="row">
-                        <div class="pull-left">
+                        <div class="left col s2 m2 l2">
                             <img src="images/noticias/{{$noticia->media or '../logo.png'}}" data-caption="{{$noticia->titulo}}" class="circle materialboxed " height="100">
                         </div>
-                        <div class="col s10 m10 l10 offset-s2 offset-m2 offset-l2">
-                            <p>{{$noticia->contenido}}
-                                <br>
-                                <blockquote class="pull-right"> Por: {{ $noticia->persona or 'Condominio'}}</blockquote>
+                        <div class="col s10 m10 l10">
+                            <p>
+                                {{$noticia->contenido}}
+                                <blockquote class="right"> Por: {{ $noticia->persona or 'Condominio'}}</blockquote>
                             </p>
                         </div>
                     </div>

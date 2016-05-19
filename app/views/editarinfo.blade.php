@@ -3,10 +3,12 @@
 	<div class="container">
 
 		<div class="row">
-			<div class="card">
+			<br>
+			<a class="btn light-blue btn-block modal-trigger" href="#modalQr"><i class="fa fa-qrcode"></i> Generar Qr para Aplicación</a>
+
 
 			{{-- Tu Perfil Card --}}
-			<div class=" col m6">
+			<div class="card col m6">
 				<h2 class="center">Tus Datos</h2>
 
 				{{ Form::model(Auth::user(),['method' => 'Post', 'class' => 'form-horizontal row']) }}
@@ -44,7 +46,7 @@
 			</div>
 
 			{{-- Residencia Card --}}
-			<div class="col m6 ">
+			<div class="card col m5 offset-m1 ">
 				<h2 class="center">Tu Residencia</h2>
 				{{ Form::model(Residencias::find(Auth::user()->residencia_id),['method' => 'Post','url' =>'editar-residencia', 'class' => 'form-horizontal']) }}
 				<div class="input-field">
@@ -66,8 +68,6 @@
 					{{ Form::submit("Actualizar", ['class' => 'btn blue']) }}
 				</div>
 				{{ Form::close() }}
-			</div>
-
 			</div>
 
 			{{-- Otros Datos Card --}}
@@ -255,6 +255,29 @@
 				</div>
 			</div>
 
+			<!-- Modal Qr Code -->
+			<div id="modalQr" class="modal">
+				<div class="modal-content">
+					<h4>Escanea este codigo  con tu dispositivo</h4>
+					<div class="row center-align">
+						<div id="qrcode" class="col m6"></div>
+						<script src="{{asset('js/qrcode.min.js')}}">
+						</script>
+						<script>
+						   codigo  = { url : '{{url()}}' , user: '{{Auth::user()->email}}' , token : '{{Crypt::encrypt(Auth::user()->id)}}' }
+							var qrcode = new QRCode("qrcode", {
+								text: JSON.stringify(codigo)
+							});
+						</script>
+
+						<div class="col m6">
+							<a class="btn green btn-block  btn-large"><i class="fa fa-android"></i> Descargar para Android</a>
+							<br>
+							<a class="btn grey lighten-1 btn-block btn-large"><i class="fa fa-apple"></i> Descargar para Iphone</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 	</div>

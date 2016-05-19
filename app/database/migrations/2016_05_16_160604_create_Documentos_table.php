@@ -18,6 +18,7 @@ class CreateDocumentosTable extends Migration {
 			$table->string('titulo')->unique();
 			$table->text('contenido');
 			$table->boolean('activo')->default(true);
+			$table->boolean('morosos')->default(true);
 			$table->timestamps();
 		});
 	}

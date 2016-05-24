@@ -12,7 +12,7 @@ class CreateResidenciasTable extends Migration {
 	 */
 public function up()
 	{
-		Schema::create('residencias', function($tabla) 
+		Schema::create('residencias', function($tabla)
 		{
 			$tabla->increments('id');
 			$tabla->string('nombre', 50)->unique();
@@ -21,7 +21,7 @@ public function up()
 			$tabla->bigInteger('persona_id_propietario')->nullable();
 			$tabla->decimal('alicuota');
 			$tabla->timestamps();
- 
+
 		});
 	}
 

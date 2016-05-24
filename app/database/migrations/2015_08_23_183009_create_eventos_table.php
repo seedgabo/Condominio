@@ -12,9 +12,9 @@ class CreateEventosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('eventos', function($tabla) 
+		Schema::create('eventos', function($tabla)
 		{
- 
+
 			$tabla->increments('id');
 			$tabla->string('razon', 50);
 			$tabla->date('fecha_ini');
@@ -22,9 +22,10 @@ class CreateEventosTable extends Migration {
 			$tabla->time('tiempo_ini');
 			$tabla->time('tiempo_fin');
 			$tabla->string('persona',50)->nullable();
+			$tabla->integer('user_id')->nullable();
 			$tabla->string('areas',200)->nullable();
 			$tabla->timestamps();
- 
+
 		});
 	}
 

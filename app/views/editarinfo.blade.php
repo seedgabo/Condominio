@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<br>
-			<a class="btn light-blue btn-block modal-trigger" href="#modalQr"><i class="fa fa-qrcode"></i> Generar Qr para Aplicación</a>
+			<a class="btn red btn-block modal-trigger" href="#modalQr"><i class="fa fa-qrcode"></i> Generar Qr para Aplicación</a>
 
 
 			{{-- Tu Perfil Card --}}
@@ -39,7 +39,7 @@
 					{{ Form::select('residencia_id', $residencias, null, ['class' => '', 'required' => 'required', 'disabled']) }}
 					<small class="text-danger">{{ $errors->first('residencia_id') }}</small>
 				</div>
-				<div class="col m12 l12 s12">
+				<div class="col m12 l12 s12 center-align">
 					{{ Form::submit("Actualizar", ['class' => 'btn blue']) }}
 				</div>
 				{{ Form::close() }}
@@ -48,7 +48,7 @@
 			{{-- Residencia Card --}}
 			<div class="card col m5 offset-m1 ">
 				<h2 class="center">Tu Residencia</h2>
-				{{ Form::model(Residencias::find(Auth::user()->residencia_id),['method' => 'Post','url' =>'editar-residencia', 'class' => 'form-horizontal']) }}
+				{{ Form::model(Residencias::find(Auth::user()->residencia_id),['method' => 'Post','url' =>'editar-residencia', 'class' => 'form-horizontal row']) }}
 				<div class="input-field">
 					{{ Form::label('nombre', 'Nombre de Residencia:') }}
 					{{ Form::text('nombre', null, ['class' => 'form-control', 'required' => 'required','length'=>'30']) }}
@@ -64,14 +64,14 @@
 				{{ Form::select('persona_id_propietario',User::where("residencia_id","=",Auth::user()->residencia_id)->lists('nombre','id'),Residencias::find(Auth::user()->residencia_id)->persona_id_propietario ,["class" => ""])}}
 				<small class="red-text">{{ $errors->first('persona_id_propietario') }}</small>
 
-				<div class="">
+				<div class="col m12 l12 s12 center-align">
 					{{ Form::submit("Actualizar", ['class' => 'btn blue']) }}
 				</div>
 				{{ Form::close() }}
 			</div>
 
 			{{-- Otros Datos Card --}}
-			<div class="card col m6 offset-m3">
+			<div class="card col m6 offset-m3 center-align">
 				<h2 class="center"> Otros Datos</h2>
 				<ul class="collection with-header">
 					<li class="collection-header center"> <h5>Tu Personal</h5></li>
@@ -271,7 +271,7 @@
 						</script>
 
 						<div class="col m6">
-							<a class="btn green btn-block  btn-large"><i class="fa fa-android"></i> Descargar para Android</a>
+							<a class="btn green btn-block  btn-large" href="https://play.google.com/store/apps/details?id=com.ionicframework.residenciasonline220562" target="_blank"><i class="fa fa-android"></i> Descargar para Android</a>
 							<br>
 							<a class="btn grey lighten-1 btn-block btn-large"><i class="fa fa-apple"></i> Descargar para Iphone</a>
 						</div>

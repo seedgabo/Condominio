@@ -10,7 +10,7 @@ class NoticiasController extends \BaseController {
 
 	public function index()
 	{
-		return json_encode(Noticias::orderby("updated_at","asc")->get());
+		return json_encode(Noticias::select("*", DB::raw("SUBSTRING(contenido,1,50) as 'cont'"))->orderby("updated_at","desc")->take(50)->get());
 	}
 
 
@@ -43,7 +43,7 @@ class NoticiasController extends \BaseController {
 			else
 				$imagen ='  <i class="fa fa-2x fa-user"></i>';
 			$data= array_add($data,'persona', Auth::user()->nombre . " de Residencia " . Residencias::find(Auth::user()->residencia_id)->nombre . $imagen);
-
+			$data= array_add($data,'user_id', Auth::user()->id);
 			$noticia = Noticias::create($data);
 			return 	$noticia;
 	}
@@ -93,7 +93,14 @@ class NoticiasController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		if(Auth::user()->id == Noticias::find($id)->user_id || Auth::user()->admin==1)
+		{
+			Noticias::destroy($id);
+			return "true";
+		}
+		else {
+			return "false";
+		}
 	}
 
 

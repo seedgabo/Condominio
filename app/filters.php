@@ -17,6 +17,11 @@ Route::filter('auth', function()
 		Session::flash('message', 'Antes de Acceder elige tu Residencia');
 		return Redirect::to('register/completar-registro');
 	}
+	if(Auth::user()->cedula == null || Auth::user()->cedula == "")
+	{
+		Session::flash('message', 'Antes de Acceder debes registrar tu documento de identidad');
+		return Redirect::to('register/completar-registro');
+	}
 	if (Auth::guest())
 	{
 		if (Request::ajax())

@@ -9,10 +9,10 @@ class DocumentosController extends \BaseController {
 	 */
 	public function index()
 	{
-		$documentos = Documento::activo()->get();
+		$documentos = Documento::select("titulo","morosos","activo")->activo()->get();
 		$list  = [];
 		foreach (File::files(public_path()."/docs")  as $documento) {
-			$list[]  =  array("url" => $documento, "titulo" => substr(strrchr($documento,'/'),1) );
+			$list[]  =  array("titulo" => substr(strrchr($documento,'/'),1) , "url" => asset('docs/' . substr(strrchr($documento,'/'),1)) );
 		}
 		$docs = array_where($list, function ($key, $documento ){
 			return $documento["titulo"] != 'index.html';

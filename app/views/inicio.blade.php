@@ -28,7 +28,7 @@ $portadas = DB::table('portadas')->get();
                 <li class="collection-item">
                     <div class="center-align">
                         <strong class="uppercase">{{$noticia->titulo}}</strong>
-                        @if ( Auth::check()  && strpos($noticia->persona, Auth::user()->nombre) === 0)
+                        @if ( Auth::check()  && $noticia->user_id == Auth::user()->id)
                             <a class="red-text right" href="{{url('eliminar-noticia'.'/'.$noticia->id)}}"><i class="fa fa-trash"></i> </a>
                         @endif
                     </div>

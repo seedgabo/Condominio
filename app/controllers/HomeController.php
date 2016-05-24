@@ -30,13 +30,14 @@ class HomeController extends BaseController {
 			}
 			$data= Input::except('_token','media');
 			$fecha = new Carbon();
-			$fecha->setTimezone('America/Caracas');
+			$fecha->setTimezone('America/Bogota');
 			$data= array_add($data,'fecha',$fecha::now());
 			if(Auth::user()->avatar != null)
 			$imagen ="<img class='avatar circle' src='" . Auth::user()->avatar ."'/>";
 			else
 			$imagen ='  <i class="fa fa-2x fa-user"></i>';
 			$data= array_add($data,'persona', Auth::user()->nombre . " de Residencia " . Residencias::find(Auth::user()->residencia_id)->nombre . $imagen);
+			$data= array_add($data,'user_id', Auth::user()->id);
 			if (Input::hasFile('media'))
 			{
 				$newName = quitar_tildes(Input::file('media')->getClientOriginalName());
@@ -67,6 +68,7 @@ class HomeController extends BaseController {
 			$data['tiempo_ini'] = date("G:i", strtotime(Input::get('tiempo_ini')));
 			$data['tiempo_fin'] = date("G:i", strtotime(Input::get('tiempo_fin')));
 			$data= array_add($data,'persona', Auth::user()->nombre);
+			$data= array_add($data,'user_id', Auth::user()->id);
 			$areas = "";
 			foreach (Input::get('area',array()) as $key => $value) {
 				$areas .= $key .', ';
@@ -165,8 +167,10 @@ class HomeController extends BaseController {
 	public function verdocumentos()
 	{
 		$list  = File::files(public_path()."/docs");
-		$documentos = Documento::where("activo" ,"=","1")->get();
-		return View::make('verdocumentos')->withDocs($list)->withDocumentos($documentos);
+		$documentos = Documento::activo()->get();
+		return View::make('verdocumentos')
+			->withDocs($list)
+			->withDocumentos($documentos);
 	}
 	public function verresidencia()
 	{
@@ -292,7 +296,7 @@ class HomeController extends BaseController {
 	public function eliminarnoticia($id)
 	{
 		$noticia =	Noticias::find($id);
-		if (strpos($noticia->persona, Auth::user()->nombre) === 0) {
+		if ($noticia->user_id == Auth::user()->id || Auth::user()->admin == 1) {
 			$noticia->delete();
 			Session::flash('message', 'Noticia Borrada Correctamente');
 			return Redirect::to("ver-noticias");
@@ -343,7 +347,7 @@ class HomeController extends BaseController {
 		if($documento->activo == 0){
 			return "<h1> Este documento ya no esta disponible</h1>";
 		}
-		if(Auth::user()->solvencia == 0 && $documento->morosos == 0){
+		if(Auth::user()->residencia->solvencia == 0 && $documento->morosos == 0){
 			return "<h1>Usted no puede acceder a este documento</h1> <h4> Contacte a su administrador</h4>";
 		}
 		$persona = Input::has('persona') ? User::find(Input::get('persona')) : Auth::user();
@@ -351,6 +355,7 @@ class HomeController extends BaseController {
         $titulo = $documento->titulo;
         $contenido = $documento->contenido;
         $html = View::make('pdf.basic',["persona" => $persona, "residencia" => $residencia, 'contenido' => $contenido]);
+		// return $html;
         header('Content-Type : application/pdf');
 		$headers = array('Content-Type' => 'application/pdf');
 		return Response::make(PDF::load($html, 'A4', 'portrait')->show($titulo), 200, $headers);

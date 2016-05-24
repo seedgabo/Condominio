@@ -28,6 +28,7 @@ class CreatePortadasTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('portadas');	}
-
+		Schema::drop('portadas');	
 	}
+
+}

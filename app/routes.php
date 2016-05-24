@@ -73,13 +73,17 @@ Route::group(array('prefix' => 'ajax'), function()
 //Controlador de API's
 Route::group(array('prefix' => 'api'), function()
 {
+    Route::resource('areas', 'AreasController');
     Route::resource('noticias', 'NoticiasController');
+    Route::delete('noticias/{id}', 'NoticiasController@destroy');
     Route::resource('encuestas', 'EncuestasController');
     Route::resource('residencias', 'ResidenciasController');
     Route::resource('portadas', 'PortadasController');
     Route::resource('eventos', 'EventosController');
     Route::resource('galeria', 'GaleriaController');
     Route::resource('documentos', 'DocumentosController');
+    Route::resource('vehiculos', 'VehiculosController');
+    Route::any('generar-factura', array('uses' => 'HomeController@generarFactura'));
     Route::any('generar-documento/{id}', array('uses' => 'HomeController@generarDocumento'));
 
     Route::any("login", array('uses' => function()

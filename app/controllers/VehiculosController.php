@@ -9,9 +9,12 @@ class VehiculosController extends \BaseController {
 	 */
 	public function index()
 	{
-		$vehiculos = Vehiculo::all();
+		$vehiculos = Vehiculo::join("residencias","residencias.id","=","vehiculos.residencia_id")
+		->select('vehiculos.*' , 'residencias.nombre as residencia')
+		->orderby("residencia_id")
+		->get();
 
-		return View::make('vehiculos.index', compact('vehiculos'));
+		return Response::json($vehiculos);
 	}
 
 	/**

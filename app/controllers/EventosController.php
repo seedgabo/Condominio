@@ -38,7 +38,28 @@ class EventosController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$rules =  array(
+			'razon' =>'required|min:6|max:30',
+			'fecha_ini' =>'required',
+			'fecha_fin' =>'required'
+		);
+		$validation = Validator::make(Input::except('_token'),$rules);
+		if ($validation->fails())
+		{
+			return "ERROR";
+		}
+		$data= Input::except("areas");
+		$data['tiempo_ini'] = date("G:i", strtotime(Input::get('tiempo_ini')));
+		$data['tiempo_fin'] = date("G:i", strtotime(Input::get('tiempo_fin')));
+		$data= array_add($data,'persona', Auth::user()->nombre);
+		$data= array_add($data,'user_id', Auth::user()->id);
+		$areas = "";
+		foreach (Input::get('areas',array()) as $key => $value) {
+			$areas .= $value .', ';
+		}
+		$data= array_add($data, 'areas',$areas);
+		$evento = Eventos::Create($data);
+		return  $evento;
 	}
 
 	/**
@@ -86,7 +107,15 @@ class EventosController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$evento = Eventos::find($id);
+		if($evento->user_id == Auth::user()->id || Auth::user()->admin)
+		{
+			$evento->delete();
+			return "TRUE";
+		}
+		else{
+			return "ERROR";
+		}
 	}
 
 }

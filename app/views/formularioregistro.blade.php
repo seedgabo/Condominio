@@ -5,8 +5,8 @@
 
     <div class="center-align">
 
-        <a href="{{url('register/facebook')}}" class="waves-effect waves-light btn btn-small blue darken-2"><i class="left fa fa-facebook"></i> Registrate con tu cuenta de facebook</a>
-        <a href="{{url('register/google')}}" class="waves-effect waves-light btn btn-small red"><i class="left fa fa-google"></i> Registrate con tu cuenta de  Google</a>
+        <a href="{{url('register/facebook')}}" class="waves-effect waves-light btn blue darken-2"><i class="left fa fa-facebook"></i> Registrate con tu cuenta de facebook</a>
+        <a href="{{url('register/google')}}" class="waves-effect waves-light btn red"><i class="left fa fa-google"></i> Registrate con tu cuenta de  Google</a>
 
     </div>
     <br>
@@ -31,9 +31,9 @@
         {{ Form::label('nombre', 'Nombre Completo:') }}
         <small class="red-text">{{ $errors->first('nombre') }}</small>
     </div>
-    <div class="input-field col l12 s12 m12">
-        {{ Form::label('cedula', Lang::get('literales.cedula') ) }}
+    <div class="input-field">
         {{ Form::text('cedula', null, ['class' => 'form-control','length'=>'30']) }}
+        {{ Form::label('cedula', Lang::get('literales.cedula') ) }}
         <small class="red-text">{{ $errors->first('cedula') }}</small>
     </div>
     <div class="input-field">

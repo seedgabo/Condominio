@@ -1,16 +1,16 @@
 @extends('layout')
 @section('contenido')
 <div class="container">
-	
+
 <ul class="collapsible" data-collapsible="expandable">
 	@forelse ($noticias as $noticia)
 	<li>
 		<div class="collapsible-header  active">
 		 <strong>{{$noticia->titulo}}</strong>
-		 			@if (Auth::check() && strpos($noticia->persona, Auth::user()->nombre) === 0)
+		 			@if (Auth::check() && $noticia->user_id == Auth::user()->id)
 		 	 			<a class="red-text right" href="{{url('eliminar-noticia'.'/'.$noticia->id)}}"><i class="fa fa-trash"></i> </a>
 				 	@endif
-		</div> 
+		</div>
 		<div class="collapsible-body row">
 			<div class="col s2 m2 ml2">
 				<img src="images/noticias/{{$noticia->media or '../logo.png'}}" alt="" data-caption="{{$noticia->titulo}}" class="circle materialboxed" height="100">

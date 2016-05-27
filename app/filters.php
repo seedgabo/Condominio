@@ -11,17 +11,6 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-
-	if(Auth::check() && Auth::user()->residencia_id == null)
-	{
-		Session::flash('message', 'Antes de Acceder elige tu Residencia');
-		return Redirect::to('register/completar-registro');
-	}
-	if(Auth::user()->cedula == null || Auth::user()->cedula == "")
-	{
-		Session::flash('message', 'Antes de Acceder debes registrar tu documento de identidad');
-		return Redirect::to('register/completar-registro');
-	}
 	if (Auth::guest())
 	{
 		if (Request::ajax())
@@ -33,6 +22,16 @@ Route::filter('auth', function()
 			Session::flash('message', 'Loguese Primero');
 			return Redirect::guest('/');
 		}
+	}
+	if(Auth::check() && Auth::user()->residencia_id == null)
+	{
+		Session::flash('message', 'Antes de Acceder elige tu Residencia');
+		return Redirect::to('register/completar-registro');
+	}
+	if(Auth::check() && Auth::user()->cedula == null || Auth::user()->cedula == "")
+	{
+		Session::flash('message', 'Antes de Acceder debes registrar tu documento de identidad');
+		return Redirect::to('register/completar-registro');
 	}
 });
 

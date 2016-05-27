@@ -1,15 +1,17 @@
 <!-- Single button -->
-<?php $solvencia = Solvencia::firstorCreate(array('mes'=> $mes,'año'=> $año, 'residencia_id'=>$residencia->id )) 
+<?php
+    $solvencia = Solvencia::firstorCreate(array('mes'=> $mes,'año'=> $año, 'residencia_id'=>$residencia->id ));
+    $solvencia = Solvencia::find($solvencia->id);
 ?>
 <div class="btn-group">
-  <button type="button" class="btn btn-sm @if ($solvencia->estado =='Moroso') btn-danger @elseif ($solvencia->estado =='Al Día')  btn-success @endif dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button type="button" class="btn btn-sm @if ($solvencia->estado == 'Moroso') btn-danger @elseif ($solvencia->estado =='Al Día')  btn-success @endif dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     {{$solvencia->estado}}
    <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">
 
     <li onclick='obtener("{{$residencia->id}}","{{$mes}}","{{$año}}")'><a href="#"><i class="fa fa-eye"></i> Ver</a></li>
-    
+
     @if($solvencia->estado == "Moroso")
       <li  onclick='pagar("{{$residencia->id}}","{{$mes}}","{{$año}}")'>
       	<a style="color: green;" href="#"><i class="fa fa-check"></i> Establecer como Pagado</a>
@@ -38,6 +40,6 @@
     @endif
 
     <li role="separator" class="divider"></li>
-    <li><a href="#"><i class="fa fa-envelope"></i> Enviar Estado por Correo al Dueño</a></li>
+    <li><a href="#"><i class="fa fa-envelope"></i> Enviar Estado por Correo al Propietario</a></li>
   </ul>
 </div>

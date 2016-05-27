@@ -74,8 +74,8 @@ Route::group(array('prefix' => 'ajax'), function()
 Route::group(array('prefix' => 'api'), function()
 {
     Route::resource('areas', 'AreasController');
+    Route::resource('directiva', 'DirectivaController');
     Route::resource('noticias', 'NoticiasController');
-    Route::delete('noticias/{id}', 'NoticiasController@destroy');
     Route::resource('encuestas', 'EncuestasController');
     Route::resource('residencias', 'ResidenciasController');
     Route::resource('portadas', 'PortadasController');
@@ -83,6 +83,7 @@ Route::group(array('prefix' => 'api'), function()
     Route::resource('galeria', 'GaleriaController');
     Route::resource('documentos', 'DocumentosController');
     Route::resource('vehiculos', 'VehiculosController');
+    Route::resource('dispositivos', 'DispositivosController');
     Route::any('generar-factura', array('uses' => 'HomeController@generarFactura'));
     Route::any('generar-documento/{id}', array('uses' => 'HomeController@generarDocumento'));
 
@@ -162,10 +163,12 @@ Route::group(array(), function()
        header('Access-Control-Allow-Origin:*');
        return json_encode(Input::all());
     });
+
     Route::any('hostname', function()
     {
       return gethostname();
     });
+
     Route::any('contacto', function(){
         $email = Input::get('emailContact');
         Mail::send('emails.contacto',array('contacto' => $email),function($message)
@@ -177,7 +180,7 @@ Route::group(array(), function()
        return  Redirect::to('/');
     });
 
-    Route::any('documento-preview',function(){
+    Route::post('documento-preview',function(){
         $persona = Input::has('persona') ? User::find(Input::get('persona')) : Auth::user();
         $residencia = Input::has('residencia') ? Residencias::find(Input::get('residencia')) : $persona->residencia;
 
@@ -188,5 +191,10 @@ Route::group(array(), function()
         header('Content-Type : application/pdf');
 		$headers = array('Content-Type' => 'application/pdf');
 		return Response::make(PDF::load($html, 'A4', 'portrait')->show($documento), 200, $headers);
+    });
+
+    Route::get('push', function() {
+         PushNotification();
+         return "Hecho";
     });
 });

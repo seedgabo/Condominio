@@ -326,17 +326,24 @@ class HomeController extends BaseController {
 		if (Input::has("persona_id"))
 		$persona = User::find(Input::get('persona_id'));
 		else
-		$persona = User::find(Auth::id());
+		$persona = Auth::user();
 
-		$residencia = residencias::where("id","=", $persona->residencia_id)->first();
+		$residencia = $persona->residencia;
 		$time = new Carbon;
 		$mes = Input::get('mes', $time->month);
 		$año = Input::get('año', $time->year);
 		$factura = DB::select(DB::raw(getFactura($residencia->id,$mes,$año)));
-		$cant_residencias = Residencias::where("nombre","<>","condominio")->count();
+		$cant_residencias = Residencias::where("id","<>","1")->count();
 		$maestra =  json_decode(File::get(app_path("config/maestra.php")),true);
 
-		$html = View::make('pdf.factura')->withFactura($factura)->withResidencia($residencia)->withPersona($persona)->withMes($mes)->with('año',$año)->withMaestra($maestra)->with('cant_residencias',$cant_residencias);
+		$html = View::make('pdf.factura')
+			->withFactura($factura)
+			->withResidencia($residencia)
+			->withPersona($persona)->withMes($mes)
+			->with('año',$año)
+			->withMaestra($maestra)
+			->with('cant_residencias',$cant_residencias);
+			
 		header('Content-Type : application/pdf');
 		$headers = array('Content-Type' => 'application/pdf');
 		return Response::make(PDF::load($html, 'A4', 'portrait')->show('mi_factura'), 200, $headers);

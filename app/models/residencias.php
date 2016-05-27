@@ -4,12 +4,11 @@ class Residencias extends Eloquent {
 	protected $table ="residencias";
 	protected $fillable = array('nombre','cant_personas','alicuota','persona_id_propietario',"solvencia");
 
-	public function personas()
-	{
+	public function personas(){
 		return $this->hasMany('User','residencia_id');
 	}
-	public function personal()
-	{
+
+	public function personal(){
 		return $this->hasMany('personal','residencia_id');
 	}
 
@@ -24,4 +23,5 @@ class Residencias extends Eloquent {
 	public function propietario(){
 		return $this->belongsTo("User","persona_id_propietario","id");
 	}
+
 }

@@ -32,11 +32,11 @@ function traducir_fecha($cadena, $diferencia = false)
 function revisar_expansion($opcion)
 {
 	if ((Request::segment(2) == $opcion))
-		return "collapse in";
+	return "collapse in";
 	else if (($opcion  == "Admin") && (Request::segment(2)!= "Email") && (Request::segment(2)!= "Dise%C3%B1o") && (Request::segment(2)!= "Finanzas") )
-		return "collapse in";
+	return "collapse in";
 	else
-		return "collapse";
+	return "collapse";
 }
 
 function getFactura($residencia_id,$mes,$año)
@@ -60,15 +60,13 @@ function getTransacciones()
 }
 
 
-
-
 function sendFacturaMail($to)
 {
-		Mail::send('pdf.factura',array('mes' => $mes, 'año' => $año, 'factura' => $factura, 'cant_residencias' => $cant_residencias,'persona'=> $persona,'residencia' => $residencia),function($message)
-		{
-				 $message->from(Config::get('var.correo'), Config::get('var.nombre'));
-    		 $message->to($to);
-		});
+	Mail::send('pdf.factura',array('mes' => $mes, 'año' => $año, 'factura' => $factura, 'cant_residencias' => $cant_residencias,'persona'=> $persona,'residencia' => $residencia),function($message)
+	{
+		$message->from(Config::get('var.correo'), Config::get('var.nombre'));
+		$message->to($to);
+	});
 }
 
 function getdeuda($residencia_id,$mes,$año)
@@ -87,6 +85,28 @@ function getdeuda($residencia_id,$mes,$año)
 }
 
 
+function PushNotification(){
+	$dispositivos = Dispositivo::all();
+	$disp = [];
+
+	foreach ($dispositivos as $dispositivo) {
+		$disp[]= PushNotification::Device($dispositivo->token);
+	}
+
+	$devices = PushNotification::DeviceCollection($disp);
+
+	$message = PushNotification::Message('Notificacion de Prueba',[
+	    'badge' => 1,
+	    'image' => 'www/logo.png',
+	    'title' => 'Mi Notificacion'
+		]);
+
+	$collection = PushNotification::app('android')
+        ->to($devices)
+        ->send($message);
+
+    return $collection;
+}
 
 
 

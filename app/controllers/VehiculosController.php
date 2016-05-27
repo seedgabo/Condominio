@@ -34,17 +34,17 @@ class VehiculosController extends \BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Vehiculo::$rules);
+		$data = Input::all();
+		$data = array_add($data, "residencia_id", Auth::user()->residencia_id);
+		$validator = Validator::make($data, Vehiculo::$rules);
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			return "ERROR";
 		}
+		$vehiculo = Vehiculo::create($data);
 
-		Vehiculo::create($data);
-
-		Session::flash("message", "Vehiculo Creado Correctamente");
-		return Redirect::back();
+		return $vehiculo;
 	}
 
 	/**
@@ -104,10 +104,14 @@ class VehiculosController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Vehiculo::destroy($id);
-
-		Session::flash("message", "Vehiculo Eliminado Correctamente");
-		return Redirect::back();
+		if(Auth::user()->residencia->id == Vehiculo::find($id)->residencia_id)
+		{
+			Vehiculo::destroy($id);
+			return "TRUE";
+		}
+		else{
+			return "ERROR";
+		}
 	}
 
 }

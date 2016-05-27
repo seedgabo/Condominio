@@ -4,11 +4,11 @@
 
 		<div class="row">
 			<br>
-			<a class="btn red btn-block modal-trigger" href="#modalQr"><i class="fa fa-qrcode"></i> Generar Qr para Aplicación</a>
+			<a class="btn pink btn-block modal-trigger" href="#modalQr"><i class="fa fa-qrcode"></i> Generar Qr para Aplicación</a>
 
 
-			{{-- Tu Perfil Card --}}
-			<div class="card col m6">
+			<!-- Tu Perfil Card -->
+			<div class=" col m5">
 				<h2 class="center">Tus Datos</h2>
 
 				{{ Form::model(Auth::user(),['method' => 'Post', 'class' => 'form-horizontal row']) }}
@@ -39,6 +39,7 @@
 					{{ Form::select('residencia_id', $residencias, null, ['class' => '', 'required' => 'required', 'disabled']) }}
 					<small class="text-danger">{{ $errors->first('residencia_id') }}</small>
 				</div>
+
 				<div class="col m12 l12 s12 center-align">
 					{{ Form::submit("Actualizar", ['class' => 'btn blue']) }}
 				</div>
@@ -46,7 +47,7 @@
 			</div>
 
 			{{-- Residencia Card --}}
-			<div class="card col m5 offset-m1 ">
+			<div class=" col m5 offset-m1 ">
 				<h2 class="center">Tu Residencia</h2>
 				{{ Form::model(Residencias::find(Auth::user()->residencia_id),['method' => 'Post','url' =>'editar-residencia', 'class' => 'form-horizontal row']) }}
 				<div class="input-field">

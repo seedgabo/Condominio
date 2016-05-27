@@ -7,7 +7,7 @@ class Vehiculo extends \Eloquent {
 		'nombre' => 'required|min:3',
 		'color'  => 'min:3,max:50',
 		'placa'  => 'min:3,max:50',
-		'residencia_id' => 'required,exists:residencias,residencia_id'
+		'residencia_id' => 'exists:residencias,id'
 	];
 
 	// Don't forget to fill this array

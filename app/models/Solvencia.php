@@ -1,7 +1,7 @@
 <?php
 
 class Solvencia extends \Eloquent {
-	
+
 
 	protected $table = "solvencia";
 

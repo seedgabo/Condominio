@@ -4,7 +4,7 @@ class FinanzasController extends \BaseController {
 
 	public function facturas()
 	{
-		
+
 		if(Request::isMethod("post"))
 		{
 			$i=0;
@@ -156,8 +156,9 @@ class FinanzasController extends \BaseController {
 	   $residencias = Residencias::get();
 	    foreach ($residencias as $residencia) {
 	        $deudas[$i]['monto'] = getdeuda($residencia->id, $time->month, $time->year);
-	        $deudas[$i++]['residencia'] = $residencia;
-	    }
+	        $deudas[$i]['residencia'] = $residencia;
+			$i++;
+		}
 	   $html = View::make('pdf/estadoFacturasMes')->withDeudas($deudas)->withMes($mes)->withAño($año);
 	   header('Content-Type : application/pdf');
 		 $headers = array('Content-Type' => 'application/pdf');
@@ -167,13 +168,13 @@ class FinanzasController extends \BaseController {
 	public function eliminarconcepto($id)
 	{
 		Facturas::where("id","=",$id)->delete();
-		return  Redirect::to(url(URL::previous()));
+		return  Redirect::back();
 	}
 
 	public function eliminarconceptomasivo($concepto)
 	{
 		$cantidad = Facturas::where("concepto","=",$concepto)->delete();
-		return  Redirect::to(url(URL::previous()));
+		return  Redirect::back();
 	}
 
 }

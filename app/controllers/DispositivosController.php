@@ -82,15 +82,18 @@ class DispositivosController extends \BaseController {
 	{
 		$data = Input::all();
 		$data = array_add($data, "user_id", Auth::user()->id);
-		$validator = Validator::make($data, Disppositivo::$rules);
+		// $validator = Validator::make($data, Dispositivo::$rules);
 
-		if ($validator->fails())
-		{
-			return "ERROR";
-		}
+		// if ($validator->fails())
+		// {
+		// 	return  Response::json($validator->messages(), 500);
+		// }
 
-		$dispositivo = Dispositivo::find(id);
-		$dispositivo->fill($data);
+		$dispositivo = Dispositivo::find($id);
+		$dispositivo->active =  Input::get('active', "true") == "true" ? 1 : 0 ;
+		$dispositivo->mensajes_enabled =  Input::get('mensajes_enabled', "true") == "true" ? 1 : 0 ;
+		$dispositivo->eventos_enabled =  Input::get('eventos_enabled', "true") == "true" ? 1 : 0;
+		$dispositivo->noticias_enabled =  Input::get('noticias_enabled', "true") == "true" ? 1 : 0;
 		$dispositivo->save();
 		return $dispositivo;
 	}

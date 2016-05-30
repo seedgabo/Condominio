@@ -16,7 +16,7 @@ class EventosController extends \BaseController {
 	  	$evento['inicio'] = traducir_fecha(Carbon::parse($evento->fecha_ini . $evento->tiempo_ini)->toDayDateTimeString());
 	  	$evento['fin'] = traducir_fecha(Carbon::parse($evento->fecha_fin . $evento->tiempo_fin)->toDayDateTimeString());
 	  }
-	  return $eventos;
+	  return Response::json($eventos,200);
 	}
 
 	/**

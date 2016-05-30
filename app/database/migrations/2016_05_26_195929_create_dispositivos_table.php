@@ -19,6 +19,7 @@ class CreateDispositivosTable extends Migration {
 			$table->string('dispositivo')->nullable();
 			$table->string('plataforma')->default('android');
 			$table->integer('user_id')->nullable();
+			$table->boolean('active')->default(1);
 			$table->boolean('noticias_enabled')->default(1);
 			$table->boolean('eventos_enabled')->default(1);
 			$table->boolean('mensajes_enabled')->default(1);

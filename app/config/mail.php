@@ -15,7 +15,7 @@ return array(
 	|
 	*/
 
-	'driver' => 'mailgun',
+	'driver' => 'smtp',
 	/*
 	|--------------------------------------------------------------------------
 	| SMTP Host Address
@@ -27,7 +27,7 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	'host' => 'smtp.gmail.com',
 	/*
 	|--------------------------------------------------------------------------
 	| SMTP Host Port
@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'username' => 'postmaster@sandbox01eec299665643c4a6c655f5e3d50401.mailgun.org',
+	'username' => 'seedgabo@gmail.com',
 	/*
 	|--------------------------------------------------------------------------
 	| SMTP Server Password
@@ -90,7 +90,7 @@ return array(
 	|
 	*/
 
-	'password' => 'f887a1d6dcebca0cc08fb2ca8755590c',
+	'password' => 'gab23gab**',
 	/*
 	|--------------------------------------------------------------------------
 	| Sendmail System Path

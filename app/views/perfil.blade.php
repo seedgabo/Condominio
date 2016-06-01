@@ -4,7 +4,7 @@
 
 		<div class="row">
 			<br>
-			<a class="btn pink btn-block modal-trigger" href="#modalQr"><i class="fa fa-qrcode"></i> Generar Qr para Aplicación</a>
+			<a class="btn orange btn-block modal-trigger" href="#modalQr"><i class="fa fa-qrcode"></i> Generar Qr para Aplicación</a>
 
 
 			<!-- Tu Perfil Card -->
@@ -151,6 +151,9 @@
 
 			</div>
 
+		</div>
+
+	</div>
 
 			<!-- Modal Personal Estructura -->
 			<div id="modalPersonal" class="modal">
@@ -261,7 +264,7 @@
 				<div class="modal-content">
 					<h4>Escanea este codigo  con tu dispositivo</h4>
 					<div class="row center-align">
-						<div id="qrcode" class="col m6"></div>
+						<div id="qrcode" class="col m6 s12"></div>
 						<script src="{{asset('js/qrcode.min.js')}}">
 						</script>
 						<script>
@@ -271,7 +274,7 @@
 							});
 						</script>
 
-						<div class="col m6">
+						<div class="col m6 s12">
 							<a class="btn green btn-block  btn-large" href="https://play.google.com/store/apps/details?id=com.ionicframework.residenciasonline220562" target="_blank"><i class="fa fa-android"></i> Descargar para Android</a>
 							<br>
 							<a class="btn grey lighten-1 btn-block btn-large"><i class="fa fa-apple"></i> Descargar para Iphone</a>
@@ -279,8 +282,5 @@
 					</div>
 				</div>
 			</div>
-		</div>
-
-	</div>
 
 @stop

@@ -1,6 +1,7 @@
 <?php
 
 class Dispositivo extends \Eloquent {
+
 	public static $rules = [
 		'token' => 'min:3',
 		'dispositivo'  => 'min:3,max:50',
@@ -24,6 +25,20 @@ class Dispositivo extends \Eloquent {
 	{
 		return $this->hasOne('users','id','user_id');
 	}
+
+	public function scopeNoticias($query){
+		return $query->where('noticias_enabled', '=', '1');
+	}
+	public function scopeEventos($query){
+		return $query->where('eventos_enabled', '=', '1');
+	}
+	public function scopeMensajes($query){
+		return $query->where('mensajes_enabled', '=', '1');
+	}
+	public function scopeActive($query){
+		return $query->where('active', '=', '1');
+	}
+
 	public function getActiveAttribute($value){
 		return ($value == 1)? true  : false;
 	}

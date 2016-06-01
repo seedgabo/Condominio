@@ -175,6 +175,29 @@ class AdminController extends BaseController {
 		return View::make('admin.email')->withCorreos($correos);
 	}
 
+	public function push(){
+		$dispositivos = Dispositivo::active()->mensajes()->get();
+		$disp = [];
+
+		foreach ($dispositivos as $dispositivo) {
+			$disp[]= PushNotification::Device($dispositivo->token);
+		}
+
+		$devices = PushNotification::DeviceCollection($disp);
+
+		$message = PushNotification::Message(Input::get('mensaje'),[
+		    'badge' => 1,
+		    'image' => 'www/logo.png',
+		    'title' => Input::get('titulo')
+			]);
+
+		$collection = PushNotification::app('android')
+	        ->to($devices)
+	        ->send($message);
+
+		Session::flash('success', 'Mensaje enviado');
+	    return Redirect::back();
+	}
 
   //Controladores para el Diseño
 	public function Portada()

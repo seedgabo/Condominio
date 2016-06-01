@@ -84,6 +84,10 @@ function getdeuda($residencia_id,$mes,$año)
 	return $total;
 }
 
+function flashMessage($message, $class="green"){
+	Session::flash('message', $message);
+	Session::flash('status', $class);
+}
 
 function PushNotification(){
 	$dispositivos = Dispositivo::all();

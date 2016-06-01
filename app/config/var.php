@@ -40,4 +40,6 @@ return array(
 
 'vendedor' => '',
 
+'push' => true
+
 );

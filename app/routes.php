@@ -7,6 +7,7 @@ View::share('time', new Carbon);
 Route::group(array('prefix' => 'admin'), function()
 {
     Route::any('/', 'GraphController@Graphs');
+    Route::post('push','AdminController@push');  
     Route::any('eventos', 'AdminController@eventos');
     Route::any('areas', 'AdminController@areas');
     Route::any('directiva', 'AdminController@directiva');
@@ -130,16 +131,18 @@ Route::group(array(), function()
     Route::any('ver-eventos','HomeController@verfullcalendar');
     Route::any('ver-galeria', "HomeController@vergaleria");
     Route::any('ver-noticias', "HomeController@vernoticias");
-    Route::any('Usuario-Edit',array('before' => 'auth' ,'uses' => 'HomeController@usuarioEdit'));
+    Route::any('perfil',array('before' => 'auth' ,'uses' => 'HomeController@perfil'));
     Route::any('editar-residencia',array('before' => 'auth', 'uses' => 'HomeController@editarResidencia'));
     Route::any('generar-factura',array('before' => 'auth', 'uses' => 'HomeController@generarFactura'));
     Route::any('generar-documento/{id}', array('before' => 'auth', 'uses' => 'HomeController@generarDocumento'));
 
 
-    // Controladores de login y logout
+    // Controladores de login, logout y resetPassword
     Route::post('user', 'HomeController@login');
     Route::any('logout', array('before' => 'auth', 'uses' => 'HomeController@logout'));
     Route::any('registro',"HomeController@registro");
+    Route::any('forgot-password',array('before' => 'guest', 'uses' => 'HomeController@forgotPassword'));
+    Route::controller('password', 'RemindersController');
 });
 
 //Miselaneo

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEncuestasRespuestasTable extends Migration {
+class CreateRespuestasTable extends Migration {
 	public function up()
 	{
 			Schema::create('encuestas_respuestas', function($tabla)

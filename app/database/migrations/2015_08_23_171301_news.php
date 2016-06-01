@@ -10,8 +10,8 @@ class News extends Migration {
 		Schema::create('noticias', function($tabla)
 		{
 			$tabla->increments('id');
-			$tabla->string('titulo', 50)->unique();
-			$tabla->string('contenido', 4000);
+			$tabla->string('titulo', 50);
+			$tabla->text('contenido');
 			$tabla->string('persona', 200)->nullable();
 			$tabla->integer('user_id')->nullable();
 			$tabla->date('fecha')->nullable();

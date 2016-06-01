@@ -1,5 +1,6 @@
 <?php
 $message = Session::get('message');
+$status = Session::get('status', null);
 // $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.persona_id_propietario")->select("residencias.*","personas.nombre as dueño")->get();
 
 ?>
@@ -97,7 +98,7 @@ $message = Session::get('message');
 								<li><a href="{{url('ver-galeria')}}">Galeria</a></li>
 								<li><a href="{{url('ver-documentos')}}">Documetación</a></li>
 								<li><a href="{{url('ver-residencia')}}">Mi Residencia</a></li>
-								<li><a href="{{url('Usuario-Edit')}}">Mi Perfil</a></li>
+								<li><a href="{{url('perfil')}}">Mi Perfil</a></li>
 								@if (Auth::user()->admin)
 									<li><a href="{{url('admin')}}" title="Entrar como Administrador">Admin</a></li>
 								@endif
@@ -136,6 +137,7 @@ $message = Session::get('message');
 						<a href="{{url('login/google')}}" class="waves-effect waves-light btn btn-small red"><i class="fa fa-google-plus"></i></a>
 						<button type="submit" class="btn waves-effect waves-light"><i class="right fa fa-sign-in"></i> Iniciar Sesión</button>
 					</div>
+						<a href="forgot-password" class="btn-small btn-outline">Olvido su contraseña</a>
 					<br>
 				</form>
 			</div>
@@ -194,7 +196,7 @@ $message = Session::get('message');
 				<li class="tooltipped" data-delay="10" data-position="right" data-tooltip="Entrar Como Administrador"><a class="white-text" href="{{url('admin')}}" title="Entrar como Administrador"><i class="left fa fa-unlock-alt"></i>Administrar</a></li>
 			@endif
 			<li ><a class="white-text" href="{{url('ver-residencia')}}"><i class="left fa fa-home "></i>Mi Residencia</a></li>
-			<li><a class="white-text" href="{{url('Usuario-Edit')}}"><i class="left fa fa-pencil"></i>Mi Perfil</a></li>
+			<li><a class="white-text" href="{{url('perfil')}}"><i class="left fa fa-pencil"></i>Mi Perfil</a></li>
 			<li class="divider"></li>
 			<li><a class="white-text" href="{{url('logout')}}"><i class="left fa fa-sign-out"></i>Cerrar Sessión</a></li>
 		</ul>
@@ -205,7 +207,7 @@ $message = Session::get('message');
 			$('select').material_select();
 			$('.modal-trigger').leanModal();
 			if ("{{$message or ''}}".length != 0) {
-				Materialize.toast("{{$message or ''}}", 15000, "rounded");
+				Materialize.toast("{{$message}}", 5000, "{{$status or 'rounded'}}");
 			}
 
 			$("#fab").hover(

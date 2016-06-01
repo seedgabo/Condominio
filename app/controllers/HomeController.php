@@ -45,7 +45,7 @@ class HomeController extends BaseController {
 				$data= array_add($data,'media',$newName );
 			}
 			Noticias::create($data);
-			Session::flash('message', '# Noticia Cargada Correctamente #');
+			Session::flash('message', ' Noticia Cargada Correctamente ');
 			return Redirect::to('/');
 		}
 		return View::make('agregarnoticia');
@@ -75,7 +75,7 @@ class HomeController extends BaseController {
 			}
 			$data= array_add($data, 'areas',$areas);
 			$id =DB::table('eventos')->insertGetId($data);
-			Session::flash('message', "Evento Agregado Correctamente");
+			flashMessage("Evento Agregado Correctamente");
 			return  Redirect::To('ver-eventos');
 		}
 		return View::make('agregarevento');
@@ -108,7 +108,7 @@ class HomeController extends BaseController {
 			}
 
 			$id =Recibos::insertGetId($data);
-			Session::flash('message', "Recibo Agregado Correctamente");
+			flashMessage("Recibo Agregado Correctamente");
 			return  Redirect::to('ver-recibos');
 		}
 		return View::make('agregarrecibo');
@@ -129,7 +129,7 @@ class HomeController extends BaseController {
 				}
 				Input::file('file')->move(public_path()."/images/galeria/", quitar_tildes(Input::get('nombre') . "." . Input::file('file')->getClientOriginalExtension()));
 				Event::fire('register.image', array(public_path()."/images/galeria/",quitar_tildes(Input::get('nombre') . "." . Input::file('file')->getClientOriginalExtension()),Input::get('album')));
-				Session::flash('message',"Imagen subida a la Galeria Correctamente");
+				flashMessage("Imagen Cargada Correctamente");
 				return Redirect::to('ver-galeria');
 			}
 		}
@@ -215,7 +215,7 @@ class HomeController extends BaseController {
 			$datos = Input::except('_token');
 			$datos = array_add($datos,"residencia_id",Auth::user()->residencia_id);
 			Personal::FirstorCreate ($datos);
-			Session::flash('message', 'Personal Agregado Correctamente');
+			flashMessage("Personal Agregado Correctamente");
 		}
 		$personal = Personal::all();
 		$tupersonal = Auth::user()->residencia->personal;
@@ -234,7 +234,7 @@ class HomeController extends BaseController {
 			$datos = Input::except('_token');
 			$datos = array_add($datos,"residencia_id",Auth::user()->residencia_id);
 			Vehiculo::FirstorCreate ($datos);
-			Session::flash('message', 'Vehiculo Agregado Correctamente');
+			flashMessage("Vehiculo Agregado Correctamente");
 		}
 		$vehiculos = Vehiculo::orderBy("residencia_id","asc")->get();
 		$tusvehiculos = Auth::user()->residencia->vehiculos->sortBy('residencia_id');
@@ -253,7 +253,7 @@ class HomeController extends BaseController {
 			$datos = Input::except('_token');
 			$datos = array_add($datos,"residencia_id",Auth::user()->residencia_id);
 			Visitante::FirstorCreate ($datos);
-			Session::flash('message', 'Visitante Frecuente Agregado Correctamente');
+			flashMessage("Visitante Agregado Correctamente");
 		}
 		$visitantes    = Visitante::orderBy("residencia_id","asc")->get();
 		$tusvisitantes = Auth::user()->residencia->visitantes->sortBy('residencia_id');
@@ -270,12 +270,12 @@ class HomeController extends BaseController {
 		if ($recibo->persona_id == Auth::user()->id) {
 			File::delete(public_path()."/images/recibos/".$recibo->path);
 			$recibo->delete();
-			Session::flash('message', 'Recibo o Factura Borrado Correctamente');
+			flashMessage("Recibo o Factura  eliminado Correctamente");
 			return Redirect::to("ver-recibos");
 		}
 		else
 		{
-			Session::flash('message',"No Posee permisos para realizar esta acción");
+			flashMessage("No posee los permisos para realizar esta acción", 'red');
 			return Redirect::back();
 		}
 	}
@@ -284,12 +284,12 @@ class HomeController extends BaseController {
 		$persona =	Personal::find($id);
 		if ($persona->residencia_id == Auth::user()->residencia_id) {
 			$persona->delete();
-			Session::flash('message', 'Personal Borrado Correctamente');
+			flashMessage("Personal Eliminado");
 			return Redirect::to("ver-personal");
 		}
 		else
 		{
-			Session::flash('message',"No Posee permisos para realizar esta acción");
+			flashMessage("No posee los permisos para realizar esta acción", 'red');
 			return Redirect::back();
 		}
 	}
@@ -303,7 +303,7 @@ class HomeController extends BaseController {
 		}
 		else
 		{
-			Session::flash('message',"No Posee permisos para realizar esta acción");
+			flashMessage("No posee los permisos para realizar esta acción", 'red');
 			return Redirect::back();
 		}
 	}
@@ -317,7 +317,7 @@ class HomeController extends BaseController {
 		}
 		else
 		{
-			Session::flash('message',"No Posee permisos para realizar esta acción");
+			flashMessage("No posee los permisos para realizar esta acción", 'red');
 			return Redirect::back();
 		}
 	}
@@ -343,7 +343,7 @@ class HomeController extends BaseController {
 			->with('año',$año)
 			->withMaestra($maestra)
 			->with('cant_residencias',$cant_residencias);
-			
+
 		header('Content-Type : application/pdf');
 		$headers = array('Content-Type' => 'application/pdf');
 		return Response::make(PDF::load($html, 'A4', 'portrait')->show('mi_factura'), 200, $headers);
@@ -376,13 +376,13 @@ class HomeController extends BaseController {
 			Session::flash('message', "Bienvenido " . Auth::user()->nombre);
 			return  Redirect::to("/");
 		}
-		Session::flash('message', "Credenciales Invalidas");
+		flashMessage("Usuario o contraseña invalidos", 'red');
 		return  Redirect::to("/");
 	}
 	public function logout()
 	{
 		Auth::logout();
-		Session::flash('message', 'Session Cerrada');
+		flashMessage("Sesión Finalizada", 'blue lighten-1 rounded');
 		return Redirect::to("/");
 	}
 	public function registro()
@@ -416,7 +416,7 @@ class HomeController extends BaseController {
 			$credentials =Input::only('email','password');
 			if(Auth::attempt($credentials, Input::get('remember', false)))
 			{
-				Session::flash('message', "Usuario Creado Correctamente");
+				flashMessage("Usuario creado correctamente");
 				return  Redirect::to("/");
 			};
 
@@ -425,7 +425,13 @@ class HomeController extends BaseController {
 		$residencias =Residencias::union($nulos)->lists("nombre","id");
 		return View::make('formularioregistro')->withResidencias($residencias);
 	}
-	public function usuarioEdit()
+	public function forgotPassword(){
+		if (Input::method() == "GET"){
+			return View::make('forgotPassword');
+		}
+	}
+
+	public function perfil()
 	{
 		$residencias = Residencias::lists('nombre','id');
 		if (Input::has('nombre'))
@@ -439,19 +445,19 @@ class HomeController extends BaseController {
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
-				return Redirect::to('Usuario-Edit')->withResidencias($residencias)->withErrors($validation);
+				return Redirect::to('perfil')->withResidencias($residencias)->withErrors($validation);
 			}
 			else
 			{
 				Auth::user()->Update(Input::except('_token'));
-				Session::flash('message', 'Usuario Actualizado Correctamente');
+				flashMessage("Usuario Actualziado Correctamente");
 				return Redirect::back();
 			}
 		}
 		$tupersonal = Auth::user()->residencia->personal;
 		$tusvehiculos   = Auth::user()->residencia->vehiculos;
 		$tusvisitantes = Auth::user()->residencia->visitantes;
-		return View::make("editarinfo")->withResidencias($residencias)
+		return View::make("perfil")->withResidencias($residencias)
 		->withTupersonal($tupersonal)->withTusvehiculos($tusvehiculos)->withTusvisitantes($tusvisitantes);
 	}
 	public function editarResidencia()
@@ -467,12 +473,12 @@ class HomeController extends BaseController {
 			$validation = Validator::make(Input::except('_token'),$rules);
 			if ($validation->fails())
 			{
-				return Redirect::to('Usuario-Edit')->withResidencias($residencias)->withErrors($validation);
+				return Redirect::to('perfil')->withResidencias($residencias)->withErrors($validation);
 			}
 			else
 			{
 				Residencias::find(Auth::user()->residencia_id)->Update(Input::except('_token'));
-				Session::flash('message', 'Residencia Actualizada Correctamente');
+				flashMessage("Residencia Actualizada Correctamente");
 				return Redirect::to("ver-residencia");
 			}
 		}

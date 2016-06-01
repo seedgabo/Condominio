@@ -89,7 +89,7 @@ class DispositivosController extends \BaseController {
 		// 	return  Response::json($validator->messages(), 500);
 		// }
 
-		$dispositivo = Dispositivo::find($id);
+		$dispositivo = Dispositivo::findOrFail($id);
 		$dispositivo->active =  Input::get('active', "true") == "true" ? 1 : 0 ;
 		$dispositivo->mensajes_enabled =  Input::get('mensajes_enabled', "true") == "true" ? 1 : 0 ;
 		$dispositivo->eventos_enabled =  Input::get('eventos_enabled', "true") == "true" ? 1 : 0;

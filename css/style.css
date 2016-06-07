@@ -96,3 +96,17 @@
 	-o-transition: 0.3s;
 	transition: 0.3s;
 }
+
+
+.chat-container{
+	width: 330px;
+	position: fixed;
+	left: 5%;
+	bottom: -2%;
+	z-index: 100;
+	transition: 1s;
+}
+
+.title-chat{
+ cursor:pointer;
+}

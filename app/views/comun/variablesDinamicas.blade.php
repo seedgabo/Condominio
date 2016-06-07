@@ -74,6 +74,7 @@
                     <li><a onclick="addVar('{minuto}')">Minuto Dinámico</a></li>
                     <li><a onclick="addVar('{segundo}')">Segundo Dinámico</a></li>
                     <li><a onclick="addVar('{nombre_dia}')"> Dia de la Semana Dinámico</a></li>
+                    <li><a onclick="addVar('{nombre_mes}')">Nombre del Mes Dinámico</a></li>
                     <li><a onclick="addVar('{fecha}')">Fecha Dinámica</a></li>
                 </ul>
             </div>

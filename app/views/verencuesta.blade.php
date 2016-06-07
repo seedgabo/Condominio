@@ -8,7 +8,7 @@
 				<li class="collection-header"> <h4>Encuestas:</h4></li>
 				@forelse ($encuestas as $encuesta)
 				<a onclick="cargarGrafico({{$encuesta->id}})" class="collection-item">
-					{{$encuesta->pregunta}}
+					{{$encuesta->nombre}}
 				</a>
 				@empty
 				<li class="collection-item"> NO HAY ENCUESTAS</li>
@@ -24,7 +24,7 @@
 <script>
 	$(document).ready(function()
 	{
-		cargarGrafico({{$encuestas['0']->id}});  
+		cargarGrafico({{$encuestas['0']->id}});
 	});
 	function cargarGrafico(id)
 	{
@@ -42,14 +42,14 @@
 			      opacity: .5, // Opacity of modal background
 			      in_duration: 300, // Transition in duration
 			      out_duration: 200, // Transition out duration
-			  });  
+			  });
 			},
 			complete : function()
 			{
 				$( "#respuestaform" ).submit(function( e ) {
 					e.preventDefault();
 					enviarRespuesta(id);
-				});	 
+				});
 			},
 		});
 	}
@@ -60,7 +60,7 @@
 		$.ajax({
 			beforeSend: function ()
 			{
-				$("#respuestaform").append('<div class="progress"> <div class="indeterminate"></div> </div>') 
+				$("#respuestaform").append('<div class="progress"> <div class="indeterminate"></div> </div>')
 			},
 			url: '{{url("ajax/resultados-encuesta/")}}' +"/"+id,
 			data: {comentarios:$('input[name=comentarios]').val(),respuesta:$('input[name=respuesta]:checked').val(), persona_id:"{{Auth::user()->id}}" ,encuesta_id: $('input[name=encuesta_id]').val()},
@@ -71,5 +71,5 @@
 			},
 		});
 	}
-</script>	
+</script>
 @stop

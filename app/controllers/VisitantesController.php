@@ -9,9 +9,12 @@ class VisitantesController extends \BaseController {
 	 */
 	public function index()
 	{
-		$visitantes = Visitante::all();
+		$visitantes = Visitante::join("residencias","residencias.id","=","visitantes.residencia_id")
+		->select('visitantes.*' , 'residencias.nombre as residencia')
+		->orderby("residencia_id")
+		->get();
 
-		return View::make('visitantes.index', compact('visitantes'));
+		return Response::json($visitantes);
 	}
 
 	/**
@@ -31,16 +34,9 @@ class VisitantesController extends \BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Visitante::$rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		Visitante::create($data);
-
-		return Redirect::route('visitantes.index');
+		$data = Input::all();
+		$data = array_add($data, 'residencia_id', Auth::user()->residencia_id);
+		return Visitante::create($data);
 	}
 
 	/**
@@ -83,12 +79,12 @@ class VisitantesController extends \BaseController {
 
 		if ($validator->fails())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			return  Response::json('No Autorizado', 401);
 		}
 
 		$visitante->update($data);
-
-		return Redirect::route('visitantes.index');
+		$visitante->save();
+		return $visitante;
 	}
 
 	/**
@@ -99,9 +95,14 @@ class VisitantesController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Visitante::destroy($id);
-
-		return Redirect::route('visitantes.index');
+		if(Auth::user()->residencia->id == Visitante::findorFail($id)->residencia_id || Auth::user()->admin == 1)
+		{
+			Visitante::destroy($id);
+			return "TRUE";
+		}
+		else{
+			return Response::json("No Autorizado", 401);
+		}
 	}
 
 }

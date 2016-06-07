@@ -7,7 +7,7 @@ View::share('time', new Carbon);
 Route::group(array('prefix' => 'admin'), function()
 {
     Route::any('/', 'GraphController@Graphs');
-    Route::post('push','AdminController@push');  
+    Route::post('push','AdminController@push');
     Route::any('eventos', 'AdminController@eventos');
     Route::any('areas', 'AdminController@areas');
     Route::any('directiva', 'AdminController@directiva');
@@ -44,7 +44,7 @@ Route::group(array('prefix' => 'admin/Finanzas'), function()
     Route::any('cuotasMasivas', 'FinanzasController@cuotasMasivas');
     Route::any('parametros', 'FinanzasController@parametros');
     Route::any('gestion', 'FinanzasController@gestionResidencias');
-
+    Route::any('cargar-cobros', 'FinanzasController@cargarCobros');
     Route::any('generarResumendeCobrosMes', 'FinanzasController@generarResumendeCobrosMes');
 
     Route::any('eliminarconcepto/{id}','FinanzasController@eliminarconcepto');
@@ -84,6 +84,8 @@ Route::group(array('prefix' => 'api'), function()
     Route::resource('galeria', 'GaleriaController');
     Route::resource('documentos', 'DocumentosController');
     Route::resource('vehiculos', 'VehiculosController');
+    Route::resource('personal', 'PersonalController');
+    Route::resource('visitantes', 'VisitantesController');
     Route::resource('dispositivos', 'DispositivosController');
     Route::any('generar-factura', array('uses' => 'HomeController@generarFactura'));
     Route::any('generar-documento/{id}', array('uses' => 'HomeController@generarDocumento'));
@@ -148,11 +150,16 @@ Route::group(array(), function()
 //Miselaneo
 Route::group(array(), function()
 {
+    Route::any('test', function(){
+        return Solvencia::getEstadoResidencia(81, Carbon::today());
+    });
+
     Route::any('demo', function()
     {
         Auth::loginUsingId(2, true);
         Return Redirect::to('');
     });
+
     Route::any('reset', function()
     {
         header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
@@ -161,6 +168,7 @@ Route::group(array(), function()
         Artisan::call('db:seed');
         return "hecho";
     });
+
     Route::any("printInput",function()
     {
        header('Access-Control-Allow-Origin:*');
@@ -196,8 +204,10 @@ Route::group(array(), function()
 		return Response::make(PDF::load($html, 'A4', 'portrait')->show($documento), 200, $headers);
     });
 
-    Route::get('push', function() {
-         PushNotification();
-         return "Hecho";
-    });
+    Route::get('chat-frame',['before' => 'auth'  , 'uses'=> function() {
+            Return View::make('chat.chat');
+    }]);
+    Route::get('chat',['before' => 'auth'  , 'uses'=> function() {
+            Return View::make('chat.chat-full');
+    }]);
 });

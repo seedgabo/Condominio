@@ -141,4 +141,7 @@ $query = "?" . http_build_query(Input::only('mes','año'));
 		})
 	});
 </script>
+
+@include('admin.comun.cargadordeDeudas')
+
 @stop

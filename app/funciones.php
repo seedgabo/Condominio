@@ -74,7 +74,7 @@ function getdeuda($residencia_id,$mes,$año)
 	$maestra =  json_decode(File::get(app_path("config/maestra.php")),true);
 
 	$total  = Facturas::wherenull("residencia_id")->where("mes","=",$mes)->where("año","=",$año)->where("porcentual","=",1)->sum('monto')*(Residencias::find($residencia_id)->alicuota/100);
-	$total += Facturas::wherenull("residencia_id")->where("mes","=",$mes)->where("año","=",$año)->where("porcentual","=",0)->sum('monto')/(Residencias::where("nombre","<>","condominio")->count());
+	$total += Facturas::wherenull("residencia_id")->where("mes","=",$mes)->where("año","=",$año)->where("porcentual","=",0)->sum('monto')/(Residencias::where("id","<>","1")->count());
 	$total += Facturas::where("residencia_id","=", $residencia_id)->where("mes","=",$mes)->where("año","=",$año)->sum('monto');
 
 	if($maestra['is_fondo'])
@@ -84,33 +84,39 @@ function getdeuda($residencia_id,$mes,$año)
 	return $total;
 }
 
+function getDeudaTotal($residencia_id){
+	$años = Facturas::distinct()->lists("año");
+	$deuda = 0;
+	foreach ($años as $año) {
+		for ($mes=1; $mes <= 12; $mes++) {
+			$solvencia = Solvencia::mes($mes)->ano($año)->residencia($residencia_id)->first();
+			if($solvencia->estado == 'Moroso')
+				$deuda +=$solvencia->monto;
+		}
+	}
+	return $deuda;
+}
+
 function flashMessage($message, $class="green"){
 	Session::flash('message', $message);
 	Session::flash('status', $class);
 }
 
-function PushNotification(){
-	$dispositivos = Dispositivo::all();
-	$disp = [];
 
-	foreach ($dispositivos as $dispositivo) {
-		$disp[]= PushNotification::Device($dispositivo->token);
-	}
 
-	$devices = PushNotification::DeviceCollection($disp);
+function renderVariables($contenido){
+	$persona = Input::has('persona') ? User::find(Input::get('persona')) : Auth::user();
+	$residencia = Input::has('residencia') ? Residencias::find(Input::get('residencia')) : $persona->residencia;
+	$propietario = $residencia->propietario ? $residencia->propietario : (new User);
+	$tiempo =  new Carbon();
+	$busqueda = array( "{residencia}", "{residencia_alicuota}", "{residencia_solvencia}", "{residencia_qtyper}", "{residencia_telefono}", "{persona}", "{persona_email}", "{persona_telefono}", "{persona_cedula}", "{persona_imagen}", "{propietario}", "{propietario_email}", "{propietario_telefono}", "{propietario_cedula}", "{propietario_imagen}", "{condo}", "{condo_direccion}", "{condo_telefono}", "{condo_email}", "{condo_cuenta}", "{condo_doc}" ,"{condo_keycode}", "{condo_long}", "{condo_lat}", "{moneda}", "{moneda_abreviada}", "{pais}", "{dia}", "{mes}", "{ano}", "{hora}", "{minuto}", "{segundo}", "{nombre_dia}","{nombre_mes}" ,"{fecha}", );
 
-	$message = PushNotification::Message('Notificacion de Prueba',[
-	    'badge' => 1,
-	    'image' => 'www/logo.png',
-	    'title' => 'Mi Notificacion'
-		]);
+	$reemplazo= array( $residencia->nombre, $residencia->alicuota, $residencia->solvencia ==1 ? 'Al Día' : 'Moroso', $residencia->cant_personas, $residencia->telefono, $persona->nombre, $persona->email, $persona->telefono, number_format($persona->cedula,0,",","."), "<p><img style=&quot;float:left&quot; src=&quot;{{$persona->avatar}}&quot;/></p>", $propietario->nombre, $propietario->email, $propietario->telefono, number_format($propietario->cedula,0,",","."), "<p><img style=&quot;float:left&quot; src=&quot;{{$propietario->avatar}}&quot;/></p>", Config::get("var.nombre", ""), Config::get("var.ubicacion", ""), Config::Get("var.telefono",""), Config::get("var.email", ""), Config::get("var.cuenta-bancaria", ""),Config::get("var.documento", "") ,Config::get("var.keycode", ""), Config::get("var.long", ""), Config::get("var.lat", ""), Config::get("var.moneda", ""), Config::get("var.moneda_abreviada", ""), Config::get("var.pais", ""), $tiempo->day, $tiempo->month, $tiempo->year, $tiempo->hour, $tiempo->minute, $tiempo->second, traducir_fecha($tiempo->formatLocalized('%A')),traducir_fecha($tiempo->formatLocalized('%B')) , traducir_fecha($tiempo->formatLocalized('%A %d %B %Y')), );
 
-	$collection = PushNotification::app('android')
-        ->to($devices)
-        ->send($message);
-
-    return $collection;
+	$procesado = str_ireplace($busqueda,$reemplazo,$contenido);
+	return $procesado;
 }
+
 
 
 

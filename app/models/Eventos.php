@@ -5,12 +5,24 @@ class Eventos extends Eloquent {
     protected $fillable = array('razon','fecha_ini','tiempo_ini','fecha_fin','tiempo_fin','user_id','persona','areas');
 
     public function user(){
-        return $this->hasOne('User');
+        return $this->belongsTo('User');
+    }
+
+    public function  setAreasAttribute($value){
+        $this->attributes['areas'] = json_encode($value);
+    }
+
+    public function  getAreasAttribute($value){
+        return   json_decode($value);
+    }
+
+    public function Areas(){
+        return Areas::whereIn('id', $this->areas)->get();
     }
 }
 
 
-Eventos::observe(new EnentoObserver);
+Eventos::observe(new EventoObserver);
 
 
 
@@ -28,17 +40,25 @@ class EventoObserver{
 
             $devices = PushNotification::DeviceCollection($disp);
 
-            $message = PushNotification::Message($model->user->nombre . ' ha agregado un nuevo Evento',[
+            $actions = [];
+            $actions[0] = new stdClass();
+            $actions[0]->icon = 'eye';
+            $actions[0]->title = 'ver';
+            $actions[0]->callback = 'mycallback';
+            $devices = PushNotification::DeviceCollection($disp);
+            $message = PushNotification::Message($model->user->nombre . ' ha agregado un nuevo evento',[
                 'badge' => 1,
                 'image' => 'www/logo.png',
-                'title' => 'Nueva Noticia'
+                'soundname' => 'alert',
+                'title' => 'Nueva Evento',
+                "ledColor" => [0, 146, 234, 255],
+                'actions' => $actions
             ]);
 
             $collection = PushNotification::app('android')
             ->to($devices)
             ->send($message);
 
-            // return $collection;
         }
     }
 

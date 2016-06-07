@@ -11,11 +11,14 @@ class EventosController extends \BaseController {
 	public function index()
 	{
 	  $eventos = Eventos::where('fecha_ini','>=',Carbon::today())->orderby("fecha_ini","asc")->orderby("tiempo_ini","asc")->get();
-	  foreach ($eventos as $key => $evento) {
+	  $eventos->each(function($evento){
 	  	$evento  = array_add($evento,'duracion',traducir_fecha(Carbon::parse($evento->fecha_ini . $evento->tiempo_ini)->diffForHumans(Carbon::parse($evento->fecha_fin . $evento->tiempo_fin)),true));
 	  	$evento['inicio'] = traducir_fecha(Carbon::parse($evento->fecha_ini . $evento->tiempo_ini)->toDayDateTimeString());
 	  	$evento['fin'] = traducir_fecha(Carbon::parse($evento->fecha_fin . $evento->tiempo_fin)->toDayDateTimeString());
-	  }
+		foreach ($evento->areas() as $area) {
+			$evento->area .= $area->nombre . "," ;
+		}
+	});
 	  return Response::json($eventos,200);
 	}
 
@@ -53,12 +56,9 @@ class EventosController extends \BaseController {
 		$data['tiempo_fin'] = date("G:i", strtotime(Input::get('tiempo_fin')));
 		$data= array_add($data,'persona', Auth::user()->nombre);
 		$data= array_add($data,'user_id', Auth::user()->id);
-		$areas = "";
-		foreach (Input::get('areas',array()) as $key => $value) {
-			$areas .= $value .', ';
-		}
-		$data= array_add($data, 'areas',$areas);
-		$evento = Eventos::Create($data);
+		$areas = explode(",",Input::get('areas',""));
+		$data= array_add($data,'areas', $areas);
+		$evento = Eventos::create($data);
 		return  $evento;
 	}
 
@@ -71,7 +71,11 @@ class EventosController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		return	 json_encode(Eventos::find($id));
+		$evento = Eventos::find($id);
+		foreach ($evento->areas() as $area) {
+			$evento->area .= $area->nombre . "," ;
+		}
+		return	 json_encode($evento);
 	}
 
 	/**

@@ -11,7 +11,7 @@ class Visitante extends \Eloquent {
 		'residencia_id' => 'required|number|exists:Residencias,id'
 
 	];
-
+	protected $table = 'visitantes';
 	// Don't forget to fill this array
 	protected $fillable = ["nombre","cedula","telefono","email","residencia_id"];
 

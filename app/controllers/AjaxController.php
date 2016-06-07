@@ -9,13 +9,21 @@ class AjaxController extends BaseController {
 		{
 			if ($action=="create" )
 			{
-				$data = Eventos::firstOrCreate(Input::all());
-				return	$respuesta = array('Record' => $data,'Result'=>"OK") ;
+				$evento = Eventos::firstOrCreate(Input::all());
+				foreach ($evento->areas() as $area) {
+					$evento->area .= $area->nombre . "," ;
+				}
+				return	$respuesta = array('Record' => $evento,'Result'=>"OK") ;
 			}
 			if ($action=="edit" )
 			{
-				Eventos::where("id" ,Input::get("id"))->update(Input::except("id"));
-				return $respuesta = array('Record' => Eventos::find(Input::get('id')),'Result'=>"OK") ;
+				$evento = Eventos::find(Input::get("id"));
+				$evento->fill(Input::all());
+				$evento->save();
+				foreach ($evento->areas() as $area) {
+					$evento->area .= $area->nombre . "," ;
+				}
+				return $respuesta = array('Record' => $evento,'Result'=>"OK") ;
 			}
 			if($action=="remove")
 			{
@@ -25,14 +33,19 @@ class AjaxController extends BaseController {
 			if($action=="list")
 			{
 				$Records = Eventos::get();
+				$Records->each(function($evento)
+				{
+					foreach ($evento->areas() as $area) {
+						$evento->area .= $area->nombre . "," ;
+					}
+				});
 				$respuesta= array('Records' => $Records, 'Result' => "OK");
 				return json_encode($respuesta);
 			}
 			if($action=="areas")
 			{
 				$nulos = DB::table('areas')->select(DB::raw("'Ninguna' as DisplayText,'null' as value"));
-				$respuesta = DB::table('areas')
-				->select("nombre as DisplayText","nombre as Value")->union($nulos)->orderby('value','asc')->distinct()
+				$respuesta = Areas::select("nombre as DisplayText","id as Value")->union($nulos)->orderby('value','asc')->distinct()
 				->get();
 				return	"var opciones=" .json_encode($respuesta);
 			}
@@ -180,9 +193,9 @@ class AjaxController extends BaseController {
 			if($action=="list")
 			{
 				if (Input::has('q'))
-					$Records = Residencias::where("id", Input::get('q'))->get();
+				$Records = Residencias::where("id", Input::get('q'))->get();
 				else
-					$Records = Residencias::get();
+				$Records = Residencias::get();
 				$respuesta= array('Records' => $Records, 'Result' => "OK");
 				return json_encode($respuesta);
 			}
@@ -373,22 +386,29 @@ class AjaxController extends BaseController {
 			if ($action=="solventar" )
 			{
 				$data = Solvencia::firstOrCreate(Input::all());
-			  $data->estado = 1;
-			  $data->save();
+				$data->estado = 1;
+				$data->save();
 				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
 			}
 			if($action=="adeudar")
 			{
 				$data = Solvencia::firstOrCreate(Input::all());
-			  $data->estado = 0;
-			  $data->save();
+				$data->estado = 3;
+				$data->save();
 				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
 			}
-				if($action=="acreditar")
+			if($action=="acreditar")
 			{
 				$data = Solvencia::firstOrCreate(Input::all());
-			  $data->estado = 2;
-			  $data->save();
+				$data->estado = 2;
+				$data->save();
+				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
+			}
+			if($action=="desactivar")
+			{
+				$data = Solvencia::firstOrCreate(Input::all());
+				$data->estado = 0;
+				$data->save();
 				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
 			}
 			if($action=="obtener")
@@ -403,7 +423,7 @@ class AjaxController extends BaseController {
 				$data = Solvencia::find(Input::get('id'));
 				return  Response::json($data, 200);
 			}
-				if($action=="vistar")
+			if($action=="vistar")
 			{
 				$data = Solvencia::firstOrCreate(Input::all());
 				return View::make('admin/estadoSolvencia')->withMes($data->mes)->with('año',$data->año)->withResidencia(Residencias::find($data->residencia_id));
@@ -445,39 +465,39 @@ class AjaxController extends BaseController {
 		if (Input::has('to'))
 		{
 			$validator = Validator::make(Input::all(),
-				array('contenido'=> 'required|min:8',
-					'title'=> 'required|min:3|max:50',
-					'to'=> 'required',
-					'file' => 'max:10240|mimes:jpeg,bmp,png,doc,docx,xls,xlsx,pdf,jpg,gif,sql,txt,ppt,pptx'
-					));
-			if ($validator->fails())
-			{
-				$salida ['message'] =  $validator->messages()->first();
-				return Redirect::back()->withErrors($validator);
-			}
-			foreach (Input::get('to') as $to)
-			{
-				$persona = User::where("email","=",$to)->first();
-				$residencia = $persona->residencia;
-				Mail::send('emails.basic',
-				array('title' => Input::get('title'), 'contenido' => Input::get('contenido'), 'persona'=> $persona , 'residencia' => $residencia),
-				function($message) use ($to)
-				{
-					$message->to($to)->subject(Input::get('title'));
-					if(Input::hasFile('file'))
-					{
-						$message->attach(Input::file('file')->getRealPath(), array('as' =>Input::file('file')->getClientOriginalName()));
-					}
-				});
-
-			};
-			$salida['status']  = "ok";
-			$salida['message'] = "Mensaje Enviado entregado a los Destinatarios:  ";
-			foreach (Input::get('to') as $key => $correo) {
-				$salida['message'] .= $correo  .",  ";
-			}
-			return  json_encode($salida);
+			array('contenido'=> 'required|min:8',
+			'title'=> 'required|min:3|max:50',
+			'to'=> 'required',
+			'file' => 'max:10240|mimes:jpeg,bmp,png,doc,docx,xls,xlsx,pdf,jpg,gif,sql,txt,ppt,pptx'
+		));
+		if ($validator->fails())
+		{
+			$salida ['message'] =  $validator->messages()->first();
+			return Redirect::back()->withErrors($validator);
 		}
-		return "error No Ha Seleccionado ningun Destinatario";
+		foreach (Input::get('to') as $to)
+		{
+			$persona = User::where("email","=",$to)->first();
+			$residencia = $persona->residencia;
+			Mail::send('emails.basic',
+			array('title' => Input::get('title'), 'contenido' => Input::get('contenido'), 'persona'=> $persona , 'residencia' => $residencia),
+			function($message) use ($to)
+			{
+				$message->to($to)->subject(Input::get('title'));
+				if(Input::hasFile('file'))
+				{
+					$message->attach(Input::file('file')->getRealPath(), array('as' =>Input::file('file')->getClientOriginalName()));
+				}
+			});
+
+		};
+		$salida['status']  = "ok";
+		$salida['message'] = "Mensaje Enviado entregado a los Destinatarios:  ";
+		foreach (Input::get('to') as $key => $correo) {
+			$salida['message'] .= $correo  .",  ";
+		}
+		return  json_encode($salida);
 	}
+	return "error No Ha Seleccionado ningun Destinatario";
+}
 }

@@ -1,15 +1,15 @@
-<?php  
+<?php
 $meses = getMeses();
 $i=0;
 $query = "?" . http_build_query(Input::only('mes','año','residencia_id'));
 $residencias_opt = Residencias::orderby("id")->where("nombre","<>","condominio")->lists("nombre","id");
 ?>
-    @extends('admin.layout') 
+    @extends('admin.layout')
     @section('header')
     <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-chosen.css')}}">
     <script type="text/javascript" src="{{asset('js/chosen.jquery.min.js')}}"></script>
-    @stop 
-    @section('content') 
+    @stop
+    @section('content')
 
     <div id="info" class="jumbotron">
 	    <div class="container">
@@ -23,7 +23,7 @@ $residencias_opt = Residencias::orderby("id")->where("nombre","<>","condominio")
 	    </div>
 		</div>
 
-     <div class="well"> 
+     <div class="well">
      		<button class="btn" onclick="$('form#crear').toggle('fast')"><i class="fa fa-eye"></i></button>
 		    {{ Form::open(['method' => 'POST','id' =>'crear' , 'class' => 'form-horizontal']) }}
 
@@ -104,4 +104,6 @@ $residencias_opt = Residencias::orderby("id")->where("nombre","<>","condominio")
             allow_single_deselect: true
         });
     </script>
+
+     @include('admin.comun.cargadordeDeudas')
     @stop

@@ -1,7 +1,7 @@
 
 @extends('admin.layout')
 @section('header')
-<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>     
+<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Include one of jTable styles. -->
 <link href="{{asset('jtable/themes/jqueryui/jtable_jqueryui.min.css')}}" rel="stylesheet" type="text/css" />
 
@@ -21,7 +21,7 @@
 @stop
 @section('content')
 <div id="table"></div>
- 
+
 <script type="text/javascript" src="{{url('ajax/calendar/areas')}}"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -80,7 +80,27 @@
 				areas:{
 					title: 'Areas',
 					type :'radiobutton',
-					options : opciones,
+                    display : function(data)
+                    {
+                        return  data.record.area;
+                    },
+                    input: function (data){
+                        if (data.record){
+                        var salida ="";
+                        for(var i=0; i< opciones.length; i++)
+                        salida += '<input type="checkbox" name="areas[]" value="'+ opciones[i]["Value"] +'" '+
+                         (data.record.area!= undefined && data.record.area.indexOf(opciones[i]["DisplayText"]) >= 0 ? "checked": "" )+
+                         '>' + opciones[i]["DisplayText"] +"<br>";
+                         return salida;
+                     }
+                     else{
+                         var salida ="";
+                         for(var i=0; i< opciones.length; i++)
+                         salida += '<input type="checkbox" name="areas[]" value="'+ opciones[i]["Value"] +'">' + opciones[i]["DisplayText"] +"<br>";
+                         return salida;
+                     }
+                    },
+					options : opciones
 				}
 			},
 	    recordsLoaded: function()
@@ -112,7 +132,7 @@
                     "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                 },
             }
-        }); 
+        });
     $(".dataTables_paginate").removeClass("dataTables_paginate fg-buttonset ui-buttonset fg-buttonset-multi ui-buttonset-multi paging_simple_numbers");
      $(".dataTables_length").css("display", "inline").append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
      $(".dataTables_filter").css("display", "inline");

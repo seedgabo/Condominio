@@ -64,21 +64,17 @@ class HomeController extends BaseController {
 			{
 				return Redirect::to('agregar-evento')->withErrors($validation);
 			}
-			$data= Input::except("_token","area");
+			$data= Input::except("_token");
 			$data['tiempo_ini'] = date("G:i", strtotime(Input::get('tiempo_ini')));
 			$data['tiempo_fin'] = date("G:i", strtotime(Input::get('tiempo_fin')));
 			$data= array_add($data,'persona', Auth::user()->nombre);
 			$data= array_add($data,'user_id', Auth::user()->id);
-			$areas = "";
-			foreach (Input::get('area',array()) as $key => $value) {
-				$areas .= $key .', ';
-			}
-			$data= array_add($data, 'areas',$areas);
-			$id =DB::table('eventos')->insertGetId($data);
+			$evento = Eventos::create($data);
 			flashMessage("Evento Agregado Correctamente");
 			return  Redirect::To('ver-eventos');
 		}
-		return View::make('agregarevento');
+		$areas = Areas::get();
+		return View::make('agregarevento')->with(compact('areas'));
 	}
 	public function agregarrecibo()
 	{
@@ -137,8 +133,7 @@ class HomeController extends BaseController {
 	}
 	public function verfullcalendar()
 	{
-		$proximos = DB::table('eventos')
-		->where('fecha_ini','>=',Carbon::today())
+		$proximos = Eventos::where('fecha_ini','>=',Carbon::today())
 		->take(10)
 		->orderby('fecha_ini','asc')
 		->orderby('tiempo_ini','asc')
@@ -156,8 +151,10 @@ class HomeController extends BaseController {
 	}
 	public function verrecibos()
 	{
-		$recibos = Recibos::where("persona_id","=" ,Auth::user()->id)->orderby("id","asc")->get();
-		return View::make('verrecibos')->withRecibos($recibos);
+		$recibos = Recibos::where("persona_id","=" ,Auth::user()->id)->orderby("created_at","desc")->get();
+		$solvencias = Solvencia::getEstadoResidencia(Auth::user()->residencia->id);
+		$deuda = getDeudaTotal(Auth::user()->residencia_id);
+		return View::make('verrecibos')->withRecibos($recibos)->withSolvencias($solvencias)->withDeuda($deuda);
 	}
 	public function vergaleria()
 	{
@@ -343,10 +340,10 @@ class HomeController extends BaseController {
 			->with('año',$año)
 			->withMaestra($maestra)
 			->with('cant_residencias',$cant_residencias);
-
+		$html = renderVariables($html);
 		header('Content-Type : application/pdf');
 		$headers = array('Content-Type' => 'application/pdf');
-		return Response::make(PDF::load($html, 'A4', 'portrait')->show('mi_factura'), 200, $headers);
+		return Response::make(PDF::load($html, 'A4', 'portrait')->show('factura-'.$mes . "-". $año), 200, $headers);
 	}
 	public function generarDocumento($id)
 	{

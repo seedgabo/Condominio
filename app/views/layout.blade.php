@@ -1,8 +1,6 @@
 <?php
 $message = Session::get('message');
 $status = Session::get('status', null);
-// $residencias = Residencias::leftjoin("personas","personas.id","=","residencias.persona_id_propietario")->select("residencias.*","personas.nombre as dueño")->get();
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -38,7 +36,8 @@ $status = Session::get('status', null);
 		display: flex;
 		min-height: 100vh;
 		flex-direction: column;
-		background-color: #fafafa;
+		background-color: #fffff;
+
 	}
 
 	main {
@@ -74,11 +73,11 @@ $status = Session::get('status', null);
 								<li><a href="#modallogin" class="modal-trigger" data-target="#modallogin"><i class="left fa fa-user"></i> Iniciar Sesión</a></li>
 								<li><a href="{{url('registro')}}"><i class="left fa fa-sign-in"></i> Registrate</a></li>
 							@else
-								<li class="tooltipped" data-delay="10" data-tooltip="Encuestas"><a href="{{url('ver-encuestas')}}"><i style="font-size:18px" class="fa fa-list-alt"></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Pagos y Facturas"><a href="{{url('ver-recibos')}}"><i style="font-size:18px" class="fa fa-credit-card"></i></a></li>
+								<li class="tooltipped" data-delay="10" data-tooltip="Encuestas"><a href="{{url('ver-encuestas')}}"><i style="font-size:18px" class="fa fa-pie-chart"></i></a></li>
+								<li class="tooltipped" data-delay="10" data-tooltip="Pagos y Facturas"><a href="{{url('ver-recibos')}}"><i style="font-size:18px" class="fa fa-money"></i></a></li>
 								<li class="tooltipped" data-delay="10" data-tooltip="Condominio"><a href="{{url('directiva')}}"><i style="font-size:18px" class="fa fa-info"></i></a></li>
 								<li class="tooltipped" data-delay="10" data-tooltip="Galeria"><a href="{{url('ver-galeria')}}"><i style="font-size:18px" class="fa fa-picture-o "></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Documentos"><a href="{{url('ver-documentos')}}"><i style="font-size:18px" class="fa fa-paperclip "></i></a></li>
+								<li class="tooltipped" data-delay="10" data-tooltip="Documentos"><a href="{{url('ver-documentos')}}"><i style="font-size:18px" class="fa fa-file "></i></a></li>
 								<li class="tooltipped" data-delay="10" data-tooltip="Calendario"><a href="{{url('ver-eventos')}}"><i style="font-size:18px" class="fa fa-calendar "></i></a></li>
 								<li class="tooltipped" data-delay="10" data-tooltip="Personal" ><a href="{{url('ver-personal')}}"><i style="font-size:18px" class="fa fa-users"></i></a></li>
 								<li class="tooltipped" data-delay="10" data-tooltip="Vehiculos" ><a href="{{url('ver-vehiculos')}}"><i style="font-size:18px" class="fa fa-car"></i></a></li>
@@ -91,14 +90,18 @@ $status = Session::get('status', null);
 								<li><a href="#modallogin" class="modal-trigger" data-target="#modallogin">Iniciar Sesión</a></li>
 								<li><a href="{{url('registro')}}">Registrate</a></li>
 							@else
-								<li><a href="{{url('logout')}}"><i class="fa fa-user fa-lg"></i> Cerrar Sesión</a> </li>
-								<li><a href="{{url('ver-encuestas')}}">Encuestas</a></li>
-								<li><a href="{{url('ver-recibos')}}">Pagos</a></li>
-								<li><a href="{{url('directiva')}}"> @lang('literales.condominio')</a></li>
-								<li><a href="{{url('ver-galeria')}}">Galeria</a></li>
-								<li><a href="{{url('ver-documentos')}}">Documetación</a></li>
+								<li><a href="{{url('logout')}}"> Cerrar Sesión</a> </li>
 								<li><a href="{{url('ver-residencia')}}">Mi Residencia</a></li>
 								<li><a href="{{url('perfil')}}">Mi Perfil</a></li>
+								<li><a href="{{url('ver-recibos')}}">Pagos</a></li>
+								<li><a href="{{url('ver-encuestas')}}">Encuestas</a></li>
+								<li><a href="{{url('directiva')}}"> @lang('literales.condominio')</a></li>
+								<li><a href="{{url('ver-galeria')}}">Galeria</a></li>
+								<li><a href="{{url('ver-documentos')}}">Documentos</a></li>
+								<li><a href="{{url('ver-personal')}}">Ver Personal</a></li>
+								<li><a href="{{url('ver-vehiculos')}}">Ver Vehiculos</a></li>
+								<li><a href="{{url('ver-visitantes')}}">Ver Visitantes</a></li>
+
 								@if (Auth::user()->admin)
 									<li><a href="{{url('admin')}}" title="Entrar como Administrador">Admin</a></li>
 								@endif
@@ -108,13 +111,45 @@ $status = Session::get('status', null);
 					</nav>
 				</header>
 			</nav>
-		</div>
+	</div>
 
 
 		{{-- Contenido Principal --}}
 		<main>
 			@yield('contenido', '')
 		</main>
+
+		{{-- CHAT --}}
+		@if(Auth::check())
+		<div class="chat-container">
+			<h5 class="center  blue accent-2 white-text">
+				<span class="title-chat">
+					<i class="fa fa-comments"></i> CHAT
+				</span>
+				<small>
+					<a href="{{url('chat')}}" class="white-text chat-close" target="_blank"><i class="fa fa-external-link"></i></a>
+					<span class="chat-close right"><i class="fa fa-times"></i></span>
+				</small>
+			</h5>
+			 <iframe style="display:none" id="chat" src="" width="100%" height="100%"></iframe>
+			<script>
+			var chatEnable =false;
+			$('.title-chat').click(function(){
+			 if(!chatEnable){
+				 $('.chat-container').css('height',"250px");
+				 $('.chat-container').css('bottom',"6%");
+				 $('#chat').attr("src","{{url('chat-frame')}}");
+				 $('#chat').css('display',"block");
+				 chatEnable = true;
+			 }
+			});
+			$(".chat-close").click(function(){
+				$('.chat-container').remove();
+			});
+
+			</script>
+		</div>
+		@endif
 
 		<!-- Modal de iniciar session -->
 		<div id="modallogin" class="modal">
@@ -151,7 +186,7 @@ $status = Session::get('status', null);
 					<div class="col l6 s12">
 						<h6 class="black-text">¿Quieres tu propio servicio de Condominio online?</h6>
 						<form action="{{url('contacto')}}" method="GET">
-							<input type="email" name="emailContact" class="form-control col s12 m8 l8" id="" placeholder="Deja tu Correo">
+							<input type="email" name="emailContact" class="form-control col s12 m8 l8" id="" required placeholder="Deja tu Correo">
 							<button type="submit" class="btn col s12 offset-l1 offset-m1 m3 l3">Enviar</button>
 						</form>
 					</div>
@@ -191,14 +226,14 @@ $status = Session::get('status', null);
 			</ul>
 		</div>
 
-		<ul id="dropdown1" class="dropdown-content blue">
+		<ul id="dropdown1" class="dropdown-content">
 			@if (Auth::check() &&Auth::user()->admin)
-				<li class="tooltipped" data-delay="10" data-position="right" data-tooltip="Entrar Como Administrador"><a class="white-text" href="{{url('admin')}}" title="Entrar como Administrador"><i class="left fa fa-unlock-alt"></i>Administrar</a></li>
+				<li class="tooltipped" data-delay="10" data-position="right" data-tooltip="Entrar Como Administrador"><a class="" href="{{url('admin')}}" title="Entrar como Administrador"><i class="left fa fa-unlock-alt"></i>Administrar</a></li>
 			@endif
-			<li ><a class="white-text" href="{{url('ver-residencia')}}"><i class="left fa fa-home "></i>Mi Residencia</a></li>
-			<li><a class="white-text" href="{{url('perfil')}}"><i class="left fa fa-pencil"></i>Mi Perfil</a></li>
+			<li ><a class="" href="{{url('ver-residencia')}}"><i class="left fa fa-home "></i>Mi Residencia</a></li>
+			<li><a class="" href="{{url('perfil')}}"><i class="left fa fa-pencil"></i>Mi Perfil</a></li>
 			<li class="divider"></li>
-			<li><a class="white-text" href="{{url('logout')}}"><i class="left fa fa-sign-out"></i>Cerrar Sessión</a></li>
+			<li><a class="" href="{{url('logout')}}"><i class="left fa fa-sign-out"></i>Cerrar Sessión</a></li>
 		</ul>
 
 		<script>

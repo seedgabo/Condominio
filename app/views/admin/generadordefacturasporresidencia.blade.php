@@ -1,10 +1,10 @@
-<?php  
+<?php
 $meses = getMeses();
 $i=0;
 $query = "?" . http_build_query(Input::only('mes','año','residencia_id'));
 $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
 ?>
-@extends('admin.layout') 
+@extends('admin.layout')
 
 @section('header')
     <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap-chosen.css')}}">
@@ -19,7 +19,7 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
     <div id="info" class="jumbotron">
         <div class="container">
         <p><button class="btn btn-info" type="button" onclick="$('#info').toggle('fast')"><i class="fa fa-eye"></i></button>
-            Este formulario permite agregar cuotas para las residencias de manera particular 
+            Este formulario permite agregar cuotas para las residencias de manera particular
         </p>
             <ul>
                 <li>Las cuotas aqui establecidas seran establecidas solo a residencia a la que se asignó</li>
@@ -34,20 +34,20 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
     <div class="col-md-12 col-sm-12 well ">
         {{ Form::open(['method' => 'GET', 'class' => 'form form-inline']) }}
         <div class="form-group ">
-            {{ Form::label('mes', 'Mes:') }} 
+            {{ Form::label('mes', 'Mes:') }}
             {{ Form::select('mes', $meses, $mes, ['class' => 'form-control', 'required' => 'required']) }}
             <small class="text-danger">{{ $errors->first('mes') }}</small>
         </div>
-        
+
         <div class="form-group ">
-            {{ Form::label('año', 'Año:') }} 
+            {{ Form::label('año', 'Año:') }}
             {{ Form::number('año', $año, ['class' => 'form-control', 'required' => 'required','min'=>'1999','max'=>'2099']) }}
             <small class="text-danger">{{ $errors->first('año') }}</small>
         </div>
 
         <div class="form-group">
-            {{ Form::label('residencia_id', 'Residencia:') }} 
-            {{ Form::select('residencia_id[]', $residencias_opt ,$residencia_id, ['id' => 'residencia_id', 'class' => 'chosen-select form-control', 'multiple','data-placeholder'=>"Selecciona las Resdencias"]) }} 
+            {{ Form::label('residencia_id', 'Residencia:') }}
+            {{ Form::select('residencia_id[]', $residencias_opt ,$residencia_id, ['id' => 'residencia_id', 'class' => 'chosen-select form-control', 'multiple','data-placeholder'=>"Selecciona las Resdencias"]) }}
             <small class="text-danger">{{ $errors->first('residencia_id') }}</small>
         </div>
 
@@ -63,10 +63,10 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
         {{ Form::open(['method' => 'POST','url' => url('admin/Finanzas/cuotasPorResidencia'), 'class' => 'form form-inline', "id" => "Facturas"]) }}
         {{-- agregando todos los campos del mes --}}
         <input type="hidden" name="mes" value="{{ $mes or $time->month}}" />
-        <input type="hidden" name="año" value="{{ $año or $time->year}}" /> 
+        <input type="hidden" name="año" value="{{ $año or $time->year}}" />
 
-        @if (isset($array)) 
-        @forelse ($array as $element) 
+        @if (isset($array))
+        @forelse ($array as $element)
         <input type="hidden" name="id[]" value="{{$element->id}}">
         <div class="col-md-12 list-group-item">
 
@@ -82,7 +82,7 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
 
             <div class="form-group @if($errors->first('residencia_id')) has-error @endif">
                 <label for="residencia_id[]">Residencia: </label>
-                    {{ Form::select('residencia_id[]',Residencias::lists("nombre","id"),$element->residencia_id, ['id' => 'residencia_id', 'class' => 'form-control chosen-select', 'required' => 'required']) }} 
+                    {{ Form::select('residencia_id[]',Residencias::lists("nombre","id"),$element->residencia_id, ['id' => 'residencia_id', 'class' => 'form-control chosen-select', 'required' => 'required']) }}
             </div>
 
             <div class="form-group">
@@ -103,11 +103,11 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
             </div>
             <div class="form-group @if($errors->first('residencia_id')) has-error @endif">
                 <label for="residencia_id[]">Residencia: </label>
-                    {{ Form::select('residencia_id[]',Residencias::orderby("id")->lists("nombre","id"),null, ['id' => 'residencia_id', 'class' => 'form-control chosen-select', 'required' => 'required']) }} 
+                    {{ Form::select('residencia_id[]',Residencias::orderby("id")->lists("nombre","id"),null, ['id' => 'residencia_id', 'class' => 'form-control chosen-select', 'required' => 'required']) }}
             </div>
         </div>
 
-        @endforelse 
+        @endforelse
         @endif
         <a class="btn btn-primary adder col-md-8 col-sm-8"> Agregar Campo <i class="fa fa-plus"></i></a>
         <button type="submit" class="btn btn-success col-sm-offset-1 col-md-offset-1 col-sm-3"> Actualizar <i class="fa fa-send"></i></button>
@@ -153,10 +153,10 @@ $residencias_opt = Residencias::orderby("id")->lists("nombre","id");
                     ' </div>');
                 $(".chosen-select").chosen({disable_search_threshold: 10});
             });
+            $(".chosen-select").chosen({disable_search_threshold: 10});
         });
     </script>
     
-    <script >
-        $(".chosen-select").chosen({disable_search_threshold: 10});
-    </script>
+    @include('admin.comun.cargadordeDeudas')
+
     @stop

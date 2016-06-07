@@ -5,7 +5,6 @@
 		<h2 class="teal-text center-align"> Calendario de Eventos</h2>
 		<div id="calendar" class=""></div>
 	</div>
-
 	<a href="href{{url('agregar-evento')}}" class="btn col s12 hide-on-med-and-up"> Agregar Evento</a>
 
 	<div class="col m3 l3 hide-on-small-only">
@@ -14,15 +13,20 @@
 			@forelse($proximos as $evento)
 			<li class="collection-item ">
 				<strong class="center-align">
-					{{ $evento->razon }}    
+					{{ $evento->razon }}
 				</strong>
-				<p>					
+				<p>
 					<?php  setlocale(LC_TIME, 'es_CO'); ?>
 					{{traducir_fecha(Carbon::parse($evento->fecha_ini)->formatLocalized('%a %d %b %y'))}} -
 					{{traducir_fecha(Carbon::parse($evento->fecha_fin)->formatLocalized('%a %d %b %y'))}}
-				</p>  
+				</p>
 				<p class="red-text">{{traducir_fecha(Carbon::now()->diffForHumans(Carbon::parse($evento->fecha_ini . $evento->tiempo_ini))) }}</p>
-				<p>{{$evento->areas}}</p>
+				<p>
+					@forelse($evento->Areas() as $area)
+						{{$area->nombre}},
+					@empty
+					@endforelse
+				</p>
 				<blockquote class="right-align">
 					{{$evento->persona}}
 				</blockquote>

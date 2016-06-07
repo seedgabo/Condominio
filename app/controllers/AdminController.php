@@ -187,7 +187,9 @@ class AdminController extends BaseController {
 
 		$message = PushNotification::Message(Input::get('mensaje'),[
 		    'badge' => 1,
-		    'image' => 'www/logo.png',
+			'image' => 'www/logo.png',
+			'soundname' => 'alert',
+			"ledColor" => [0, 146, 234, 255],
 		    'title' => Input::get('titulo')
 			]);
 

@@ -21,7 +21,7 @@ class CreateSolvenciaTable extends Migration {
 			$table->decimal("monto",20,3);
 			$table->timestamp("facturado_el");
 			$table->timestamp("cancelado_el");
-			$table->integer("estado")->default(1);   // 0 => Moroso , 1 => AlDía, 2 => Crédito
+			$table->integer("estado")->default(0);   // 0 => No Activo , 1 => AlDía, 2 => Crédito , 3 => Moroso
 			$table->string("descripcion",50)->nullable();
 			$table->timestamps();
 		});

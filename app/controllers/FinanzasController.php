@@ -101,6 +101,9 @@ class FinanzasController extends \BaseController {
 
 	public function cuotasMasivas()
 	{
+		$time = new Carbon;
+		$mes = Input::get('mes', $time->month);
+		$año = Input::get('año', $time->year);
 		if (Request::isMethod("POST"))
 		{
 			foreach (Input::get('residencia_id') as $key => $residencia_id)
@@ -117,7 +120,8 @@ class FinanzasController extends \BaseController {
 			->whereNotNull("residencia_id")
 			->get();
 
-		return View::make('admin/cuotasMasivas')->withConceptosmasivos($conceptosMasivos);
+
+		return View::make('admin/cuotasMasivas')->withConceptosmasivos($conceptosMasivos)->withMes($mes)->withAño($año);
 	}
 
 	public function parametros()
@@ -142,9 +146,23 @@ class FinanzasController extends \BaseController {
 		}
 		else
 		{
-			$residencias = Residencias::distinct()->orderby("id")->paginate(12);
+			$residencias = Residencias::distinct()->orderby("id")->paginate(Input::get('per_page', 12));
 		}
 		return View::make('admin/gestionResidencias',compact('residencias'));
+	}
+
+	public function cargarCobros(){
+		$mes = Input::get('mes');
+		$año = Input::get('año');
+		foreach (Residencias::all() as $residencia) {
+			$solvencia = Solvencia::firstorCreate(['mes' => $mes, 'año' => $año, 'residencia_id' => $residencia->id]);
+			$solvencia->estado = 3;
+			$solvencia->monto = getdeuda($residencia->id,$mes,$año);
+			$solvencia->save();
+		}
+
+		Session::flash('success', "Cobros cargados Correctamente");
+		return Redirect::to('admin/Finanzas/gestion?mes='.$mes. '&año='.$año);
 	}
 
 	public function generarResumendeCobrosMes()

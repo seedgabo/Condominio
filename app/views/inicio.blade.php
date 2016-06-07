@@ -54,16 +54,17 @@ $portadas = DB::table('portadas')->get();
         {{-- Links y Eventos --}}
         <div class="col s12  m3 l3 ">
             <ul class="collection right-aligned z-depth-3">
-                <a href="{{url('directiva')}}" class="collection-item waves-effect"><i class="fa fa-info fa-fw fa-lg"></i> Datos Del Condominio</a>
-                <a href="{{url('ver-galeria')}}" class="collection-item waves-effect"><i class="fa fa-picture-o fa-fw fa-lg"></i> Galeria</a>
-                <a href="{{url('ver-documentos')}}" class="collection-item waves-effect"><i class="fa fa-files-o fa-fw fa-lg"></i> Ver Documetación</a>
-                <a href="{{url('ver-residencia')}}" class="collection-item waves-effect"><i class="fa fa-home fa-fw fa-lg"></i> Datos de tu Residencia</a>
-                <a href="{{url('ver-encuestas')}}" class="collection-item waves-effect"><i class="fa fa-thumbs-up fa-fw fa-lg"></i> Encuestas</a>
-                <a href="{{url('ver-recibos')}}" class="collection-item waves-effect"><i class="fa fa-credit-card fa-fw fa-lg"></i> Pagos y Facturas </a>
-                <a href="{{url('ver-eventos')}}" class="collection-item waves-effect"><i class="fa fa-calendar fa-fw fa-lg"></i> Calendario</a>
                 <a href="{{url('ver-noticias')}}" class="collection-item waves-effect"><i class="fa fa-newspaper-o"></i> Noticias </a>
+                <a href="{{url('ver-galeria')}}" class="collection-item waves-effect"><i class="fa fa-picture-o fa-fw fa-lg"></i> Galeria</a>
+                <a href="{{url('ver-eventos')}}" class="collection-item waves-effect"><i class="fa fa-calendar fa-fw fa-lg"></i> Calendario</a>
+                <a href="{{url('ver-recibos')}}" class="collection-item waves-effect"><i class="fa fa-credit-card fa-fw fa-lg"></i> Pagos y Facturas </a>
+                <a href="{{url('ver-documentos')}}" class="collection-item waves-effect"><i class="fa fa-files-o fa-fw fa-lg"></i> Ver Documentos</a>
+                <a href="{{url('directiva')}}" class="collection-item waves-effect"><i class="fa fa-info fa-fw fa-lg"></i> Datos Del Condominio</a>
+                <a href="{{url('ver-residencia')}}" class="collection-item waves-effect"><i class="fa fa-home fa-fw fa-lg"></i> Datos de tu Residencia</a>
+                <a href="{{url('ver-encuestas')}}" class="collection-item waves-effect"><i class="fa fa-pie-chart fa-fw fa-lg"></i> Encuestas</a>
                 <a href="{{url('ver-personal')}}" class="collection-item waves-effect"><i class="fa fa-th"></i> Listado de Personal </a>
                 <a href="{{url('ver-vehiculos')}}" class="collection-item waves-effect"><i class="fa fa-car"></i> Listado de Vehiculos  </a>
+                <a href="{{url('ver-visitantes')}}" class="collection-item waves-effect"><i class="fa fa-hand-o-right"></i> Listado de Visitantes  </a>
             </ul>
 
             {{-- Eventos --}}

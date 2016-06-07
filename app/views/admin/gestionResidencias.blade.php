@@ -1,5 +1,6 @@
-<?php $año = Input::get('año', $time->year);
-$estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
+<?php
+$año = Input::get('año', $time->year);
+$estados  = array ('0' => 'No Activo', '1' => "Al Día", '2' => 'Crédito', '3' => 'Moroso');
 ?>
 @extends('admin/layout')
 @section('content')
@@ -9,6 +10,13 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 			<div class="form-group">
 				<input type="search" class="form-control" name="residencia" placeholder="Buscar...">
 				<input type="number" class="form-control" name="año" value="{{$año}}">
+				Mostrar: <select name="per_page" class="form-control" id="">
+					<option value="12" {{Input::get('per_page') == 12? 'selected' : ''}}>12</option>
+					<option value="25" {{Input::get('per_page') == 25? 'selected' : ''}}>25</option>
+					<option value="50" {{Input::get('per_page') == 50? 'selected' : ''}}>50</option>
+					<option value="100" {{Input::get('per_page') == 100? 'selected' : ''}}>100</option>
+					<option value="1000" {{Input::get('per_page') == 1000? 'selected' : ''}}>1000</option>
+				</select>
 			</div>
 
 			<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
@@ -18,7 +26,7 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 			<thead>
 				<tr>
 					@foreach (getMeses() as $mes)
-						<th>@if($mes!= 'Meses') {{$mes}} @else {{'Año: '. $time->year}} @endif</th>
+						<th>@if($mes!= 'Meses') {{$mes}} @else {{'Año: '. $año}} @endif</th>
 						@endforeach
 					</tr>
 				</thead>
@@ -27,8 +35,8 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 						<tr>
 							<td ondblclick="$('#ver-residencia').modal('show')">{{$residencia->nombre}}</td>
 							@for ($mes = 1; $mes <=12 ; $mes++)
-								<td id="{{$año.$mes.$residencia->id}}">
-									@include('admin/estadoSolvencia',compact('año','residencia','mes')) 
+								<td id="{{$año."-".$mes."-".$residencia->id}}">
+									@include('admin/estadoSolvencia',compact('año','residencia','mes'))
 								</td>
 							@endfor
 						</tr>
@@ -40,7 +48,7 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 		</div>
 
 
-		{{$residencias->links() }}
+		{{$residencias->appends(array('per_page' => Input::get('per_page', 12), 'año' => Input::get('año'), 'residencia' => Input::get('residencia')))->links() }}
 
 
 		<div class="modal fade" id="ver-solvencia">
@@ -64,7 +72,7 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 						<div class="form-group @if($errors->first('año')) has-error @endif">
 							{{ Form::label('año', 'Año', ['class' => 'col-sm-3 control-label']) }}
 							<div class="col-sm-9">
-								{{ Form::selectYear('año', date('Y'), date('Y') + 10, $año, ['class' => 'form-control', 'required' => 'required', 'disabled']) }}
+								{{ Form::selectYear('año', date('Y')-10, date('Y') + 10, $año, ['class' => 'form-control', 'required' => 'required', 'disabled']) }}
 								<small class="text-danger">{{ $errors->first('año') }}</small>
 							</div>
 						</div>
@@ -103,8 +111,8 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 						{{ Form::close() }}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" onclick="establecer()" class="btn btn-primary">Save changes</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+						<button type="button" onclick="establecer()" class="btn btn-primary">Guardar Cambios</button>
 					</div>
 				</div>
 			</div>
@@ -121,7 +129,7 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 			}
 			, function(response)
 			{
-				$("#"+año+mes+residencia_id).html(response);
+				$("#"+año+"-"+mes+"-"+residencia_id).html(response);
 			});
 		}
 
@@ -135,7 +143,7 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 			}
 			, function(response)
 			{
-				$("#"+año+mes+residencia_id).html(response);
+				$("#"+año+"-"+mes+"-"+residencia_id).html(response);
 			});
 		}
 		function acreditar(residencia_id,mes,año)
@@ -148,7 +156,20 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 			}
 			, function(response)
 			{
-				$("#"+año+mes+residencia_id).html(response);
+				$("#"+año+"-"+mes+"-"+residencia_id).html(response);
+			});
+		}
+		function desactivar(residencia_id,mes,año)
+		{
+			$.post('{{url("ajax/solvencias/desactivar")}}',
+			{
+				'residencia_id': residencia_id,
+				'mes': mes,
+				'año': año
+			}
+			, function(response)
+			{
+				$("#"+año+"-"+mes+"-"+residencia_id).html(response);
 			});
 		}
 		function obtener(residencia_id,mes,año)
@@ -176,7 +197,7 @@ $estados  = array ('0' => 'Moroso', '1' => "Al Día", '2' => 'Crédito');
 			, function(response)
 			{
 				$('#ver-solvencia').modal('hide');
-				vistar(response.id, '#'+ response.año+response.mes+response.residencia_id);
+				vistar(response.id, '#'+ response.año+"-"+response.mes+"-"+response.residencia_id);
 			});
 		}
 		function vistar(data_id,element_id)

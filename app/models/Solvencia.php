@@ -38,7 +38,7 @@ class Solvencia extends \Eloquent {
 		if ($fecha_inicial == null)
 			$fecha_inicial = Carbon::parse(Carbon::today()->year ."/"."01/01");
 
-		$estados = Solvencia::where('residencia_id',"=",$residencia_id)->where('año',">=",$fecha_inicial->year)->get();
+		$estados = Solvencia::where('residencia_id',"=",$residencia_id)->where('año',">=",$fecha_inicial->year)->orderBy("id","desc")->get();
 
 		$estados = $estados->filter(function($estado) use ($fecha_inicial){
 			return ($estado->año > $fecha_inicial->year or ($estado->año == $fecha_inicial->year &&  $estado->mes >= $fecha_inicial->month));

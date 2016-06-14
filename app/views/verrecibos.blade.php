@@ -59,12 +59,12 @@
 
     <div class="container row center-align">
         <h4>Estado Actual</h4>
-        <table class="table hover highlight striped responsive-table">
+        <table class="table highlight striped hoverable bordered responsive-table">
             <thead>
                 <tr>
                     <th>Periodo</th>
                     <th>Monto</th>
-                    <th>Cancelado el</th>
+                    <!-- <th>Cancelado el</th> -->
                     <th>Facturado el</th>
                     <th>Estado</th>
                 </tr>
@@ -72,9 +72,14 @@
             <tbody>
                 @forelse($solvencias as $estado)
                     <tr>
-                        <td>{{getMeses()[$estado->mes] . "/" . $estado->año}}</td>
+                        <td>{{getMeses()[$estado->mes] . "/" . $estado->año}}
+                               <a href="{{url('generar-recibo/'. $estado->id)}}" title="" class="btn-link" target="_blank">
+                                 <img src="{{asset('fonts/invoice.png')}}" alt="">
+                            </a>
+
+                        </td>
                         <td>{{$estado->monto != 0 ? Config::get('var.moneda_abreviada') . number_format($estado->monto,"2",",","."): 'No Posee'}}</td>
-                        <td>{{traducir_fecha($estado->cancelado_el->formatLocalized('%A %d de  %B de %Y'))}}</td>
+                        {{-- <td>{{traducir_fecha($estado->cancelado_el->formatLocalized('%A %d de  %B de %Y'))}}</td> --}}
                         <td>{{traducir_fecha($estado->facturado_el->formatLocalized('%A %d de  %B de %Y'))}}</td>
                         <td class="@if($estado->estado == 'Al Día') green-text @endif @if($estado->estado == 'Moroso') red-text @endif">
                             <b>{{$estado->estado}}</b>

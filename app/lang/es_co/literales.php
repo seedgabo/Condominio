@@ -19,6 +19,8 @@ return array(
 
 	'cedula'   => 'Cedula de Ciudadanía',
 
+	'DNI' => 'C.C.',
+
 	'condominio' => 'Conjunto Residencial',
 
 	'estacionamiento' => 'Parqueadero|Parqueaderos',

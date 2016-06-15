@@ -114,7 +114,7 @@ return array(
 
 			'database'  => 'u377984988_demo',
 
-			'username'  => 'u377984988_seedg',
+			'username'  => 'u377984988_demo',
 
 			'password'  => 'gab23gab',
 
@@ -245,4 +245,3 @@ return array(
 
 
 );
-

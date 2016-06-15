@@ -364,6 +364,22 @@ class HomeController extends BaseController {
 		$headers = array('Content-Type' => 'application/pdf');
 		return Response::make(PDF::load($html, 'A4', 'portrait')->show($titulo), 200, $headers);
 	}
+	public function generarRecibo($id)
+	{
+		$solvencia = Solvencia::find($id);
+		if(Auth::user()->residencia_id != $solvencia->residencia_id){
+			return Response::make("No posee los permisos para ver este recibo", 403);
+		}
+        $año = $solvencia->año;
+        $mes = $solvencia->mes;
+        $user = Auth::user();
+        $residencia = $solvencia->residencia;
+        $html = View::make('pdf.comprobante')->with('año',$año)->withMes($mes)->withResidencia($residencia)->withPersona($user)->withSolvencia($solvencia);
+        $html = renderVariables($html);
+        header('Content-Type : application/pdf');
+		$headers = array('Content-Type' => 'application/pdf');
+		return Response::make(PDF::load($html, 'A4', 'portrait')->show('Solvencia-'.$mes . "-". $año), 200, $headers);
+	}
 	public function login()
 	{
 

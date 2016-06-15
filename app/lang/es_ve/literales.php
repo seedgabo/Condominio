@@ -19,6 +19,8 @@ return array(
 
 	'cedula'   => 'Cedula de Identidad',
 
+	'DNI'  => 'C.I.'
+
 	'condominio' => 'Condominio',
 
 	'estacionamiento' => 'Estacionamiento|Estacionamientos',

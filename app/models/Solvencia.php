@@ -8,6 +8,9 @@ class Solvencia extends \Eloquent {
 
 	protected $fillable = ['id','residencia_id','mes','año','monto','facturado_el','cancelado_el','estado','descripcion'];
 
+	public function Residencia(){
+	return $this->belongsTo('residencias');
+	}
 
 	public function scopeMes($query, $mes){
 		return $query->where('mes', "=", $mes);
@@ -21,8 +24,7 @@ class Solvencia extends \Eloquent {
 		return $query->where('residencia_id', "=", $residencia_id);
 	}
 
-	public function getEstadoAttribute($value)
-	{
+	public function getEstadoAttribute($value){
 		if ($value == 0)
 		return  "No Activo";
 		if ($value == 1)
@@ -32,7 +34,6 @@ class Solvencia extends \Eloquent {
 		if($value == 3)
 		return "Moroso";
 	}
-
 
 	public static function getEstadoResidencia($residencia_id, $fecha_inicial = null){
 		if ($fecha_inicial == null)

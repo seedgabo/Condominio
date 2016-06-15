@@ -137,7 +137,7 @@ Route::group(array(), function()
     Route::any('editar-residencia',array('before' => 'auth', 'uses' => 'HomeController@editarResidencia'));
     Route::any('generar-factura',array('before' => 'auth', 'uses' => 'HomeController@generarFactura'));
     Route::any('generar-documento/{id}', array('before' => 'auth', 'uses' => 'HomeController@generarDocumento'));
-
+    Route::get('generar-recibo/{id}',  array('before' => 'auth', 'uses' => 'HomeController@generarRecibo'));
 
     // Controladores de login, logout y resetPassword
     Route::post('user', 'HomeController@login');
@@ -151,13 +151,13 @@ Route::group(array(), function()
 Route::group(array(), function()
 {
     Route::any('test', function(){
-        return Solvencia::getEstadoResidencia(81, Carbon::today());
+        
     });
 
     Route::any('demo', function()
     {
         Auth::loginUsingId(2, true);
-        Return Redirect::to('');
+        Return Redirect::to('/');
     });
 
     Route::any('reset', function()

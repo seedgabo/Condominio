@@ -115,10 +115,10 @@ class EventosController extends \BaseController {
 		if($evento->user_id == Auth::user()->id || Auth::user()->admin)
 		{
 			$evento->delete();
-			return "TRUE";
+			return Response::json(['status' => 'TRUE'], 200);
 		}
 		else{
-			return "ERROR";
+			return Response::json(['status' => 'ERROR'], 403);
 		}
 	}
 

@@ -87,7 +87,9 @@ Route::group(array('prefix' => 'api'), function()
     Route::resource('personal', 'PersonalController');
     Route::resource('visitantes', 'VisitantesController');
     Route::resource('dispositivos', 'DispositivosController');
+    Route::resource('solvencias', 'SolvenciasController');
     Route::any('generar-factura', array('uses' => 'HomeController@generarFactura'));
+    Route::any('generar-recibo/{id}', array('uses' => 'HomeController@generarRecibo'));
     Route::any('generar-documento/{id}', array('uses' => 'HomeController@generarDocumento'));
 
     Route::any("login", array('uses' => function()

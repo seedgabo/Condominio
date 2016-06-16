@@ -496,7 +496,7 @@ class AjaxController extends BaseController {
 			$salida['message'] .= $correo  .",  ";
 		}
 		return  json_encode($salida);
+		}
+		return "error No Ha Seleccionado ningun Destinatario";
 	}
-	return "error No Ha Seleccionado ningun Destinatario";
-}
 }

@@ -9,7 +9,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
 
-	
+
 	protected $table = 'personas';
 
 	protected $fillable =array('id','nombre','email','residencia_id','telefono','avatar','last_login','observaciones','admin', 'cedula');
@@ -23,7 +23,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	public function dispositivos()
     {
-        return $this->belongsToMany('dispositivos','id','user_id');
+        return $this->hasMany('dispositivos','id','user_id');
     }
+
+	public function notificaciones(){
+		return $this->hasMany('notificacion');
+	}
+
+	
+
 
 }

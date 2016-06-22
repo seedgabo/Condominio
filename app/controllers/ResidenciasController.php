@@ -9,7 +9,10 @@ class ResidenciasController extends \BaseController {
 	 */
 	public function index()
 	{
-		return json_encode(Residencias::get());
+		$residencias =Residencias::leftjoin('personas',"residencias.persona_id_propietario","=","personas.id")
+		->select("residencias.*","personas.nombre as propietario")
+		->get();
+		return json_encode($residencias);
 	}
 
 

@@ -1,6 +1,7 @@
 <?php
 $message = Session::get('message');
 $status = Session::get('status', null);
+Auth::check() ? $notificaciones = Notificacion::noleidas(Auth::user()->id): $notificaciones = null;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -32,95 +33,31 @@ $status = Session::get('status', null);
 	@yield('head', ' ')
 	{{-- Estilo para Footer siempre debajo --}}
 	<style type="text/css">
-	body {
-		display: flex;
-		min-height: 100vh;
-		flex-direction: column;
-		background-color: #fffff;
+		body {
+			display: flex;
+			min-height: 100vh;
+			flex-direction: column;
+			background-color: #fffff;
 
-	}
+		}
 
-	main {
-		flex: 1 0 auto;
-	}
+		main {
+			flex: 1 0 auto;
+		}
 	</style>
 </head>
 <body>
 
-	{{-- Menu Bar --}}
-	<div class="navbar-fixed">
-		<nav>
-			<header id="header" class="">
-				<nav>
-					<div class="nav-wrapper ">
-						<a href="{{ url('/') }}" class="brand-logo center"><img id="brand-logo" src="{{asset('images/logo-completo.png')}}" width="120"></a>
-						<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="fa fa-bars"></i></a>
-						<ul class="right hide-on-med-and-down">
-						@if(Auth::check())
-							<li>
-								<a class="dropdown-button valign-wrapper" href="#!" data-beloworigin="true" data-hover="true" data-activates="dropdown1" data-constrainwidth="true" data-alignment="left">
-									@if (Auth::check() && Auth::user()->avatar != null)
-										<img class="left avatar circle valign" src="{{Auth::user()->avatar}}" alt="">
-									@endif
-									 &nbsp;{{str_limit(Auth::user()->nombre,20,"...")}}
-									 <i class="right fa fa-caret-down"></i>
-								</a>
-							</li>
-						@endif
-						</ul>
-						<ul class="center hide-on-med-and-down">
-							@if (!Auth::check())
-								<li><a href="#modallogin" class="modal-trigger" data-target="#modallogin"><i class="left fa fa-user"></i> Iniciar Sesión</a></li>
-								<li><a href="{{url('registro')}}"><i class="left fa fa-sign-in"></i> Registrate</a></li>
-							@else
-								<li class="tooltipped" data-delay="10" data-tooltip="Encuestas"><a href="{{url('ver-encuestas')}}"><i style="font-size:18px" class="fa fa-pie-chart"></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Pagos y Facturas"><a href="{{url('ver-recibos')}}"><i style="font-size:18px" class="fa fa-money"></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Condominio"><a href="{{url('directiva')}}"><i style="font-size:18px" class="fa fa-info"></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Galeria"><a href="{{url('ver-galeria')}}"><i style="font-size:18px" class="fa fa-picture-o "></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Documentos"><a href="{{url('ver-documentos')}}"><i style="font-size:18px" class="fa fa-file "></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Calendario"><a href="{{url('ver-eventos')}}"><i style="font-size:18px" class="fa fa-calendar "></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Personal" ><a href="{{url('ver-personal')}}"><i style="font-size:18px" class="fa fa-users"></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Vehiculos" ><a href="{{url('ver-vehiculos')}}"><i style="font-size:18px" class="fa fa-car"></i></a></li>
-								<li class="tooltipped" data-delay="10" data-tooltip="Visitantes" ><a href="{{url('ver-visitantes')}}"><i style="font-size:18px" class="fa fa-hand-peace-o"></i></a></li>
-							@endif
-						</ul>
-
-						<ul class="side-nav" id="mobile-demo">
-							@if (!Auth::check())
-								<li><a href="#modallogin" class="modal-trigger" data-target="#modallogin">Iniciar Sesión</a></li>
-								<li><a href="{{url('registro')}}">Registrate</a></li>
-							@else
-								<li><a href="{{url('logout')}}"> Cerrar Sesión</a> </li>
-								<li><a href="{{url('ver-residencia')}}">Mi Residencia</a></li>
-								<li><a href="{{url('perfil')}}">Mi Perfil</a></li>
-								<li><a href="{{url('ver-recibos')}}">Pagos</a></li>
-								<li><a href="{{url('ver-encuestas')}}">Encuestas</a></li>
-								<li><a href="{{url('directiva')}}"> @lang('literales.condominio')</a></li>
-								<li><a href="{{url('ver-galeria')}}">Galeria</a></li>
-								<li><a href="{{url('ver-documentos')}}">Documentos</a></li>
-								<li><a href="{{url('ver-personal')}}">Ver Personal</a></li>
-								<li><a href="{{url('ver-vehiculos')}}">Ver Vehiculos</a></li>
-								<li><a href="{{url('ver-visitantes')}}">Ver Visitantes</a></li>
-
-								@if (Auth::user()->admin)
-									<li><a href="{{url('admin')}}" title="Entrar como Administrador">Admin</a></li>
-								@endif
-							@endif
-						</ul>
-						</div>
-					</nav>
-				</header>
-			</nav>
-	</div>
+	@include('menu')
 
 
-		{{-- Contenido Principal --}}
-		<main>
-			@yield('contenido', '')
-		</main>
+	{{-- Contenido Principal --}}
+	<main>
+		@yield('contenido', '')
+	</main>
 
-		{{-- CHAT --}}
-		@if(Auth::check())
+	{{-- CHAT --}}
+	@if(Auth::check())
 		<div class="chat-container">
 			<h5 class="center  blue accent-2 white-text">
 				<span class="title-chat">
@@ -131,17 +68,17 @@ $status = Session::get('status', null);
 					<span class="chat-close right"><i class="fa fa-times"></i></span>
 				</small>
 			</h5>
-			 <iframe style="display:none" id="chat" src="" width="100%" height="100%"></iframe>
+			<iframe style="display:none" id="chat" src="" width="100%" height="100%"></iframe>
 			<script>
 			var chatEnable =false;
 			$('.title-chat').click(function(){
-			 if(!chatEnable){
-				 $('.chat-container').css('height',"250px");
-				 $('.chat-container').css('bottom',"6%");
-				 $('#chat').attr("src","{{url('chat-frame')}}");
-				 $('#chat').css('display',"block");
-				 chatEnable = true;
-			 }
+				if(!chatEnable){
+					$('.chat-container').css('height',"250px");
+					$('.chat-container').css('bottom',"6%");
+					$('#chat').attr("src","{{url('chat-frame')}}");
+					$('#chat').css('display',"block");
+					chatEnable = true;
+				}
 			});
 			$(".chat-close").click(function(){
 				$('.chat-container').remove();
@@ -149,110 +86,102 @@ $status = Session::get('status', null);
 
 			</script>
 		</div>
-		@endif
+	@endif
 
-		<!-- Modal de iniciar session -->
-		<div id="modallogin" class="modal">
-			<div class="modal-content">
-				<a href="#" class=" pull-right waves-effect waves-green btn-flat modal-action modal-close">X</a>
-				<h4>Iniciar Sessión</h4>
-				<form action="{{url('user')}}" method="post">
-					<div class="input-field">
-						<i class="material-icons prefix">account_circle</i>
-						<input id="correo" type="text" name="email" class="validate">
-						<label for="correo">Correo</label>
-					</div>
-					<div class="input-field col s6">
-						<i class="material-icons prefix">lock_outline</i>
-						<input id="contraseña" type="password" name="password" class="validate">
-						<label for="contraseña">Contraseña</label>
-					</div>
-					<div class="pull-right">
-						<a href="{{url('login/facebook')}}" class="waves-effect waves-light btn btn-small blue darken-2"><i class="fa fa-facebook"></i></a>
-						<a href="{{url('login/google')}}" class="waves-effect waves-light btn btn-small red"><i class="fa fa-google-plus"></i></a>
-						<button type="submit" class="btn waves-effect waves-light"><i class="right fa fa-sign-in"></i> Iniciar Sesión</button>
-					</div>
-						<a href="forgot-password" class="btn-small btn-outline">Olvido su contraseña</a>
-					<br>
-				</form>
+	<!-- Modal de iniciar session -->
+	<div id="modallogin" class="modal">
+		<div class="modal-content">
+			<a href="#" class=" pull-right waves-effect waves-green btn-flat modal-action modal-close">X</a>
+			<h4>Iniciar Sessión</h4>
+			<form action="{{url('user')}}" method="post">
+				<div class="input-field">
+					<i class="material-icons prefix">account_circle</i>
+					<input id="correo" type="text" name="email" class="validate">
+					<label for="correo">Correo</label>
+				</div>
+				<div class="input-field col s6">
+					<i class="material-icons prefix">lock_outline</i>
+					<input id="contraseña" type="password" name="password" class="validate">
+					<label for="contraseña">Contraseña</label>
+				</div>
+				<div class="pull-right">
+					<a href="{{url('login/facebook')}}" class="waves-effect waves-light btn btn-small blue darken-2"><i class="fa fa-facebook"></i></a>
+					<a href="{{url('login/google')}}" class="waves-effect waves-light btn btn-small red"><i class="fa fa-google-plus"></i></a>
+					<button type="submit" class="btn waves-effect waves-light"><i class="right fa fa-sign-in"></i> Iniciar Sesión</button>
+				</div>
+				<a href="forgot-password" class="btn-small btn-outline">Olvido su contraseña</a>
+				<br>
+			</form>
+		</div>
+	</div>
+
+
+	{{-- Footer --}}
+	<footer  style="background-image: url(http://www.img.lirent.net/2014/10/Android-Lollipop-wallpapers-Download.jpg)" class="page-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col l6 s12">
+					<h6 class="black-text">¿Quieres tu propio servicio de Condominio online?</h6>
+					<form action="{{url('contacto')}}" method="GET">
+						<input type="email" name="emailContact" class="form-control col s12 m8 l8" id="" required placeholder="Deja tu Correo">
+						<button type="submit" class="btn col s12 offset-l1 offset-m1 m3 l3">Enviar</button>
+					</form>
+				</div>
+				<div class="col l4 offset-l2 s12">
+					<ul>
+						<li class="big-hover">
+							<a href="mailto:seedgabo@gmail.com" class="black-text"> <i class="fa fa-send-o"></i> Correo</a>
+						</li>
+						<li class="big-hover">
+							<a href="https://ve.linkedin.com/pub/gabriel-bejarano/98/817/711" class="black-text text-lighten-3"> <i class="fa fa-linkedin"></i> Linkendin</a>
+						</li>
+						<li class="big-hover">
+							<a href="tel:+573212441949" class="black-text text-lighten-3"> <i class="fa fa-phone"></i> Llamanos: 321 244 1949</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 
-
-		{{-- Footer --}}
-		<footer  style="background-image: url(http://www.img.lirent.net/2014/10/Android-Lollipop-wallpapers-Download.jpg)" class="page-footer">
-			<div class="container">
-				<div class="row">
-					<div class="col l6 s12">
-						<h6 class="black-text">¿Quieres tu propio servicio de Condominio online?</h6>
-						<form action="{{url('contacto')}}" method="GET">
-							<input type="email" name="emailContact" class="form-control col s12 m8 l8" id="" required placeholder="Deja tu Correo">
-							<button type="submit" class="btn col s12 offset-l1 offset-m1 m3 l3">Enviar</button>
-						</form>
-					</div>
-					<div class="col l4 offset-l2 s12">
-						<ul>
-							<li class="big-hover">
-								<a href="mailto:seedgabo@gmail.com" class="black-text"> <i class="fa fa-send-o"></i> Correo</a>
-							</li>
-							<li class="big-hover">
-								<a href="https://ve.linkedin.com/pub/gabriel-bejarano/98/817/711" class="black-text text-lighten-3"> <i class="fa fa-linkedin"></i> Linkendin</a>
-							</li>
-							<li class="big-hover">
-								<a href="tel:+573212441949" class="black-text text-lighten-3"> <i class="fa fa-phone"></i> Llamanos: 321 244 1949</a>
-							</li>
-						</ul>
-					</div>
-				</div>
+		<div class="footer-copyright">
+			<div class="container black-text">
+				© 2015 Copyright , Derechos de Autor Reservados a SeeD Ltda. ResidenciasOnline Ltda es una división de Seed Ltda.
 			</div>
-
-			<div class="footer-copyright">
-				<div class="container black-text">
-					© 2015 Copyright , Derechos de Autor Reservados a SeeD Ltda. ResidenciasOnline Ltda es una división de Seed Ltda.
-				</div>
-			</div>
-		</footer>
-
-		{{--  boton FAB --}}
-		<div id="fab" class="fixed-action-btn" style="bottom: 45px; right: 28px;">
-			<a type="button" class="btn-floating btn-large  blue accent-3"><i id="fab-btn" class="material-icons">add</i></a>
-			<ul>
-				<li>
-					<a href="{{url("agregar-noticia")}}" type="button" class="btn-floating red tooltipped" data-position="left" data-delay="10" data-tooltip="Nueva Noticia"><i class="fa fa-newspaper-o"></i></a>
-				</li>
-				<li><a href="{{url("agregar-recibo")}}" type="button" class="btn-floating blue tooltipped" data-position="left" data-delay="10" data-tooltip="Registrar Pago"><i class="fa fa-money"></i></a></li>
-				<li><a href="{{url("agregar-evento")}}" type="button" class="btn-floating green tooltipped" data-position="left" data-delay="10" data-tooltip="Agregar Evento al Calendario"><i class="fa fa-calendar-plus-o"></i></a></li>
-				<li><a href="{{url("agregar-imagen")}}" type="button" class="btn-floating yellow tooltipped" data-position="left" data-delay="10" data-tooltip="Subir una imagen"><i class="fa fa-picture-o"></i></a></li>
-			</ul>
 		</div>
+	</footer>
 
-		<ul id="dropdown1" class="dropdown-content">
-			@if (Auth::check() &&Auth::user()->admin)
-				<li class="tooltipped" data-delay="10" data-position="right" data-tooltip="Entrar Como Administrador"><a class="" href="{{url('admin')}}" title="Entrar como Administrador"><i class="left fa fa-unlock-alt"></i>Administrar</a></li>
-			@endif
-			<li ><a class="" href="{{url('ver-residencia')}}"><i class="left fa fa-home "></i>Mi Residencia</a></li>
-			<li><a class="" href="{{url('perfil')}}"><i class="left fa fa-pencil"></i>Mi Perfil</a></li>
-			<li class="divider"></li>
-			<li><a class="" href="{{url('logout')}}"><i class="left fa fa-sign-out"></i>Cerrar Sessión</a></li>
+	{{--  boton FAB --}}
+	<div id="fab" class="fixed-action-btn" style="bottom: 45px; right: 28px;">
+		<a type="button" class="btn-floating btn-large  z-depth-1 pink accent-3"><i id="fab-btn" class="material-icons">add</i></a>
+		<ul>
+			<li>
+				<a href="{{url("agregar-noticia")}}" type="button" class="btn-floating red tooltipped" data-position="left" data-delay="10" data-tooltip="Nueva Noticia"><i class="fa fa-newspaper-o"></i></a>
+			</li>
+			<li><a href="{{url("agregar-recibo")}}" type="button" class="btn-floating blue tooltipped" data-position="left" data-delay="10" data-tooltip="Registrar Pago"><i class="fa fa-money"></i></a></li>
+			<li><a href="{{url("agregar-evento")}}" type="button" class="btn-floating green tooltipped" data-position="left" data-delay="10" data-tooltip="Agregar Evento al Calendario"><i class="fa fa-calendar-plus-o"></i></a></li>
+			<li><a href="{{url("agregar-imagen")}}" type="button" class="btn-floating yellow tooltipped" data-position="left" data-delay="10" data-tooltip="Subir una imagen"><i class="fa fa-picture-o"></i></a></li>
 		</ul>
+	</div>
 
-		<script>
+
+
+	<script>
 		$(document).ready(function () {
-			$(".button-collapse").sideNav({});
-			$('select').material_select();
-			$('.modal-trigger').leanModal();
-			if ("{{$message or ''}}".length != 0) {
-				Materialize.toast("{{$message}}", 5000, "{{$status or 'rounded'}}");
-			}
+		$(".button-collapse").sideNav({});
 
-			$("#fab").hover(
-				function(){$("#fab-btn").css('transform', 'rotate(405deg)')},
-				function(){$("#fab-btn").css('transform', 'rotate(0deg)');
-			});
-			$('a[href]').on('clicks', function(e){
-			 $('#brand-logo').addClass("giant");
-			});
+		$('select').material_select();
+
+		$('.modal-trigger').leanModal();
+
+		if ("{{$message or ''}}".length != 0) {
+			Materialize.toast("{{$message}}", 5000, "{{$status or 'rounded'}}");
+		}
+
+		$("#fab").hover(
+			function(){$("#fab-btn").css('transform', 'rotate(405deg)')},
+			function(){$("#fab-btn").css('transform', 'rotate(0deg)');
 		});
-		</script>
-	</body>
-	</html>
+	});
+	</script>
+</body>
+</html>

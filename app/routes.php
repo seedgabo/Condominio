@@ -69,6 +69,8 @@ Route::group(array('prefix' => 'ajax'), function()
     Route::any('email', 'AjaxController@email');
     Route::any("resultados-encuesta/{id}", 'AjaxController@resultadosEncuesta');
     Route::any("cambiarsolvencia",'AjaxController@cambiarsolvencia');
+    Route::any('marcar-leido/{id}','AjaxController@toggleNotificacion');
+    Route::any('leer-notificaciones','AjaxController@leerTodasNotificaciones');
 });
 
 //Controlador de API's
@@ -91,15 +93,12 @@ Route::group(array('prefix' => 'api'), function()
     Route::any('generar-factura', array('uses' => 'HomeController@generarFactura'));
     Route::any('generar-recibo/{id}', array('uses' => 'HomeController@generarRecibo'));
     Route::any('generar-documento/{id}', array('uses' => 'HomeController@generarDocumento'));
-
+    Route::get('adicionales',  array('uses' => 'AjaxController@adicionales'));
     Route::any("login", array('uses' => function()
     {
-        if (Auth::user())
-        {
-            return json_encode(array_add(Auth::user(),"status",true));
-        }
-        return json_encode(array("status" =>false));
+        return json_encode(array_add(Auth::user(),"status",true));
     }));
+
 });
 
 // Controlador Oauth
@@ -135,6 +134,7 @@ Route::group(array(), function()
     Route::any('ver-eventos','HomeController@verfullcalendar');
     Route::any('ver-galeria', "HomeController@vergaleria");
     Route::any('ver-noticias', "HomeController@vernoticias");
+    Route::any('ver-notificaciones', array('before' => 'auth', 'uses' => 'HomeController@verNotificaciones'));
     Route::any('perfil',array('before' => 'auth' ,'uses' => 'HomeController@perfil'));
     Route::any('editar-residencia',array('before' => 'auth', 'uses' => 'HomeController@editarResidencia'));
     Route::any('generar-factura',array('before' => 'auth', 'uses' => 'HomeController@generarFactura'));
@@ -153,7 +153,7 @@ Route::group(array(), function()
 Route::group(array(), function()
 {
     Route::any('test', function(){
-        
+        return Notificacion::noLeidas(Auth::user()->id);
     });
 
     Route::any('demo', function()

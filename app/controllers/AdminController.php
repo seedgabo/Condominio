@@ -4,47 +4,47 @@ class AdminController extends BaseController {
 
 	public function eventos()
 	{
-		return View::make('admin.eventos');
+		return View::make('admin.eventos')->withActivo('eventos');
 	}
 	public function areas()
 	{
-		return View::make("admin.areas");
+		return View::make("admin.areas")->withActivo('areas');
 	}
 	public function directiva()
 	{
-		return View::make("admin.directiva");
+		return View::make("admin.directiva")->withActivo('directiva');
 	}
 	public function noticias()
 	{
-		return View::make("admin.noticias");
+		return View::make("admin.noticias")->withActivo('noticias');
 	}
 	public function recibos()
 	{
-		return View::make("admin.recibos");
+		return View::make("admin.recibos")->withActivo('recibos');
 	}
 	public function personas()
 	{
-		return View::make("admin.personas");
+		return View::make("admin.personas")->withActivo('personas');
 	}
 	public function personal()
 	{
-		return View::make("admin.personal");
+		return View::make("admin.personal")->withActivo('personal');
 	}
 	public function vehiculos()
 	{
-		return View::make("admin.vehiculos");
+		return View::make("admin.vehiculos")->withActivo('vehiculos');
 	}
 	public function visitantes()
 	{
-		return View::make("admin.visitantes");
+		return View::make("admin.visitantes")->withActivo('visitantes');
 	}
 	public function encuestas()
 	{
-		return View::make("admin.encuestas");
+		return View::make("admin.encuestas")->withActivo('encuestas');
 	}
 	public function residencias()
 	{
-		return View::make("admin.residencias");
+		return View::make("admin.residencias")->withActivo('residencias');
 	}
 	public function galeria()
 	{
@@ -64,7 +64,7 @@ class AdminController extends BaseController {
 			Event::fire('eliminarArchivo', public_path()."/images/galeria/" . Input::get('path'));
 			return "Imagen Eliminada Correctamente";
 		}
-		return View::make('admin.galeria')->withFiles($files);
+		return View::make('admin.galeria')->withFiles($files)->withActivo('galeria');
 	}
 
 	//Funciones para Documentos
@@ -75,7 +75,7 @@ class AdminController extends BaseController {
 			$validator = Validator::make(Input::all(), array('file'=> 'mimes:jpeg,bmp,png,doc,docx,xls,xlsx,pdf,ppt,pptx,txt|max:10240'));
 			if ($validator->fails())
 			{
-				return Redirect::to('admin/Documentos')->withFiles($files)->withErrors($validator);
+				return Redirect::to('admin/Documentos')->withFiles($files)->withErrors($validator)->withActivo('documentos');
 			}
 			Input::file('file')->move(public_path()."/docs/",quitar_tildes(Input::file('file')->getClientOriginalName()));
 			$files =File::files(public_path()."/docs");
@@ -88,7 +88,7 @@ class AdminController extends BaseController {
 				return "No Se Pudo Eliminar El Documento";
 		}
 		$documentos = Documento::all();
-		return View::make('admin.documentos')->withFiles($files)->withDocumentos($documentos);
+		 return View::make('admin.documentos')->withFiles($files)->withDocumentos($documentos)->withActivo('documentos');
 	}
 
 	public function agregarDocumento(){
@@ -152,27 +152,27 @@ class AdminController extends BaseController {
 	public function emailPorUsuario()
 	{
 		$correos =User::lists('email','nombre');
-		return View::make('admin.email')->withCorreos($correos);
+		return View::make('admin.email')->withCorreos($correos)->withActivo('emailPorUsuario');
 	}
 	public function emailPorResidencia()
 	{
 		$correos =Residencias::rightJoin('personas', 'personas.id', '=', 'residencias.persona_id_propietario')
 		->select("personas.email as correo","residencias.nombre")->lists("correo","nombre");
-		return View::make('admin.email')->withCorreos($correos);
+		return View::make('admin.email')->withCorreos($correos)->withActivo('emailPorResidencia');
 	}
 	public function emailPorMoroso()
 	{
 		$correos =Residencias::rightJoin('personas', 'personas.id', '=', 'residencias.persona_id_propietario')
 		->where("residencias.solvencia","=","0")
 		->select("personas.email as correo","residencias.nombre")->lists("correo","nombre");
-		return View::make('admin.email')->withCorreos($correos);
+		return View::make('admin.email')->withCorreos($correos)->withActivo('emailPorMoroso');
 	}
 	public function emailPorSolvencia()
 	{
 		$correos =Residencias::rightJoin('personas', 'personas.id', '=', 'residencias.persona_id_propietario')
 		->where("residencias.solvencia","=","1")
 		->select("personas.email as correo","residencias.nombre")->lists("correo","nombre");
-		return View::make('admin.email')->withCorreos($correos);
+		return View::make('admin.email')->withCorreos($correos)->withActivo('emailPorSolvencia');
 	}
 
 	public function push(){
@@ -190,7 +190,10 @@ class AdminController extends BaseController {
 			'image' => 'www/logo.png',
 			'soundname' => 'alert',
 			"ledColor" => [0, 146, 234, 255],
-		    'title' => Input::get('titulo')
+		    'title' => Input::get('titulo'),
+		    "style" => "inbox",
+        	"summaryText" =>  "Tienes %n% notificaciones",
+        	'actions' => [["title" => "Abrir", "callback"=> "abrir", "foreground"=>  true]]
 			]);
 
 		$collection = PushNotification::app('android')
@@ -227,6 +230,6 @@ class AdminController extends BaseController {
 			->where("id","=",$id)
 			->update(array("media"=> "slider" . $id .".". Input::file('media')->getClientOriginalExtension()));
 		}
-		return View::make("admin.portadas");
+		return View::make("admin.portadas")->withActivo('portadas');
 	}
 }

@@ -16,30 +16,21 @@ $message = Session::get('message');
 
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
-    <!-- Latest compiled and minified CSS & JS -->
-    <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <script src="//code.jquery.com/jquery.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/jcookie.js') }}"></script>
     {{-- Link a FAVICON --}}
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
-        <!-- <link rel="stylesheet" type="text/css" href="{{asset('css/mdb.min.css')}}"> -->
-        <!-- <script src="{{asset('js/mdb.min.js')}}"></script> -->
     @yield('header', '')
 </head>
 
 <body>
-
     <div id="wrapper">
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             @include('admin/menu')
-
-            <div id="menu-buttons" class="btn-group" role="group" style="position: fixed; z-index: 10; bottom:0px;">
-                <a class="btn btn-primary menu-toggle"><i class="fa fa-bars"></i><span class="menu-text">Menu</span></a>
-                <a class="btn btn-success" href="{{url()}}"><i class="fa fa-home"></i><span class="menu-text"> Volver </span></a>
-            </div>
         </div>
 
         <!-- Page Content -->
@@ -53,17 +44,5 @@ $message = Session::get('message');
             @yield('content','')
         </div>
     </div>
-
-
-        <!-- Menu Toggle Script -->
-        <script>
-            $(".menu-toggle").click(function(e)
-            {
-                $("#wrapper").toggleClass("toggled");
-                $("span.menu-text").toggle('slow');
-                $("#menu-buttons").toggleClass('bottom');
-            });
-        </script>
 </body>
-
 </html>

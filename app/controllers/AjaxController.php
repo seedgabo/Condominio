@@ -430,6 +430,32 @@ class AjaxController extends BaseController {
 		}
 	}
 
+	public function toggleNotificacion($id)
+	{
+		$notificacion =Notificacion::find($id);
+		if($notificacion->user_id != Auth::user()->id){
+			Response::make('No Permitido', 403);
+		}
+		$notificacion->leido = ($notificacion->leido == 0  ? 1 : 0);
+		$notificacion->save();
+		if(Request::ajax()){
+			return Response::json($notificacion, 200);
+		}
+		else{
+			flashMessage('Listo');
+			return Redirect::back();
+		}
+	}
+
+	public function leerTodasNotificaciones(){
+		Notificacion::Usuario(Auth::user()->id)->noleidos()->update(['leido' => 1]);
+		if(Request::ajax()){
+			return Response::json(["status" => "Ok"], 200);
+		}
+		else{
+			return Redirect::back();
+		}
+	}
 
 	public function resultadosEncuesta($id)
 	{
@@ -495,8 +521,15 @@ class AjaxController extends BaseController {
 		foreach (Input::get('to') as $key => $correo) {
 			$salida['message'] .= $correo  .",  ";
 		}
-		return  json_encode($salida);
+			return  json_encode($salida);
 		}
 		return "error No Ha Seleccionado ningun Destinatario";
 	}
+
+	public function adicionales(){
+		$data = [];
+		$data['deuda'] =  getDeudaTotal(Auth::user()->residencia_id);
+		return Response::json($data, 200);
+	}
+
 }

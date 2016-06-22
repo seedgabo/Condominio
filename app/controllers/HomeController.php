@@ -5,6 +5,7 @@ class HomeController extends BaseController {
 
 	public function inicio()
 	{
+		$portadas = DB::table('portadas')->get();
 		$noticias =	DB::table('noticias')->take(20)->orderby('created_at','desc')->orderby('id','asc')->get();
 		$eventos = DB::table('eventos')
 		->where('fecha_ini','>=',Carbon::today())
@@ -12,7 +13,7 @@ class HomeController extends BaseController {
 		->orderby('fecha_ini','asc')
 		->orderby('tiempo_ini','asc')
 		->get();
-		return  View::make('inicio')->with('noticias',$noticias)->withEventos($eventos);
+		return  View::make('inicio')->with('noticias',$noticias)->withEventos($eventos)->withPortadas($portadas);
 	}
 	public function agregarnoticia()
 	{
@@ -260,6 +261,11 @@ class HomeController extends BaseController {
 	{
 		$encuestas = Encuestas::orderby('updated_at','asc')->take(100)->get();
 		return View::make('verencuesta')->withEncuestas($encuestas);
+	}
+	public function verNotificaciones()
+	{
+		$notificaciones = Notificacion::Usuario(Auth::user()->id)->orderby("updated_at","desc")->paginate(50);
+		return View::make('notificaciones',['notificaciones' => $notificaciones]);
 	}
 	public function eliminarrecibo($id)
 	{

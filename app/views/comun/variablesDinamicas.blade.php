@@ -79,7 +79,9 @@
                 </ul>
             </div>
 
-            <button formaction="{{url("documento-preview")}}" formmethod="POST" formtarget="_blank" class="btn btn-warning" onclick="getHtml()"><i class="fa fa-eye"></i> Vista Previa</button>
+            <button id="preview" class="btn btn-warning" onclick="submitForm()">
+                <i class="fa fa-eye"></i> Vista Previa
+            </button>
         </div>
     </div>
 </div>
@@ -100,6 +102,17 @@ function addHtml(texto){
     }
 }
 function getHtml (){
-
 }
+
+$( "#preview" ).click(function( event ) {
+  event.preventDefault();
+    old_target = document.form1.target;
+    old_action = document.form1.action;
+    document.form1.target = "myActionWin";
+    document.form1.action = "{{url("documento-preview")}}";
+    window.open("","myActionWin","width=800,height=600,toolbar=0");
+    document.form1.submit();
+    document.form1.target = old_target;
+    document.form1.action = old_action;
+});
 </script>

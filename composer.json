@@ -1,4 +1,3 @@
-
 {
     "name" : "laravel/laravel",
     "description" : "The Laravel Framework.",
@@ -15,7 +14,8 @@
         "maatwebsite/excel": "~1.3",
         "artdarek/oauth-4-laravel": "dev-master",
         "khill/lavacharts" : "2.5.*",
-        "davibennun/laravel-push-notification": "dev-master"
+        "davibennun/laravel-push-notification": "dev-master",
+        "pushpad/pushpad-php": "^0.3.1"
     },
     "autoload" :
     {

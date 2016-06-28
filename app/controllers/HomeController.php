@@ -324,6 +324,16 @@ class HomeController extends BaseController {
 			return Redirect::back();
 		}
 	}
+	public function eliminarnotificacion($id){
+		if(Notificacion::find($id)->user_id == Auth::user()->id){
+			Notificacion::destroy($id);
+			flashMessage("Notificacion Eliminada");
+			return Redirect::back();
+		}
+		else{
+			return "No posee los permisos para hacer esta operacion";
+		}
+	}
 	public function generarFactura()
 	{
 		if (Input::has("persona_id"))

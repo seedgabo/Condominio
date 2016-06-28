@@ -176,6 +176,9 @@ class AdminController extends BaseController {
 	}
 
 	public function push(){
+		Notificacion::InsertarNotificacionesMasivas(Input::get('titulo'), Input::get('mensaje'));
+
+		//Notificaciones en android
 		$dispositivos = Dispositivo::active()->mensajes()->get();
 		$disp = [];
 
@@ -193,12 +196,25 @@ class AdminController extends BaseController {
 		    'title' => Input::get('titulo'),
 		    "style" => "inbox",
         	"summaryText" =>  "Tienes %n% notificaciones",
-        	'actions' => [["title" => "Abrir", "callback"=> "abrir", "foreground"=>  true]]
+        	'actions' => [["title" => "Abrir", "callback"=> "abrir", "foreground"=>  false]]
 			]);
 
 		$collection = PushNotification::app('android')
 	        ->to($devices)
 	        ->send($message);
+
+
+	    // notificaciones en el navegador
+	    require_once('vendor/autoload.php');
+	    
+		Pushpad\Pushpad::$auth_token = '3f31ce907b0008fbde64d2f21399b9c7';
+		Pushpad\Pushpad::$project_id = 1211; 
+		$notification = new Pushpad\Notification(array(
+		  'body' => Input::get('mensaje', ''), # max 90 characters
+		  'title' => Input::get('titulo', 'Residencias Online'), # optional, defaults to your project name, max 30 characters
+		));
+		$notification->broadcast(['tags' => []]); 
+	    
 
 		Session::flash('success', 'Mensaje enviado');
 	    return Redirect::back();

@@ -7,7 +7,7 @@
 @section('content')
 
 <div>
-    {{ Form::model(isset($documento) ? $documento : null,['method' => 'POST', 'class' => 'form-horizontal']) }}
+    {{ Form::model(isset($documento) ? $documento : null,['method' => 'POST', 'class' => 'form-horizontal', 'name' => 'form1']) }}
         <div class="form-group">
 
             {{ Form::label('titulo', 'Titulo Del Documento:') }}

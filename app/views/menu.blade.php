@@ -1,3 +1,9 @@
+
+<?php 
+require_once('vendor/autoload.php');
+Pushpad\Pushpad::$auth_token = '3f31ce907b0008fbde64d2f21399b9c7';
+Pushpad\Pushpad::$project_id = 1211; 
+?>
 <div class="navbar-fixed">
     <header id="header" class="">
         <nav>
@@ -7,7 +13,9 @@
                 <ul class="right hide-on-med-and-down">
                     @if(Auth::check())
                         <li class="tooltipped dropdown-button" data-activates="dropdown2" data-delay="10" data-constrainwidth="false" data-beloworigin="true" data-alignment="right" data-tooltip="Notificaciones">
-                            <a href="#!"><i style="font-size:18px" class="fa fa-bell badge1" data-badge="{{sizeof($notificaciones)}}"> </i></a></li>
+                            <a href="#!"><i style="font-size:18px" class="fa fa-bell badge1" data-badge="{{sizeof($notificaciones)}}"> </i>
+                            </a>
+                        </li>
                             <li>
                                 <a class="dropdown-button valign-wrapper" href="#!" data-beloworigin="true" data-hover="true" data-activates="dropdown1" data-alignment="left">
                                     @if (Auth::check() && Auth::user()->avatar != null)
@@ -41,6 +49,11 @@
                             <li><a href="#modallogin" class="modal-trigger" data-target="#modallogin">Iniciar Sesión</a></li>
                             <li><a href="{{url('registro')}}">Registrate</a></li>
                         @else
+                            <li>
+                                <a href="{{url('ver-notificaciones')}}">Notificaciones 
+                                    <i style="font-size:18px" class="fa fa-bell badge1" data-badge="{{sizeof($notificaciones)}}"> </i>
+                                </a>
+                            </li>
                             <li><a href="{{url('logout')}}"> Cerrar Sesión</a> </li>
                             <li><a href="{{url('ver-residencia')}}">Mi Residencia</a></li>
                             <li><a href="{{url('perfil')}}">Mi Perfil</a></li>
@@ -61,7 +74,7 @@
                 </div>
             </nav>
         </header>
-    </div>
+</div>
 
     <ul id="dropdown1" class="dropdown-content">
         @if (Auth::check() &&Auth::user()->admin)
@@ -72,14 +85,24 @@
         <li class="divider"></li>
         <li><a class="" href="{{url('logout')}}"><i class="left fa fa-sign-out"></i>Cerrar Sessión</a></li>
     </ul>
+
  @if(Auth::check())
     <ul id="dropdown2" class="dropdown-content">
         @forelse($notificaciones->take(5) as $notificacion)
-            <li><a href="{{url('ver-notificaciones')}}">* {{$notificacion->titulo}}</a></li>
+            <li>
+                <span class="blue-text lighten-2" onclick="window.location = '{{url('ver-notificaciones')}}'">{{$notificacion->titulo}}<span>
+                <span onclick="window.location = '{{url('ajax/marcar-leido/'. $notificacion->id)}}'"><i class="fa fa-bell-o grey-text"></i></span>
+                <span onclick="window.location = '{{url('eliminar-notificacion/'. $notificacion->id)}}'"><i class="fa fa-times red-text"></i></span>
+            </li>
         @empty
             <p class="black-text"> No Tienes Notificaciones Nuevas </p>
         @endforelse
         <li class="divider"></li>
         <li><a href="{{url('ver-notificaciones')}}">Ver Todas las Notificaciones</a></li>
+        <li><a href="<?= Pushpad\Pushpad::path_for(Auth::user()->id) ?>">Suscribirse</a></li>
     </ul>
 @endif
+
+
+
+

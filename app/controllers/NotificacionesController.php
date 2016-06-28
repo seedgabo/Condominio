@@ -1,6 +1,6 @@
 <?php
 
-class NotificacionController extends \BaseController {
+class NotificacionesController extends \BaseController {
 
 	/**
 	 * Display a listing of notificaciones
@@ -9,8 +9,7 @@ class NotificacionController extends \BaseController {
 	 */
 	public function index()
 	{
-		$notificaciones =  Auth::user()->notificaciones;
-
+		$notificaciones =  Auth::user()->notificaciones->sortByDesc('id')->take(50);
 		return Response::json($notificaciones,200);
 	}
 
@@ -32,7 +31,7 @@ class NotificacionController extends \BaseController {
 	public function store()
 	{
 		$validator = Validator::make($data = Input::all(), Notificacion::$rules);
-		$data = array_add($notificaciones,('user_id',Auth::user()->id));
+		$data = array_add($notificaciones,'user_id',Auth::user()->id);
 		if ($validator->fails())
 		{
 			return Redirect::back()->withErrors($validator)->withInput();
@@ -65,7 +64,15 @@ class NotificacionController extends \BaseController {
 	public function marcarComoLeido($id)
 	{
 		$notificacion = Notificacion::find($id);
-		$notificacion->leido(1);
+		$notificacion->leido= 1;
+		$notificacion->save();
+		return Response::json($notificacion,200);
+	}
+
+	public function marcarComoNoLeido($id)
+	{
+		$notificacion = Notificacion::find($id);
+		$notificacion->leido= 0;
 		$notificacion->save();
 		return Response::json($notificacion,200);
 	}
@@ -95,7 +102,7 @@ class NotificacionController extends \BaseController {
 	{
 		Notificacion::destroy($id);
 
-		return Response::json["status" => 'success'],200);
+		return Response::json(["status" => 'success'],200);
 	}
 
 }

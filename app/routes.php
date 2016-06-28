@@ -79,6 +79,9 @@ Route::group(array('prefix' => 'api'), function()
     Route::resource('areas', 'AreasController');
     Route::resource('directiva', 'DirectivaController');
     Route::resource('noticias', 'NoticiasController');
+    Route::resource('notificaciones', 'NotificacionesController');
+    Route::get('notificaciones/leido/{id}', 'NotificacionesController@marcarComoLeido');
+    Route::get('notificaciones/no-leido/{id}', 'NotificacionesController@marcarComoNoLeido');
     Route::resource('encuestas', 'EncuestasController');
     Route::resource('residencias', 'ResidenciasController');
     Route::resource('portadas', 'PortadasController');
@@ -93,12 +96,8 @@ Route::group(array('prefix' => 'api'), function()
     Route::any('generar-factura', array('uses' => 'HomeController@generarFactura'));
     Route::any('generar-recibo/{id}', array('uses' => 'HomeController@generarRecibo'));
     Route::any('generar-documento/{id}', array('uses' => 'HomeController@generarDocumento'));
-    Route::get('adicionales',  array('uses' => 'AjaxController@adicionales'));
-    Route::any("login", array('uses' => function()
-    {
-        return json_encode(array_add(Auth::user(),"status",true));
-    }));
-
+    Route::get('adicionales',  array('uses' => 'ApiController@adicionales'));
+    Route::any("login", array('uses' => 'ApiController@login'));
 });
 
 // Controlador Oauth
@@ -124,6 +123,7 @@ Route::group(array(), function()
     Route::any('eliminar-personal/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarpersonal'));
     Route::any('eliminar-vehiculo/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarVehiculo'));
     Route::any('eliminar-noticia/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarnoticia'));
+    Route::any('eliminar-notificacion/{id}',array('before' => 'auth', 'uses' => 'HomeController@eliminarnotificacion'));
     Route::any('ver-recibos',array('before' => 'auth', 'uses' => 'HomeController@verrecibos'));
     Route::any('ver-documentos',array('before' => 'auth', 'uses' => 'HomeController@verdocumentos'));
     Route::any('ver-residencia',array('before' => 'auth', 'uses' => 'HomeController@verresidencia'));

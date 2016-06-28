@@ -20,6 +20,7 @@ Auth::check() ? $notificaciones = Notificacion::noleidas(Auth::user()->id): $not
 	<!-- Libreria de Iconos -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 	<!-- Latest compiled and minified CSS & JS -->
 	<script src="//code.jquery.com/jquery.js"></script>
 	<!-- Compiled and minified JavaScript -->

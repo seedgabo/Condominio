@@ -154,13 +154,14 @@ class FinanzasController extends \BaseController {
 	public function cargarCobros(){
 		$mes = Input::get('mes');
 		$año = Input::get('año');
-		foreach (Residencias::all() as $residencia) {
-			$solvencia = Solvencia::firstorCreate(['mes' => $mes, 'año' => $año, 'residencia_id' => $residencia->id]);
+		foreach (Residencias::all() as $residencia)
+		{
+			$solvencia = Solvencia::firstorNew(['mes' => $mes, 'año' => $año, 'residencia_id' => $residencia->id]);
 			$solvencia->estado = 3;
 			$solvencia->monto = getdeuda($residencia->id,$mes,$año);
 			$solvencia->save();
 		}
-
+		Notificacion::InsertarNotificacionesMasivas("Nuevo Recibo Agregado", "Se ha agregado el recibo de " . getMeses()[$mes] .  $año);
 		Session::flash('success', "Cobros cargados Correctamente");
 		return Redirect::to('admin/Finanzas/gestion?mes='.$mes. '&año='.$año);
 	}

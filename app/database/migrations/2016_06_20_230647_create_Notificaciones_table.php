@@ -18,9 +18,11 @@ class CreateNotificacionesTable extends Migration {
 			$table->string('titulo');
 			$table->string('mensaje');
 			$table->boolean('leido')->default(0);
+			$table->boolean('admin')->default(0);
 			$table->integer('user_id');
 			$table->string('url');
 			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

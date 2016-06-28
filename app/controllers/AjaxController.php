@@ -526,10 +526,4 @@ class AjaxController extends BaseController {
 		return "error No Ha Seleccionado ningun Destinatario";
 	}
 
-	public function adicionales(){
-		$data = [];
-		$data['deuda'] =  getDeudaTotal(Auth::user()->residencia_id);
-		return Response::json($data, 200);
-	}
-
 }

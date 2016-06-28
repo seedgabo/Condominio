@@ -13,13 +13,13 @@ return array(
 	|
 	*/
 
-	'solvente' => 'Al Día',
+	'solvente' => 'solvente',
 
 	'moroso'     => 'Moroso|Morosos',
 
 	'cedula'   => 'Cedula de Identidad',
 
-	'DNI'  => 'C.I.'
+	'DNI'  => 'C.I.',
 
 	'condominio' => 'Condominio',
 

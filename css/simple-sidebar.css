@@ -35,7 +35,7 @@ ul.sidebar-nav {
       ul.sidebar-nav li a .sidebar-brand {
         height: 45px;
         font-size: 18px;
-        line-height: 80px; }
+        line-height: 70px; }
         ul.sidebar-nav li a .sidebar-brand a {
           color: #999999; }
           ul.sidebar-nav li a .sidebar-brand a:hover {
@@ -55,11 +55,11 @@ ul.sidebar-nav {
       #wrapper.toggled #sidebar-wrapper.compact {
         width: 70px; }
   #wrapper.compact #sidebar-wrapper {
-    width: 80px;
-    left: 80px;
-    margin-left: -80px; }
+    width: 70px;
+    left: 70px;
+    margin-left: -70px; }
   #wrapper.compact .sidebar-nav {
-    width: 80px; }
+    width: 70px; }
     #wrapper.compact .sidebar-nav li a span {
       display: none; }
 
@@ -88,7 +88,7 @@ ul.sidebar-nav {
   #wrapper {
     padding-left: 250px; }
     #wrapper.compact {
-      padding-left: 80px; }
+      padding-left: 70px; }
 
   #wrapper.toggled {
     padding-left: 0; }

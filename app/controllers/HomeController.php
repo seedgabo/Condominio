@@ -2,7 +2,6 @@
 
 class HomeController extends BaseController {
 
-
 	public function inicio()
 	{
 		$portadas = DB::table('portadas')->get();
@@ -194,8 +193,6 @@ class HomeController extends BaseController {
 	}
 	public function verpersonal()
 	{
-		$personal = Personal::all();
-		$tupersonal = Personal::where("residencia_id","=",Auth::user()->residencia_id) ->get();
 		if (Input::has(array("nombre","cargo","cedula")))
 		{
 			$rules =  array(
@@ -215,7 +212,7 @@ class HomeController extends BaseController {
 			Personal::FirstorCreate ($datos);
 			flashMessage("Personal Agregado Correctamente");
 		}
-		$personal = Personal::all();
+		$personal = Personal::with('residencia')->get();
 		$tupersonal = Auth::user()->residencia->personal;
 		return View::make('verpersonal')->withPersonal($personal)->withTupersonal($tupersonal);
 	}
@@ -234,7 +231,7 @@ class HomeController extends BaseController {
 			Vehiculo::FirstorCreate ($datos);
 			flashMessage("Vehiculo Agregado Correctamente");
 		}
-		$vehiculos = Vehiculo::orderBy("residencia_id","asc")->get();
+		$vehiculos = Vehiculo::with('residencia')->orderBy("residencia_id","asc")->get();
 		$tusvehiculos = Auth::user()->residencia->vehiculos->sortBy('residencia_id');
 		return View::make('vervehiculos')->withVehiculos($vehiculos)->withTusvehiculos($tusvehiculos);
 	}
@@ -253,7 +250,7 @@ class HomeController extends BaseController {
 			Visitante::FirstorCreate ($datos);
 			flashMessage("Visitante Agregado Correctamente");
 		}
-		$visitantes    = Visitante::orderBy("residencia_id","asc")->get();
+		$visitantes    = Visitante::with('residencia')->orderBy("residencia_id","asc")->get();
 		$tusvisitantes = Auth::user()->residencia->visitantes->sortBy('residencia_id');
 		return View::make('vervisitantes')->withVisitantes($visitantes)->withTusvisitantes($tusvisitantes);
 	}
@@ -467,7 +464,7 @@ class HomeController extends BaseController {
 		{
 			$rules =  array(
 				'nombre' => 'required|min:8|max:30|',
-				'email' => 'required|email|unique:personas,email,'.Auth::user()->id,
+				'email' => 'required|email',
 				'residencia_id' => 'exists:residencias,id',
 				'cedula' => 'required|min:3|max:10',
 			);

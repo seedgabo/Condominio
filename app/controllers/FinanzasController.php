@@ -151,7 +151,8 @@ class FinanzasController extends \BaseController {
 		return View::make('admin/gestionResidencias',compact('residencias'));
 	}
 
-	public function cargarCobros(){
+	public function cargarCobros()
+	{
 		$mes = Input::get('mes');
 		$año = Input::get('año');
 		foreach (Residencias::all() as $residencia)
@@ -163,6 +164,26 @@ class FinanzasController extends \BaseController {
 		}
 		Notificacion::InsertarNotificacionesMasivas("Nuevo Recibo Agregado", "Se ha agregado el recibo de " . getMeses()[$mes] .  $año);
 		Session::flash('success', "Cobros cargados Correctamente");
+		if (Config::get('var.push',false)){
+
+            $dispositivos = Dispositivo::active()->mensajes()->get();
+            $disp = [];
+
+            foreach ($dispositivos as $dispositivo) {
+                $disp[]= PushNotification::Device($dispositivo->token);
+            }
+            $devices = PushNotification::DeviceCollection($disp);
+            $message = PushNotification::Message("Se ha agregado el recibo de " . getMeses()[$mes] .  $año,[
+                'badge' => 1,
+                'image' => 'www/logo.png',
+                'soundname' => 'alert',
+                "ledColor" => [0, 146, 234, 255],
+                'title' => 'Nueva Recibo Agregado',
+            ]);
+            $collection = PushNotification::app('android')
+            ->to($devices)
+            ->send($message);
+        }
 		return Redirect::to('admin/Finanzas/gestion?mes='.$mes. '&año='.$año);
 	}
 

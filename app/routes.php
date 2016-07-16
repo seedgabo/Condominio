@@ -1,5 +1,4 @@
 <?php
-
 // Variables compartidas en vistas
 View::share('time', new Carbon);
 

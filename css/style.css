@@ -147,3 +147,85 @@ hr.simple {
 	padding-left: 4px;
 	padding-right: 4px;
 }
+
+.shake {
+	animation: shake 6s infinite alternate;
+}
+@keyframes shake {
+    1%, 9% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    2%, 8% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    3%, 5%, 7% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    4%, 6% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+
+#cf {
+  position: relative;
+  margin: 0 auto;
+  height: 400px;
+}
+#cf img {
+	height: 320px;
+  	position: absolute;
+	top: 80px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+#cf img.top {
+  animation-name: cf3FadeInOut;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-duration: 6s;
+  animation-direction: alternate;
+}
+
+@keyframes cf3FadeInOut {
+  0% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+
+
+.fadeinleft{
+	-webkit-animation: fadeInLeft 1s;
+	-o-animation: fadeInLeft 1s;
+	animation: fadeInLeft 1s;
+}
+@keyframes fadeInLeft {
+   0% {
+      opacity: 0;
+      transform: translateX(-200px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateX(0);
+   }
+}
